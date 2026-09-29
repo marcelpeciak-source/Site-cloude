@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Lumora — cyfrowe doświadczenia dla biznesu</title>
+  <meta name="description" content="Lumora łączy strategię, design i technologię 3D. Tworzymy strony, sklepy i kampanie, które zamieniają odwiedzających w klientów.">
+  <meta name="theme-color" content="#07070b">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Lumora — cyfrowe doświadczenia dla biznesu">
+  <meta property="og:description" content="Strategia, design i 3D, które sprzedają. Budujemy marki, których nie da się przewinąć.">
+  <meta property="og:locale" content="pl_PL">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <link rel="preload" href="vendor/fonts/syne-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="vendor/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="vendor/fonts.css">
+  <link rel="stylesheet" href="vendor/lenis.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <script>
+    (function (c) {
+      c.add('js');
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) c.add('motion');
+      // Failsafe: if scripts never start, show the content without animations.
+      setTimeout(function () { if (!c.contains('is-ready')) c.remove('js', 'motion'); }, 8000);
+    })(document.documentElement.classList);
+  </script>
+  <script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script>
+  <script src="vendor/gsap.min.js" defer></script>
+  <script src="vendor/ScrollTrigger.min.js" defer></script>
+  <script src="vendor/SplitText.min.js" defer></script>
+  <script src="vendor/lenis.min.js" defer></script>
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#tresc">Przejdź do treści</a>
+
+  <div class="preloader" aria-hidden="true">
+    <div class="preloader__inner">
+      <span class="preloader__brand">Lumora</span>
+      <span class="preloader__count"><span data-count>0</span>%</span>
+    </div>
+    <div class="preloader__bar"><span></span></div>
+  </div>
+
+  <canvas class="webgl" aria-hidden="true"></canvas>
+  <div class="webgl-fallback" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="cursor" aria-hidden="true">
+    <div class="cursor__ring"><span class="cursor__label"></span></div>
+    <div class="cursor__dot"></div>
+  </div>
+
+  <header class="nav">
+    <a href="#top" class="nav__logo" aria-label="Lumora — strona główna">Lumora<sup>®</sup></a>
+    <nav class="nav__links" aria-label="Główna nawigacja">
+      <a href="#o-nas">O nas</a>
+      <a href="#uslugi">Usługi</a>
+      <a href="#proces">Proces</a>
+      <a href="#wyniki">Wyniki</a>
+    </nav>
+    <a href="#kontakt" class="btn btn--small" data-magnetic><span>Porozmawiajmy</span></a>
+  </header>
+
+  <main id="top">
+    <section class="hero" data-scene="sphere" data-scene-x="1.55" data-scene-mobile-y="0.9">
+      <div class="hero__content" id="tresc">
+        <p class="eyebrow hero__eyebrow"><span class="dot"></span> Studio cyfrowych doświadczeń</p>
+        <h1 class="hero__title" data-hero-title>
+          <span class="line">Budujemy marki,</span>
+          <span class="line">których nie da się</span>
+          <span class="line line--accent">przewinąć.</span>
+        </h1>
+        <p class="hero__lead" data-fade>
+          Łączymy strategię, design i&nbsp;technologię 3D, by zamieniać odwiedzających w&nbsp;klientów.
+          Strony, sklepy i&nbsp;kampanie, które działają — i&nbsp;zachwycają.
+        </p>
+        <div class="hero__actions" data-fade>
+          <a href="#kontakt" class="btn" data-magnetic><span>Zacznij projekt</span><i class="btn__arrow" aria-hidden="true">→</i></a>
+          <a href="#proces" class="btn btn--ghost" data-magnetic><span>Jak pracujemy</span></a>
+        </div>
+      </div>
+      <div class="hero__meta" data-fade>
+        <div class="hero__scroll"><span class="hero__scroll-line"></span>Przewiń, aby odkryć</div>
+        <div class="hero__coords">52.2297° N · 21.0122° E</div>
+      </div>
+    </section>
+
+    <div class="marquee" aria-label="Nasze specjalizacje">
+      <div class="marquee__inner">
+        <div class="marquee__track">
+          <span>Strategia marki</span><i>✦</i><span>Strony WWW 3D</span><i>✦</i><span>E-commerce</span><i>✦</i><span>Identyfikacja wizualna</span><i>✦</i><span>Motion design</span><i>✦</i><span>Produkty cyfrowe</span><i>✦</i>
+        </div>
+        <div class="marquee__track" aria-hidden="true">
+          <span>Strategia marki</span><i>✦</i><span>Strony WWW 3D</span><i>✦</i><span>E-commerce</span><i>✦</i><span>Identyfikacja wizualna</span><i>✦</i><span>Motion design</span><i>✦</i><span>Produkty cyfrowe</span><i>✦</i>
+        </div>
+      </div>
+    </div>
+
+    <section class="manifesto section" id="o-nas" data-scene="knot" data-scene-x="0" data-scene-dim="0.45">
+      <p class="section__label">(01) — O nas</p>
+      <p class="manifesto__text" data-words>
+        Wierzymy, że strona internetowa to nie wizytówka. To najlepszy handlowiec Twojej firmy —
+        pracuje 24/7, nie bierze urlopu i&nbsp;robi pierwsze wrażenie, zanim ktokolwiek powie „dzień dobry”.
+      </p>
+      <div class="manifesto__foot" data-fade>
+        <p>Jesteśmy zespołem strategów, projektantów i&nbsp;inżynierów 3D. Od pierwszego warsztatu do wdrożenia prowadzimy projekt tak, jakby to był nasz własny biznes.</p>
+        <a href="#uslugi" class="link-arrow" data-cursor="Dalej">Co robimy <span aria-hidden="true">↘</span></a>
+      </div>
+    </section>
+
+    <section class="services section" id="uslugi" data-scene="galaxy" data-scene-x="-1.8" data-scene-dim="0.55">
+      <header class="section__head">
+        <p class="section__label">(02) — Usługi</p>
+        <h2 class="section__title" data-reveal>Od strategii<br>po piksel i&nbsp;polygon.</h2>
+      </header>
+      <div class="services__grid">
+        <article class="card" data-tilt>
+          <span class="card__num">01</span>
+          <h3 class="card__title">Strategia i&nbsp;marka</h3>
+          <p class="card__text">Pozycjonowanie, identyfikacja wizualna i&nbsp;komunikacja, które wyróżniają Cię na tle konkurencji.</p>
+          <ul class="card__tags"><li>Warsztaty</li><li>Naming</li><li>Brand book</li></ul>
+        </article>
+        <article class="card" data-tilt>
+          <span class="card__num">02</span>
+          <h3 class="card__title">Strony i&nbsp;sklepy 3D</h3>
+          <p class="card__text">Immersyjne strony WWW i&nbsp;e-commerce z&nbsp;WebGL, które sprzedają i&nbsp;zapadają w&nbsp;pamięć.</p>
+          <ul class="card__tags"><li>WebGL</li><li>Shopify</li><li>SEO</li></ul>
+        </article>
+        <article class="card" data-tilt>
+          <span class="card__num">03</span>
+          <h3 class="card__title">Produkty cyfrowe</h3>
+          <p class="card__text">Aplikacje webowe i&nbsp;panele klienta projektowane wokół realnych potrzeb użytkowników.</p>
+          <ul class="card__tags"><li>UX research</li><li>Design system</li><li>React</li></ul>
+        </article>
+        <article class="card" data-tilt>
+          <span class="card__num">04</span>
+          <h3 class="card__title">Motion i&nbsp;kampanie</h3>
+          <p class="card__text">Animacje, wideo 3D i&nbsp;kampanie, które zatrzymują kciuk w&nbsp;pół przewijania.</p>
+          <ul class="card__tags"><li>3D</li><li>Social</li><li>Launch</li></ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="process" id="proces" data-scene="helix" data-scene-x="0" data-scene-dim="0.6">
+      <div class="process__pin">
+        <header class="process__head">
+          <p class="section__label">(03) — Proces</p>
+          <h2 class="section__title" data-reveal>Cztery kroki<br>do efektu „wow”.</h2>
+        </header>
+        <div class="process__viewport">
+          <ol class="process__track">
+            <li class="step">
+              <span class="step__num">01</span>
+              <h3 class="step__title">Odkrywamy</h3>
+              <p class="step__text">Warsztaty, badania i&nbsp;audyt. Poznajemy Twój biznes, klientów i&nbsp;konkurencję, zanim narysujemy pierwszą linię.</p>
+            </li>
+            <li class="step">
+              <span class="step__num">02</span>
+              <h3 class="step__title">Projektujemy</h3>
+              <p class="step__text">Koncepcja, prototyp i&nbsp;design system. Widzisz i&nbsp;klikasz efekt, zanim powstanie kod.</p>
+            </li>
+            <li class="step">
+              <span class="step__num">03</span>
+              <h3 class="step__title">Budujemy</h3>
+              <p class="step__text">Kod, 3D, animacje i&nbsp;integracje. Szybko, dostępnie i&nbsp;zgodnie z&nbsp;dobrymi praktykami SEO.</p>
+            </li>
+            <li class="step">
+              <span class="step__num">04</span>
+              <h3 class="step__title">Rozwijamy</h3>
+              <p class="step__text">Analityka, testy A/B i&nbsp;kolejne iteracje. Strona rośnie razem z&nbsp;Twoją firmą.</p>
+            </li>
+          </ol>
+        </div>
+        <div class="process__progress" aria-hidden="true"><span></span></div>
+      </div>
+    </section>
+
+    <section class="stats section" id="wyniki" data-scene="wave" data-scene-x="0" data-scene-y="-1.2" data-scene-dim="0.8">
+      <header class="section__head">
+        <p class="section__label">(04) — Wyniki</p>
+        <h2 class="section__title" data-reveal>Liczby, które<br>mówią za nas.</h2>
+      </header>
+      <dl class="stats__grid">
+        <div class="stat"><dt class="stat__label">zrealizowanych projektów</dt><dd class="stat__value" data-counter="120" data-suffix="+">120+</dd></div>
+        <div class="stat"><dt class="stat__label">średni wzrost konwersji</dt><dd class="stat__value" data-counter="3.4" data-decimals="1" data-suffix="×">3,4×</dd></div>
+        <div class="stat"><dt class="stat__label">klientów poleca nas dalej</dt><dd class="stat__value" data-counter="98" data-suffix="%">98%</dd></div>
+        <div class="stat"><dt class="stat__label">nagród i&nbsp;wyróżnień</dt><dd class="stat__value" data-counter="24">24</dd></div>
+      </dl>
+    </section>
+
+    <section class="contact section" id="kontakt" data-scene="sphere" data-scene-x="0" data-scene-scale="1.15" data-scene-dim="0.9">
+      <p class="section__label">(05) — Kontakt</p>
+      <h2 class="contact__title" data-reveal>Masz pomysł?<br><span class="contact__accent">Zróbmy z&nbsp;niego coś niezwykłego.</span></h2>
+      <a class="orb-btn" href="mailto:kontakt@lumora.example" data-magnetic data-cursor="Napisz">
+        <svg class="orb-btn__ring" viewBox="0 0 200 200" aria-hidden="true">
+          <defs><path id="orb-circle" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
+          <text><textPath href="#orb-circle" textLength="486" lengthAdjust="spacing">napisz do nas ✦ odpowiadamy w 24h ✦</textPath></text>
+        </svg>
+        <span class="orb-btn__core">↗</span>
+        <span class="sr-only">Napisz do nas: kontakt@lumora.example</span>
+      </a>
+      <a class="contact__mail" href="mailto:kontakt@lumora.example">kontakt@lumora.example</a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <span class="footer__logo">Lumora<sup>®</sup></span>
+        <p>Cyfrowe doświadczenia dla biznesu.<br>Warszawa · Kraków · zdalnie.</p>
+      </div>
+      <nav class="footer__col" aria-label="Stopka — nawigacja">
+        <span class="footer__head">Menu</span>
+        <a href="#o-nas">O nas</a><a href="#uslugi">Usługi</a><a href="#proces">Proces</a><a href="#kontakt">Kontakt</a>
+      </nav>
+      <nav class="footer__col" aria-label="Media społecznościowe">
+        <span class="footer__head">Social</span>
+        <a href="#" rel="noopener">Instagram</a><a href="#" rel="noopener">LinkedIn</a><a href="#" rel="noopener">Behance</a><a href="#" rel="noopener">Dribbble</a>
+      </nav>
+      <div class="footer__col">
+        <span class="footer__head">Czas lokalny</span>
+        <span class="footer__clock" data-clock>--:--</span>
+        <span class="footer__muted">Warszawa, Polska</span>
+      </div>
+    </div>
+    <div class="footer__big" aria-hidden="true">Lumora</div>
+    <div class="footer__bottom">
+      <span>© <span data-year>2026</span> Lumora Studio. Wszelkie prawa zastrzeżone.</span>
+      <a href="#top" class="link-arrow" data-to-top>Do góry <span aria-hidden="true">↑</span></a>
+    </div>
+  </footer>
+</body>
+</html>
