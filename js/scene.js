@@ -2,7 +2,7 @@
 // as the visitor moves through the page. Morph weights, position and brightness are
 // tweened with GSAP; everything else happens in the vertex shader.
 import * as THREE from 'three';
-import { SHAPES, buildShapes } from './shapes.js';
+import { SHAPES, LOGO_WIDTH, buildShapes, sampleText } from './shapes.js';
 
 const noise = /* glsl */ `
 vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
@@ -57,7 +57,7 @@ float snoise(vec3 v) {
 const vertexShader = /* glsl */ `
 uniform float uTime;
 uniform float uRot;
-uniform float uW[5];
+uniform float uW[7];
 uniform vec2 uMouse;
 uniform float uMouseForce;
 uniform float uSize;
@@ -72,6 +72,8 @@ attribute vec3 aKnot;
 attribute vec3 aWave;
 attribute vec3 aHelix;
 attribute vec3 aGalaxy;
+attribute vec3 aCube;
+attribute vec3 aLogo;
 attribute vec4 aRnd;
 attribute vec3 aDir;
 
@@ -99,12 +101,20 @@ void main() {
 
   vec3 galaxy = rotX(rotY(aGalaxy, uRot * 1.4), 1.05);
 
-  vec3 p = sphere * uW[0] + knot * uW[1] + wave * uW[2] + helix * uW[3] + galaxy * uW[4];
+  vec3 cube = rotX(rotY(aCube, uRot * 0.9), 0.55 + sin(t * 0.2) * 0.25);
 
-  // Organic drift; stronger while scrolling fast or mid-transition.
+  // The logo faces the camera and ripples gently.
+  vec3 logo = aLogo;
+  logo.z += sin(logo.x * 1.4 + t * 1.3) * 0.08;
+
+  vec3 p = sphere * uW[0] + knot * uW[1] + wave * uW[2] + helix * uW[3] + galaxy * uW[4]
+         + cube * uW[5] + logo * uW[6];
+
+  // Organic drift; stronger while scrolling fast or mid-transition, calmer on the logo
+  // so the letters stay legible.
   vec3 q = p * 0.55 + vec3(0.0, 0.0, t * 0.12);
   vec3 drift = vec3(snoise(q), snoise(q + 11.3), snoise(q + 27.1));
-  p += drift * (0.06 + uAgitation * 0.45);
+  p += drift * ((0.06 - uW[6] * 0.035) + uAgitation * 0.45);
 
   // Intro: particles start blown out and collapse into the first shape.
   p += aDir * uScatter * (2.5 + aRnd.w * 7.0);
@@ -174,6 +184,8 @@ export function createScene(canvas, { motion }) {
   geometry.setAttribute('aWave', new THREE.BufferAttribute(data.wave, 3));
   geometry.setAttribute('aHelix', new THREE.BufferAttribute(data.helix, 3));
   geometry.setAttribute('aGalaxy', new THREE.BufferAttribute(data.galaxy, 3));
+  geometry.setAttribute('aCube', new THREE.BufferAttribute(data.cube, 3));
+  geometry.setAttribute('aLogo', new THREE.BufferAttribute(data.logo, 3));
   geometry.setAttribute('aRnd', new THREE.BufferAttribute(data.rnd, 4));
   geometry.setAttribute('aDir', new THREE.BufferAttribute(data.dir, 3));
   // Morphs move points far outside the sphere's bounds; skip frustum culling.
@@ -182,7 +194,7 @@ export function createScene(canvas, { motion }) {
   const uniforms = {
     uTime: { value: 0 },
     uRot: { value: 0 },
-    uW: { value: [1, 0, 0, 0, 0] },
+    uW: { value: [1, 0, 0, 0, 0, 0, 0] },
     uMouse: { value: new THREE.Vector2(99, 99) },
     uMouseForce: { value: 0 },
     uSize: { value: 30 },
@@ -212,10 +224,16 @@ export function createScene(canvas, { motion }) {
 
   // Tweened state (GSAP writes here, the render loop reads it).
   const state = {
-    w0: 1, w1: 0, w2: 0, w3: 0, w4: 0,
+    w0: 1, w1: 0, w2: 0, w3: 0, w4: 0, w5: 0, w6: 0,
     x: 0, y: 0, scale: 1, dim: 1,
     agitation: 0,
+    anchorMix: 0,
   };
+
+  // Optional DOM anchor: the cloud follows an element on screen (e.g. the footer wordmark),
+  // matching its centre and text width. `anchorMix` blends between free and anchored.
+  let anchorEl = null;
+  let anchorWidth = 0;
 
   const pointer = { x: 0, y: 0, tx: 0, ty: 0, active: false, force: 0 };
   const raycaster = new THREE.Raycaster();
@@ -236,6 +254,7 @@ export function createScene(canvas, { motion }) {
     camera.position.z = camera.aspect < 1 ? 7 + (1 - camera.aspect) * 8.5 : 7;
     camera.updateProjectionMatrix();
     uniforms.uSize.value = 30 * pixelRatio * (camera.position.z / 7) * (isSmall() ? 0.85 : 1);
+    measureAnchor();
     if (current) go(current, true);
     requestRender();
   }
@@ -249,8 +268,13 @@ export function createScene(canvas, { motion }) {
       y: small ? cfg.mobileY ?? cfg.y ?? 0 : cfg.y ?? 0,
       scale: (cfg.scale ?? 1) * (small ? 0.92 : 1),
       dim: cfg.dim ?? 1,
+      anchorMix: cfg.anchor ? 1 : 0,
     };
     SHAPES.forEach((_, i) => { target[`w${i}`] = i === idx ? 1 : 0; });
+    if (cfg.anchor && cfg.anchor !== anchorEl) {
+      anchorEl = cfg.anchor;
+      measureAnchor();
+    }
 
     const gsap = window.gsap;
     if (immediate || !motion || !gsap) {
@@ -263,6 +287,30 @@ export function createScene(canvas, { motion }) {
     gsap.timeline({ overwrite: false })
       .to(state, { agitation: 0.9, duration: 0.9, ease: 'power2.out' })
       .to(state, { agitation: 0, duration: 1.4, ease: 'power2.inOut' });
+  }
+
+  function measureAnchor() {
+    if (!anchorEl) return;
+    // Width of the rendered text (not the block), so the particle logo matches the glyphs.
+    const range = document.createRange();
+    range.selectNodeContents(anchorEl);
+    anchorWidth = range.getBoundingClientRect().width || anchorEl.getBoundingClientRect().width;
+  }
+
+  function worldPerPixel() {
+    const halfH = camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+    return (2 * halfH) / window.innerHeight;
+  }
+
+  // Replaces the logo target with `text` sampled from the (loaded) display font.
+  function setLogo(text) {
+    const pts = sampleText(text, count);
+    if (!pts) return false;
+    const attr = geometry.getAttribute('aLogo');
+    attr.array.set(pts);
+    attr.needsUpdate = true;
+    requestRender();
+    return true;
   }
 
   function intro() {
@@ -295,9 +343,23 @@ export function createScene(canvas, { motion }) {
 
   function applyState() {
     const w = uniforms.uW.value;
-    w[0] = state.w0; w[1] = state.w1; w[2] = state.w2; w[3] = state.w3; w[4] = state.w4;
-    group.position.set(state.x, state.y, 0);
-    group.scale.setScalar(state.scale);
+    w[0] = state.w0; w[1] = state.w1; w[2] = state.w2; w[3] = state.w3;
+    w[4] = state.w4; w[5] = state.w5; w[6] = state.w6;
+
+    let { x, y, scale } = state;
+    const m = state.anchorMix;
+    if (anchorEl && m > 0.001) {
+      const r = anchorEl.getBoundingClientRect();
+      const k = worldPerPixel();
+      const ax = (r.left + r.width / 2 - window.innerWidth / 2) * k;
+      const ay = -(r.top + r.height / 2 - window.innerHeight / 2) * k;
+      const as = (anchorWidth * k) / LOGO_WIDTH;
+      x += (ax - x) * m;
+      y += (ay - y) * m;
+      scale += (as - scale) * m;
+    }
+    group.position.set(x, y, 0);
+    group.scale.setScalar(scale);
     uniforms.uDim.value = state.dim;
     uniforms.uAgitation.value = Math.min(1.2, state.agitation + Math.min(Math.abs(velocity) * 0.012, 0.5));
     uniforms.uRot.value = rot;
@@ -362,6 +424,7 @@ export function createScene(canvas, { motion }) {
   return {
     go,
     intro,
+    setLogo,
     setVelocity(v) { velocity = v; },
     resize,
   };

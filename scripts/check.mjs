@@ -3,7 +3,7 @@
 //   npm run check            — all runs
 //   npm run check -- desktop — only the named run(s)
 import { createServer } from 'node:http';
-import { readFile, mkdir } from 'node:fs/promises';
+import { readFile, mkdir, rm } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
 import { chromium } from 'playwright';
 
@@ -42,6 +42,8 @@ const SECTIONS = [
   ['hero', null],
   ['o-nas', '#o-nas'],
   ['uslugi', '#uslugi'],
+  ['realizacje', '#realizacje'],
+  ['realizacje-hover', '#realizacje', 0, '.work__item:nth-child(2)'],
   ['proces', '#proces'],
   ['proces-mid', '#proces', 0.5],
   ['wyniki', '#wyniki'],
@@ -49,6 +51,7 @@ const SECTIONS = [
   ['stopka', '.footer'],
 ];
 
+await rm(outDir, { recursive: true, force: true });
 await mkdir(outDir, { recursive: true });
 const browser = await chromium.launch({
   args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'],
@@ -95,7 +98,8 @@ for (const [name, options] of runs) {
   if (info.overflowX) errors.push('horizontal overflow: page is wider than the viewport');
   if (!info.heroVisible) errors.push('hero title is not visible');
 
-  for (const [shot, selector, fraction = 0] of SECTIONS) {
+  for (const [shot, selector, fraction = 0, hover] of SECTIONS) {
+    if (hover && (options.isMobile || options.reducedMotion)) continue;
     await page.evaluate(({ selector, fraction }) => {
       let y = 0;
       if (selector) {
@@ -111,6 +115,17 @@ for (const [name, options] of runs) {
       else window.scrollTo(0, y);
     }, { selector, fraction });
     await page.waitForTimeout(options.reducedMotion ? 600 : 2600);
+    if (hover) {
+      // Glide the mouse onto the element so pointer-driven effects (e.g. the WebGL preview) kick in.
+      const box = await page.locator(hover).boundingBox();
+      if (box) {
+        await page.mouse.move(box.x + box.width * 0.2, box.y - 40);
+        await page.mouse.move(box.x + box.width * 0.45, box.y + box.height / 2, { steps: 12 });
+        await page.waitForTimeout(1200);
+      }
+    } else {
+      await page.mouse.move(1, 1);
+    }
     await page.screenshot({ path: join(outDir, `${name}-${String(SECTIONS.findIndex((s) => s[0] === shot)).padStart(2, '0')}-${shot}.png`) });
   }
 

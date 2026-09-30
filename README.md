@@ -29,6 +29,7 @@ js/main.js          start, preloader, Lenis, ScrollTrigger, odsłanianie treści
 js/scene.js         scena Three.js: shadery, morfing, kursor, adaptacja jakości
 js/shapes.js        generatory kształtów chmury (sfera, węzeł, fala, helisa, galaktyka)
 js/interactions.js  kursor, magnetyczne przyciski, tilt kart
+js/work.js          Realizacje: okładki z shadera, podgląd WebGL za kursorem, miniatury
 scripts/            vendor.mjs (biblioteki), check.mjs (test Playwright)
 vendor/             three, gsap, lenis, fonty (generowane)
 ```
@@ -41,4 +42,5 @@ Każda sekcja z `data-scene` przełącza chmurę po wejściu w widok:
 <section data-scene="helix" data-scene-x="0" data-scene-y="0" data-scene-scale="1" data-scene-dim="0.6">
 ```
 
-Kształty: `sphere`, `knot`, `wave`, `helix`, `galaxy` (nowe dodaje się w `js/shapes.js` + vertex shaderze).
+Kształty: `sphere`, `knot`, `wave`, `helix`, `galaxy`, `cube`, `logo` (nowe dodaje się w `js/shapes.js` + vertex shaderze).
+`logo` to napis z `.footer__big` próbkowany z fontu; `data-scene-anchor="<selektor>"` przykleja chmurę do elementu na stronie.

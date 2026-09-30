@@ -1,5 +1,6 @@
 import { createScene } from './scene.js';
 import { initCursor, initMagnetic, initTilt } from './interactions.js';
+import { initWork } from './work.js';
 
 const root = document.documentElement;
 const motion = root.classList.contains('motion');
@@ -49,6 +50,7 @@ async function start() {
   initNav();
   initClock();
   initMarquee(lenis);
+  initWork({ motion, finePointer });
   if (motion && finePointer) {
     initCursor();
     initMagnetic();
@@ -58,6 +60,7 @@ async function start() {
   lenis?.stop();
   await preload();
   lenis?.start();
+  await initParticleLogo(scene);
 
   // Order matters: pinned sections first, so later triggers measure the pin spacing.
   initProcess();
@@ -127,10 +130,19 @@ function intro(scene) {
 
 /* ------------------------------------------------------------------------ */
 
+async function initParticleLogo(scene) {
+  const mark = $('.footer__big');
+  if (!scene || !motion || !mark) return;
+  // Sample the wordmark only once the display font is really available.
+  await Promise.race([document.fonts?.load('800 100px "Syne Variable"'), wait(2000)]).catch(() => {});
+  if (scene.setLogo(mark.textContent.trim())) root.classList.add('has-particle-logo');
+}
+
 function sceneConfig(el) {
   const d = el.dataset;
   const num = (v) => (v === undefined ? undefined : parseFloat(v));
   return {
+    anchor: d.sceneAnchor ? $(d.sceneAnchor) : undefined,
     shape: d.scene,
     x: num(d.sceneX),
     y: num(d.sceneY),
@@ -143,6 +155,8 @@ function sceneConfig(el) {
 function initSceneSections(scene) {
   if (!scene) return;
   $$('[data-scene]').forEach((el) => {
+    // Anchored shapes (the footer logo) need the live render loop to follow the page.
+    if (el.dataset.sceneAnchor && !root.classList.contains('has-particle-logo')) return;
     const cfg = sceneConfig(el);
     ScrollTrigger.create({
       trigger: el,

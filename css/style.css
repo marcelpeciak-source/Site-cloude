@@ -446,6 +446,113 @@ main, .footer, .nav { position: relative; z-index: 2; }
 }
 
 /* --------------------------------------------------------------------------
+   Work / Realizacje
+   Default: grid of cards with shader-rendered thumbnails (touch, reduced motion, no JS).
+   .work-has-preview: big typographic rows + floating WebGL preview following the cursor.
+   -------------------------------------------------------------------------- */
+
+.work__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+  gap: clamp(36px, 5vh, 56px) clamp(16px, 2vw, 28px);
+}
+.work__item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    "thumb thumb"
+    "index name"
+    "cat   cat"
+    "result result";
+  align-items: baseline;
+  column-gap: 14px;
+}
+.work__thumb {
+  grid-area: thumb;
+  aspect-ratio: 16 / 10;
+  margin-bottom: 22px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  background-size: cover;
+  background-position: center;
+}
+.work__index { grid-area: index; font-family: var(--font-display); font-size: 14px; color: var(--muted); }
+.work__name {
+  grid-area: name;
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(36px, 4vw, 56px); line-height: 1; letter-spacing: -0.04em;
+}
+.work__cat { grid-area: cat; margin-top: 10px; color: var(--muted); }
+.work__result { grid-area: result; margin-top: 4px; color: rgba(243, 240, 234, 0.8); }
+.work__result strong {
+  font-weight: 600;
+  background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+.work__foot {
+  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px;
+  margin-top: clamp(48px, 8vh, 96px);
+}
+.work__foot p { max-width: 440px; color: var(--muted); }
+
+/* Rows + floating preview (fine pointer, motion allowed, WebGL available) */
+.work-has-preview .work__list {
+  display: block;
+  border-top: 1px solid var(--line);
+}
+.work-has-preview .work__item {
+  position: relative;
+  grid-template-columns: clamp(48px, 7vw, 110px) minmax(0, 1fr) minmax(180px, 22vw) minmax(150px, 14vw);
+  grid-template-areas: "index name cat result";
+  align-items: center;
+  padding: clamp(22px, 3.6vh, 40px) 0;
+  border-bottom: 1px solid var(--line);
+  transition: opacity 0.5s var(--ease);
+}
+.work-has-preview .work__item::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+  background: var(--grad);
+  transform: scaleX(0); transform-origin: right;
+  transition: transform 0.8s var(--ease);
+}
+.work-has-preview .work__item.is-active::after { transform: scaleX(1); transform-origin: left; }
+.work-has-preview .work__list.is-hovering .work__item:not(.is-active) { opacity: 0.32; }
+.work-has-preview .work__thumb { display: none; }
+.work-has-preview .work__name {
+  font-size: clamp(48px, 7.4vw, 128px);
+  line-height: 1.05;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(243, 240, 234, 0.6);
+  background: linear-gradient(90deg, var(--fg) 50%, transparent 50%) 100% 0 / 200% 100% no-repeat;
+  -webkit-background-clip: text; background-clip: text;
+  transition: background-position 0.9s var(--ease), transform 0.9s var(--ease);
+}
+.work-has-preview .work__item.is-active .work__name {
+  background-position: 0 0;
+  transform: translateX(clamp(12px, 2vw, 36px));
+}
+.work-has-preview .work__cat,
+.work-has-preview .work__result { margin: 0; }
+.work-has-preview .work__result { text-align: right; }
+
+@media (max-width: 960px) {
+  .work-has-preview .work__item {
+    grid-template-columns: 48px minmax(0, 1fr) auto;
+    grid-template-areas: "index name result";
+  }
+  .work-has-preview .work__cat { display: none; }
+}
+
+.work-preview {
+  position: fixed; top: 0; left: 0; z-index: 60;
+  width: 440px; height: 300px;
+  border-radius: 22px;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* --------------------------------------------------------------------------
    Process (horizontal on desktop)
    -------------------------------------------------------------------------- */
 
@@ -586,7 +693,6 @@ main, .footer, .nav { position: relative; z-index: 2; }
 .footer {
   padding: clamp(64px, 10vh, 120px) var(--pad) 28px;
   border-top: 1px solid var(--line);
-  background: linear-gradient(to bottom, rgba(7, 7, 11, 0.4), var(--bg) 40%);
   overflow: hidden;
 }
 .footer__top {
@@ -612,6 +718,13 @@ main, .footer, .nav { position: relative; z-index: 2; }
   background: linear-gradient(180deg, rgba(243, 240, 234, 0.16), rgba(243, 240, 234, 0));
   -webkit-background-clip: text; background-clip: text; color: transparent;
   user-select: none;
+  transition: opacity 1.2s var(--ease);
+}
+/* The particle cloud draws the wordmark; the text stays as an invisible layout anchor. */
+.has-particle-logo .footer__big { opacity: 0; }
+/* Without the particle logo the cloud stays a sphere; keep it from shining through the links. */
+html:not(.has-particle-logo) .footer {
+  background: linear-gradient(to bottom, rgba(7, 7, 11, 0.4), var(--bg) 40%);
 }
 .footer__bottom {
   display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px;
