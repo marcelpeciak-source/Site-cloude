@@ -3,6 +3,7 @@
 // tweened with GSAP; everything else happens in the vertex shader.
 import * as THREE from 'three';
 import { SHAPES, LOGO_WIDTH, buildShapes, sampleText } from './shapes.js';
+import { createPostFX } from './postfx.js';
 
 const noise = /* glsl */ `
 vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
@@ -169,9 +170,26 @@ export function createScene(canvas, { motion }) {
   if (!renderer.getContext()) return null;
 
   const isSmall = () => window.innerWidth < 820;
-  let pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+  const maxPixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+  let pixelRatio = maxPixelRatio;
   renderer.setPixelRatio(pixelRatio);
   renderer.setClearColor(BG, 1);
+
+  // Quality ladder, stepped down while the measured frame rate stays low:
+  // 0 = everything (post-fx, DPR ≤ 2) → 1 = no post-fx → 2 = DPR 1 → 3 = 60% of the particles.
+  // Phones start at 1 (battery, high-DPR fill rate). ?quality=max pins level 0 (screenshots,
+  // strong GPUs), ?quality=low starts at level 3.
+  const forcedQuality = new URLSearchParams(window.location.search).get('quality');
+  let quality = { max: 0, low: 3 }[forcedQuality] ?? (isSmall() ? 1 : 0);
+
+  let post = null;
+  if (quality === 0) {
+    try {
+      post = createPostFX(renderer, { bloom: 0.9 });
+    } catch (err) {
+      console.warn('Post-processing niedostępny:', err);
+    }
+  }
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
@@ -244,11 +262,16 @@ export function createScene(canvas, { motion }) {
   let rot = 0;
   let time = 0;
   let current = null;
+  const bufferSize = new THREE.Vector2();
 
   function resize() {
     const w = window.innerWidth;
     const h = window.innerHeight;
     renderer.setSize(w, h, false);
+    if (post) {
+      renderer.getDrawingBufferSize(bufferSize);
+      post.setSize(bufferSize.x, bufferSize.y);
+    }
     camera.aspect = w / h;
     // Pull the camera back on portrait screens so shapes still fit.
     camera.position.z = camera.aspect < 1 ? 7 + (1 - camera.aspect) * 8.5 : 7;
@@ -313,10 +336,24 @@ export function createScene(canvas, { motion }) {
     return true;
   }
 
+  // Temporarily show another configuration (e.g. behind the open menu), then restore.
+  let beforePeek = null;
+  function peek(cfg) {
+    if (!beforePeek) beforePeek = current;
+    go(cfg);
+  }
+  function unpeek() {
+    if (!beforePeek) return;
+    const cfg = beforePeek;
+    beforePeek = null;
+    go(cfg);
+  }
+
   function intro() {
     const gsap = window.gsap;
     if (!motion || !gsap) { uniforms.uScatter.value = 0; requestRender(); return; }
     gsap.to(uniforms.uScatter, { value: 0, duration: 3.2, ease: 'expo.out' });
+    measuring = forcedQuality !== 'max';
   }
 
   function onPointerMove(e) {
@@ -337,9 +374,26 @@ export function createScene(canvas, { motion }) {
   let needsRender = true;
   let frames = 0;
   let sampleTime = 0;
-  let measured = false;
+  let measuring = false; // starts after the intro, so preloader work doesn't skew it
 
   function requestRender() { needsRender = true; }
+
+  function setQuality(level) {
+    quality = level;
+    pixelRatio = level >= 2 ? 1 : maxPixelRatio;
+    renderer.setPixelRatio(pixelRatio);
+    geometry.setDrawRange(0, level >= 3 ? Math.floor(count * 0.6) : Infinity);
+    resize();
+  }
+
+  function render() {
+    if (post && quality < 1) {
+      post.uniforms.uAberration.value = 0.0025 + Math.min(Math.abs(velocity) * 0.0008, 0.025);
+      post.render(scene, camera);
+    } else {
+      renderer.render(scene, camera);
+    }
+  }
 
   function applyState() {
     const w = uniforms.uW.value;
@@ -369,13 +423,14 @@ export function createScene(canvas, { motion }) {
   function tick() {
     requestAnimationFrame(tick);
     const now = performance.now();
-    const dt = Math.min((now - last) / 1000, 0.05);
+    const rawDt = (now - last) / 1000;
+    const dt = Math.min(rawDt, 0.05);
     last = now;
 
     if (!motion) {
       if (!needsRender) return;
       applyState();
-      renderer.render(scene, camera);
+      render();
       needsRender = false;
       return;
     }
@@ -398,34 +453,34 @@ export function createScene(canvas, { motion }) {
     group.rotation.y += (pointer.x * 0.2 - group.rotation.y) * 0.04;
 
     applyState();
-    renderer.render(scene, camera);
+    render();
 
-    // Adaptive quality: measure the first seconds once; on slow devices lower the
-    // resolution and, if that is not enough, the particle count.
-    if (!measured) {
+    // Adaptive quality: measure in 2.5 s windows and step down the ladder while it's slow.
+    // Long gaps (background tab) are ignored.
+    if (measuring && rawDt < 0.5) {
       frames++;
-      sampleTime += dt;
+      sampleTime += rawDt;
       if (sampleTime > 2.5) {
-        measured = true;
         const fps = frames / sampleTime;
-        if (fps < 38 && pixelRatio > 1) {
-          pixelRatio = 1;
-          renderer.setPixelRatio(1);
-          resize();
-        }
-        if (fps < 28) geometry.setDrawRange(0, Math.floor(count * 0.6));
+        frames = 0;
+        sampleTime = 0;
+        if (fps < 40 && quality < 3) setQuality(quality + 1);
+        else measuring = false;
       }
     }
   }
 
-  resize();
+  setQuality(quality);
   tick();
 
   return {
     go,
+    peek,
+    unpeek,
     intro,
     setLogo,
     setVelocity(v) { velocity = v; },
     resize,
+    get quality() { return quality; },
   };
 }

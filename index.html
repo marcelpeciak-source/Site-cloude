@@ -63,8 +63,30 @@
       <a href="#proces">Proces</a>
       <a href="#wyniki">Wyniki</a>
     </nav>
-    <a href="#kontakt" class="btn btn--small" data-magnetic><span>Porozmawiajmy</span></a>
+    <div class="nav__actions">
+      <a href="#kontakt" class="btn btn--small" data-magnetic><span>Porozmawiajmy</span></a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Otwórz menu">
+        <span class="nav__toggle-line"></span><span class="nav__toggle-line"></span>
+      </button>
+    </div>
   </header>
+
+  <div class="menu" id="menu" aria-label="Menu" inert>
+    <nav class="menu__nav" aria-label="Menu mobilne">
+      <a href="#o-nas" class="menu__link"><span class="menu__num">01</span><span class="menu__mask"><span class="menu__label">O nas</span></span></a>
+      <a href="#uslugi" class="menu__link"><span class="menu__num">02</span><span class="menu__mask"><span class="menu__label">Usługi</span></span></a>
+      <a href="#realizacje" class="menu__link"><span class="menu__num">03</span><span class="menu__mask"><span class="menu__label">Realizacje</span></span></a>
+      <a href="#proces" class="menu__link"><span class="menu__num">04</span><span class="menu__mask"><span class="menu__label">Proces</span></span></a>
+      <a href="#wyniki" class="menu__link"><span class="menu__num">05</span><span class="menu__mask"><span class="menu__label">Wyniki</span></span></a>
+      <a href="#kontakt" class="menu__link"><span class="menu__num">06</span><span class="menu__mask"><span class="menu__label">Kontakt</span></span></a>
+    </nav>
+    <div class="menu__foot">
+      <a href="mailto:kontakt@lumora.example" class="menu__mail">kontakt@lumora.example</a>
+      <div class="menu__social">
+        <a href="#" rel="noopener">Instagram</a><a href="#" rel="noopener">LinkedIn</a><a href="#" rel="noopener">Behance</a>
+      </div>
+    </div>
+  </div>
 
   <main id="top">
     <section class="hero" data-scene="sphere" data-scene-x="1.55" data-scene-mobile-y="0.9">

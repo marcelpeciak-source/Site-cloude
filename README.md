@@ -15,6 +15,9 @@ npm run check      # test w Chromium + zrzuty ekranu do screenshots/
 
 Strona nie wymaga budowania — wystarczy dowolny serwer statyczny.
 
+Jakość grafiki dobiera się sama na podstawie FPS. Do testów: `?quality=max` (zawsze pełne efekty)
+albo `?quality=low` (najlżejszy tryb).
+
 ## Publikacja (GitHub Pages)
 
 Settings → Pages → *Build and deployment* → Source: **Deploy from a branch** → `main` / `(root)`.
@@ -30,6 +33,8 @@ js/scene.js         scena Three.js: shadery, morfing, kursor, adaptacja jakości
 js/shapes.js        generatory kształtów chmury (sfera, węzeł, fala, helisa, galaktyka)
 js/interactions.js  kursor, magnetyczne przyciski, tilt kart
 js/work.js          Realizacje: okładki z shadera, podgląd WebGL za kursorem, miniatury
+js/postfx.js        post-processing: mip bloom + aberracja chromatyczna (jeden przebieg)
+js/menu.js          pełnoekranowe menu mobilne
 scripts/            vendor.mjs (biblioteki), check.mjs (test Playwright)
 vendor/             three, gsap, lenis, fonty (generowane)
 ```

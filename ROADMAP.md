@@ -16,10 +16,13 @@ Po zrobieniu: `[x]`, data i krótka notka w CHANGELOG.md.
 - [x] **Logo z cząsteczek** (2026-09-30): chmura układa się w napis marki w stopce (próbkowanie tekstu z canvasa 2D),
       przyklejona do pozycji i szerokości napisu w DOM; nowy kształt „sześcian” dla sekcji Realizacje.
 
+- [x] **Menu mobilne** (2026-10-01): pełnoekranowe, otwierane okręgiem z przycisku, linki wjeżdżają z masek,
+      za menu chmura zamienia się w galaktykę; `inert`, Escape, fokus, blokada scrolla.
+- [x] **Post-processing** (2026-10-01): własny „mip bloom” + aberracja chromatyczna zależna od prędkości scrolla
+      w jednym przebiegu (bez EffectComposer), z drabiną jakości sterowaną FPS.
+
 ## Następne (w kolejności)
 
-- [ ] **Menu mobilne** — pełnoekranowe, z animacją maski i dużą typografią (dziś na mobile są tylko logo + CTA).
-- [ ] **Post-processing** — subtelny bloom + aberracja chromatyczna (three/addons przez `THREE_ADDONS` w vendor.mjs), z adaptacją jakości.
 - [ ] **Opinie klientów** — karuzela 3D przeciągana myszą/palcem (GSAP Observer/Draggable).
 - [ ] **Formularz kontaktowy** — walidacja, animowane stany, fallback `mailto:` (bez zewnętrznych usług bez zgody właściciela).
 - [ ] **SEO i udostępnianie** — JSON-LD (Organization), `robots.txt`, `sitemap.xml`, obraz OG wygenerowany z Playwrighta.

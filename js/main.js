@@ -1,6 +1,7 @@
 import { createScene } from './scene.js';
 import { initCursor, initMagnetic, initTilt } from './interactions.js';
 import { initWork } from './work.js';
+import { initMenu } from './menu.js';
 
 const root = document.documentElement;
 const motion = root.classList.contains('motion');
@@ -47,6 +48,7 @@ async function start() {
   window.__site = { lenis, scene };
 
   initAnchors(lenis);
+  initMenu({ lenis, scene, motion });
   initNav();
   initClock();
   initMarquee(lenis);
@@ -273,7 +275,7 @@ function initCounters() {
 function initAnchors(lenis) {
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a[href^="#"]');
-    if (!a || a.classList.contains('skip-link')) return;
+    if (e.defaultPrevented || !a || a.classList.contains('skip-link')) return;
     const id = a.getAttribute('href');
     if (id === '#') { e.preventDefault(); return; } // placeholder links
     const target = id === '#top' ? 0 : $(id);

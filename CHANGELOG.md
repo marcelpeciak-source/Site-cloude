@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-10-01 — v0.3 menu mobilne + post-processing
+
+- **Post-processing** (`js/postfx.js`): scena renderowana do tekstury z mipmapami, a jeden końcowy przebieg dodaje
+  poświatę z kilku rozmytych poziomów mipmap („mip bloom”, zamiast wieloprzebiegowego blur) oraz radialną
+  aberrację chromatyczną, która rośnie przy szybkim przewijaniu.
+- **Drabina jakości** zamiast jednorazowego pomiaru: mierzy FPS w oknach 2,5 s (od końca intro) i schodzi stopniami:
+  post-fx → DPR 1 → 60% cząsteczek. Telefony startują bez post-fx. `?quality=max` / `?quality=low` wymuszają poziom.
+- **Menu mobilne** (`js/menu.js`): przycisk burger → X, pełnoekranowe menu odsłaniane okręgiem z pozycji przycisku,
+  duża typografia wjeżdżająca z masek, w tle chmura cząsteczek zmienia się w galaktykę (`scene.peek/unpeek`),
+  a treść strony gaśnie. Dostępność: `aria-expanded`, `inert` na treści, Escape, fokus na pierwszy link
+  i do wybranej sekcji po nawigacji, blokada scrolla. Bez animacji przy reduced motion.
+- Nawigacja na wąskich ekranach (≤ 480 px): mniejsze logo i CTA, żeby przycisk menu nie wchodził na margines.
+- `npm run check`: desktop z `?quality=max` (efekty widoczne na zrzutach), zrzut otwartego menu na mobile,
+  raport poziomu jakości, nowy test „elementy nawigacji mieszczą się w pasku”.
+
 ## 2026-09-30 — v0.2 Realizacje + logo z cząsteczek
 
 - Nowa sekcja **Realizacje** (Aurora, Monolit, Halo, Pulse — projekty przykładowe): okładki generowane w fragment shaderze
