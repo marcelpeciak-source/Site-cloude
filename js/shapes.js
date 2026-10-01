@@ -59,7 +59,7 @@ function knot(out, i, k, count) {
   knotCurve(u, k1);
   knotCurve(u + 0.01, k2);
   // Frenet-ish frame (as in TorusKnotGeometry)
-  let tx = k2[0] - k1[0], ty = k2[1] - k1[1], tz = k2[2] - k1[2];
+  const tx = k2[0] - k1[0], ty = k2[1] - k1[1], tz = k2[2] - k1[2];
   let nx = k2[0] + k1[0], ny = k2[1] + k1[1], nz = k2[2] + k1[2];
   let bx = ty * nz - tz * ny, by = tz * nx - tx * nz, bz = tx * ny - ty * nx;
   let l = Math.hypot(bx, by, bz); bx /= l; by /= l; bz /= l;
@@ -102,8 +102,8 @@ function helix(out, i, k, count) {
     out[i * 3 + 2] = Math.sin(a) * radius + gaussian() * j;
   } else {
     const rungs = 46;
-    const k = Math.floor(Math.random() * rungs);
-    const x = (k / (rungs - 1) - 0.5) * length;
+    const rung = Math.floor(Math.random() * rungs);
+    const x = (rung / (rungs - 1) - 0.5) * length;
     const a = x * turns;
     const s = Math.random() * 2 - 1;
     out[i * 3] = x + (Math.random() - 0.5) * 0.03;

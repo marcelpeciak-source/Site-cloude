@@ -35,6 +35,9 @@ i ton komunikacji, a kolejna nocna sesja przerobi treści.
 - Statyczna strona bez kroku budowania (HTML + CSS + moduły ES). Hosting: GitHub Pages z gałęzi `main`.
 - Biblioteki w `vendor/` (CDN-y są niedostępne w kontenerze buildowym): Three.js, GSAP (+ScrollTrigger, SplitText), Lenis.
   Nowe biblioteki: `npm i -D <pakiet>` + wpis w `scripts/vendor.mjs` + `npm run vendor`.
-- Każda zmiana musi przejść `npm run check` (zero błędów konsoli; desktop, mobile, reduced motion).
+- Każda zmiana musi przejść `npm run verify` = `lint` (ESLint) + `consistency` (spójność HTML/JS/plików)
+  + `check` (Playwright: zero błędów konsoli; desktop, mobile, reduced motion).
+- **Kontrola jakości na koniec każdej sesji** (prośba właściciela, 2026-10-01): przed commitem przegląd kodu
+  dzisiejszych zmian pod kątem błędów i spójności; każdy znaleziony błąd odtworzyć, naprawić i potwierdzić testem.
 - Zawsze: fallback bez WebGL, `prefers-reduced-motion`, poprawna semantyka i fokus z klawiatury, brak poziomego scrolla na mobile.
 - Język strony: polski (ewentualna wersja EN później).

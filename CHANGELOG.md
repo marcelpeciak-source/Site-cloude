@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-10-01 — kontrola jakości (na prośbę właściciela)
+
+- Nowy stały krok na koniec każdej sesji: `npm run lint` (ESLint, flat config) + `npm run consistency`
+  (audyt spójności: kotwice ↔ id, ARIA, kształty `data-scene`, pliki lokalne i `url()` w CSS, importy ↔ eksporty
+  modułów, numeracja sekcji i menu, kompletność menu mobilnego, nazwy dostępne, spójność marki i e-maila)
+  + przegląd kodu zmian dnia. `npm run verify` uruchamia całość. Audyt sprawdzony na celowo zepsutej kopii (5/5 błędów wykrytych).
+- Naprawione po pierwszym przeglądzie (v0.3):
+  - przy otwartym menu kliknięcie logo lub „Porozmawiajmy” w pasku nie zamykało menu ani nie przewijało
+    (Lenis był zatrzymany) — teraz takie linki najpierw zamykają menu;
+  - urządzenia z limitem 30 FPS (ekran 30 Hz, tryb oszczędzania) spadały na najniższą jakość, choć nie były
+    przeciążone — krok w dół, który nie podnosi FPS, jest cofany i pomiar się kończy.
+- Porządki z ESLint: `const` zamiast `let`, usunięte przesłanianie zmiennych (m.in. indeks szczebla helisy).
+
 ## 2026-10-01 — v0.3 menu mobilne + post-processing
 
 - **Post-processing** (`js/postfx.js`): scena renderowana do tekstury z mipmapami, a jeden końcowy przebieg dodaje

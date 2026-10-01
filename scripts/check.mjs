@@ -118,20 +118,20 @@ for (const [name, { query = '', ...options }] of runs) {
     const { hover, click, mobileOnly } = action;
     if (hover && (options.isMobile || options.reducedMotion)) continue;
     if (mobileOnly && !options.isMobile) continue;
-    await page.evaluate(({ selector, fraction }) => {
+    await page.evaluate(({ sel, frac }) => {
       let y = 0;
-      if (selector) {
-        const el = document.querySelector(selector);
+      if (sel) {
+        const el = document.querySelector(sel);
         y = el.getBoundingClientRect().top + window.scrollY;
-        if (fraction) {
+        if (frac) {
           const pin = window.ScrollTrigger?.getAll().find((t) => t.pin && el.contains(t.trigger));
-          y = pin ? pin.start + (pin.end - pin.start) * fraction : y + window.innerHeight * fraction;
+          y = pin ? pin.start + (pin.end - pin.start) * frac : y + window.innerHeight * frac;
         }
       }
       const lenis = window.__site?.lenis;
       if (lenis) lenis.scrollTo(y, { immediate: true, force: true });
       else window.scrollTo(0, y);
-    }, { selector, fraction });
+    }, { sel: selector, frac: fraction });
     await page.waitForTimeout(options.reducedMotion ? 600 : 2600);
     if (hover) {
       // Glide the mouse onto the element so pointer-driven effects (e.g. the WebGL preview) kick in.

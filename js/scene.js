@@ -375,6 +375,7 @@ export function createScene(canvas, { motion }) {
   let frames = 0;
   let sampleTime = 0;
   let measuring = false; // starts after the intro, so preloader work doesn't skew it
+  let lastFps = 0; // fps measured before the last step down
 
   function requestRender() { needsRender = true; }
 
@@ -456,7 +457,8 @@ export function createScene(canvas, { motion }) {
     render();
 
     // Adaptive quality: measure in 2.5 s windows and step down the ladder while it's slow.
-    // Long gaps (background tab) are ignored.
+    // A step that doesn't raise the frame rate means the device is capped (30 Hz screen,
+    // low-power mode), not overloaded — undo it and stop. Long gaps (background tab) are ignored.
     if (measuring && rawDt < 0.5) {
       frames++;
       sampleTime += rawDt;
@@ -464,8 +466,15 @@ export function createScene(canvas, { motion }) {
         const fps = frames / sampleTime;
         frames = 0;
         sampleTime = 0;
-        if (fps < 40 && quality < 3) setQuality(quality + 1);
-        else measuring = false;
+        if (lastFps && fps < lastFps * 1.15) {
+          setQuality(quality - 1);
+          measuring = false;
+        } else if (fps < 40 && quality < 3) {
+          lastFps = fps;
+          setQuality(quality + 1);
+        } else {
+          measuring = false;
+        }
       }
     }
   }

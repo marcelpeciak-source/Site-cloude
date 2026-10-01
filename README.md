@@ -11,6 +11,9 @@ npm install        # biblioteki + Playwright (tylko do testów)
 npm run vendor     # kopiuje/minifikuje biblioteki i fonty do vendor/ (wynik jest w repo)
 npm run serve      # http://localhost:4173
 npm run check      # test w Chromium + zrzuty ekranu do screenshots/
+npm run lint       # ESLint (js/, scripts/)
+npm run consistency # spójność: kotwice, id, ARIA, kształty sceny, pliki, importy/eksporty, numeracja, menu, marka
+npm run verify     # lint + consistency + check — obowiązkowe przed każdym commitem
 ```
 
 Strona nie wymaga budowania — wystarczy dowolny serwer statyczny.
@@ -35,7 +38,7 @@ js/interactions.js  kursor, magnetyczne przyciski, tilt kart
 js/work.js          Realizacje: okładki z shadera, podgląd WebGL za kursorem, miniatury
 js/postfx.js        post-processing: mip bloom + aberracja chromatyczna (jeden przebieg)
 js/menu.js          pełnoekranowe menu mobilne
-scripts/            vendor.mjs (biblioteki), check.mjs (test Playwright)
+scripts/            vendor.mjs (biblioteki), check.mjs (test Playwright), consistency.mjs (audyt spójności)
 vendor/             three, gsap, lenis, fonty (generowane)
 ```
 

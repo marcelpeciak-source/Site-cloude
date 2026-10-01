@@ -89,6 +89,14 @@ export function initMenu({ lenis, scene, motion }) {
     });
   });
 
+  // In-page links outside the menu (logo, CTA — the bar sits above the menu) close it first,
+  // in the capture phase, so Lenis is running again when the global anchor handler scrolls.
+  document.addEventListener('click', (e) => {
+    if (!open) return;
+    const a = e.target.closest('a[href^="#"]');
+    if (a && !menu.contains(a)) setOpen(false, { focus: false });
+  }, true);
+
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && open) setOpen(false);
   });
