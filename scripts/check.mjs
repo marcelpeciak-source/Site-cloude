@@ -48,7 +48,11 @@ const SECTIONS = [
   ['proces', '#proces'],
   ['proces-mid', '#proces', 0.5],
   ['wyniki', '#wyniki'],
+  ['opinie', '#opinie'],
+  ['opinie-ruch', '#opinie', 0, { reviews: true }],
   ['kontakt', '#kontakt'],
+  ['formularz-bledy', '.form', 0, { form: 'invalid' }],
+  ['formularz-wyslany', '.form', 0, { form: 'valid' }],
   ['stopka', '.footer'],
   ['menu', '#uslugi', 0, { click: '.nav__toggle', mobileOnly: true }],
 ];
@@ -73,6 +77,8 @@ for (const [name, { query = '', ...options }] of runs) {
   page.on('requestfailed', (r) => {
     const msg = `request failed: ${r.url()} (${r.failure()?.errorText})`;
     // External hosts (fonts) may be blocked in CI containers; local files must load.
+    // mailto: "fails" because the headless browser has no mail app — expected, and proof the form opened it.
+    if (r.url().startsWith('mailto:')) return void warnings.push('mailto opened (no mail app in the test browser)');
     (r.url().startsWith(base) ? errors : warnings).push(msg);
   });
   page.on('response', (r) => { if (r.url().startsWith(base) && r.status() >= 400) errors.push(`HTTP ${r.status()}: ${r.url()}`); });
@@ -108,14 +114,19 @@ for (const [name, { query = '', ...options }] of runs) {
         });
       })(),
       heroVisible: getComputedStyle(document.querySelector('.hero__title')).visibility === 'visible',
+      // <button> doesn't inherit the font by default; every visible one must use the site fonts.
+      foreignFontButtons: [...document.querySelectorAll('button')]
+        .filter((b) => b.offsetParent && !/Manrope|Syne/.test(getComputedStyle(b).fontFamily))
+        .map((b) => b.className),
     };
   });
   if (info.overflowX) errors.push('horizontal overflow: page is wider than the viewport');
   if (info.navOverflow) errors.push('navigation items overflow the nav bar (padding or screen edge)');
   if (!info.heroVisible) errors.push('hero title is not visible');
+  if (info.foreignFontButtons.length) errors.push(`buttons without the site font: ${info.foreignFontButtons.join(', ')}`);
 
   for (const [shot, selector, fraction = 0, action = {}] of SECTIONS) {
-    const { hover, click, mobileOnly } = action;
+    const { hover, click, mobileOnly, reviews, form } = action;
     if (hover && (options.isMobile || options.reducedMotion)) continue;
     if (mobileOnly && !options.isMobile) continue;
     await page.evaluate(({ sel, frac }) => {
@@ -144,6 +155,50 @@ for (const [name, { query = '', ...options }] of runs) {
     } else if (click) {
       await page.locator(click).click();
       await page.waitForTimeout(1800);
+    } else if (reviews) {
+      // Drag the carousel with the mouse (touch devices: the "next" button); the front card must change.
+      const before = await page.evaluate(() => window.__site.reviews?.index);
+      if (options.isMobile) {
+        await page.locator('.reviews__btn[data-dir="1"]').click();
+      } else {
+        const box = await page.locator('.reviews__stage').boundingBox();
+        const y = box.y + box.height / 2;
+        await page.mouse.move(box.x + box.width / 2 + 160, y);
+        await page.mouse.down();
+        await page.mouse.move(box.x + box.width / 2 - 200, y, { steps: 14 });
+        await page.mouse.up();
+      }
+      await page.waitForTimeout(1800);
+      const after = await page.evaluate(() => window.__site.reviews?.index);
+      if (before === after) errors.push(`reviews: the front card did not change (${before} → ${after})`);
+      if (!options.reducedMotion && !options.isMobile) {
+        // With the mouse off the carousel, autoplay must advance by itself (6 s + rotation).
+        await page.mouse.move(1, 1);
+        await page.waitForTimeout(9500);
+        const later = await page.evaluate(() => window.__site.reviews?.index);
+        if (later === after) errors.push('reviews: autoplay did not advance with the mouse outside the carousel');
+      }
+    } else if (form === 'invalid') {
+      await page.locator('.form__submit').click();
+      await page.waitForTimeout(800);
+      const invalid = await page.locator('.form [aria-invalid="true"]').count();
+      if (invalid < 4) errors.push(`form: empty submit marked ${invalid} fields invalid, expected 4`);
+    } else if (form === 'valid') {
+      await page.fill('#f-name', 'Jan Testowy');
+      await page.fill('#f-email', 'jan@firma.pl');
+      await page.fill('#f-company', 'Firma Testowa');
+      await page.locator('label[for="f-need-www"]').click();
+      await page.locator('label[for="f-budget-2"]').click();
+      await page.fill('#f-message', 'Potrzebujemy nowej strony z elementami 3D i animacjami.');
+      await page.locator('label[for="f-consent"]').click();
+      await page.locator('.form__submit').click();
+      await page.waitForTimeout(2200);
+      // The thank-you panel must be rendered and the fields really gone (not just flagged hidden).
+      const sent = await page.evaluate(() => {
+        const shown = (sel) => getComputedStyle(document.querySelector(sel)).display !== 'none';
+        return document.querySelector('.form').classList.contains('is-sent') && shown('.form__done') && !shown('.form__body');
+      });
+      if (!sent) errors.push('form: a valid submit did not reach the "sent" state (thank-you shown, fields hidden)');
     } else {
       await page.mouse.move(1, 1);
     }

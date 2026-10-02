@@ -2,6 +2,8 @@ import { createScene } from './scene.js';
 import { initCursor, initMagnetic, initTilt } from './interactions.js';
 import { initWork } from './work.js';
 import { initMenu } from './menu.js';
+import { initReviews } from './reviews.js';
+import { initForm } from './form.js';
 
 const root = document.documentElement;
 const motion = root.classList.contains('motion');
@@ -53,6 +55,7 @@ async function start() {
   initClock();
   initMarquee(lenis);
   initWork({ motion, finePointer });
+  initForm({ motion, onSent: () => scene?.burst() });
   if (motion && finePointer) {
     initCursor();
     initMagnetic();
@@ -66,6 +69,7 @@ async function start() {
 
   // Order matters: pinned sections first, so later triggers measure the pin spacing.
   initProcess();
+  window.__site.reviews = initReviews({ motion });
   initReveals();
   initCounters();
   initSceneSections(scene);

@@ -349,6 +349,15 @@ export function createScene(canvas, { motion }) {
     go(cfg);
   }
 
+  // Short swirl of the whole cloud, e.g. to celebrate a sent form.
+  function burst() {
+    const gsap = window.gsap;
+    if (!motion || !gsap) return;
+    gsap.timeline()
+      .to(state, { agitation: 1.4, duration: 0.35, ease: 'power3.out' })
+      .to(state, { agitation: 0, duration: 1.8, ease: 'power2.inOut' });
+  }
+
   function intro() {
     const gsap = window.gsap;
     if (!motion || !gsap) { uniforms.uScatter.value = 0; requestRender(); return; }
@@ -486,6 +495,7 @@ export function createScene(canvas, { motion }) {
     go,
     peek,
     unpeek,
+    burst,
     intro,
     setLogo,
     setVelocity(v) { velocity = v; },

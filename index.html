@@ -78,7 +78,8 @@
       <a href="#realizacje" class="menu__link"><span class="menu__num">03</span><span class="menu__mask"><span class="menu__label">Realizacje</span></span></a>
       <a href="#proces" class="menu__link"><span class="menu__num">04</span><span class="menu__mask"><span class="menu__label">Proces</span></span></a>
       <a href="#wyniki" class="menu__link"><span class="menu__num">05</span><span class="menu__mask"><span class="menu__label">Wyniki</span></span></a>
-      <a href="#kontakt" class="menu__link"><span class="menu__num">06</span><span class="menu__mask"><span class="menu__label">Kontakt</span></span></a>
+      <a href="#opinie" class="menu__link"><span class="menu__num">06</span><span class="menu__mask"><span class="menu__label">Opinie</span></span></a>
+      <a href="#kontakt" class="menu__link"><span class="menu__num">07</span><span class="menu__mask"><span class="menu__label">Kontakt</span></span></a>
     </nav>
     <div class="menu__foot">
       <a href="mailto:kontakt@lumora.example" class="menu__mail">kontakt@lumora.example</a>
@@ -256,9 +257,72 @@
       </dl>
     </section>
 
+    <!-- Opinie są PRZYKŁADOWE (placeholder) — przed publikacją zastąpić prawdziwymi, za zgodą klientów. -->
+    <section class="reviews section" id="opinie" data-scene="knot" data-scene-x="0" data-scene-y="-0.3" data-scene-dim="0.35">
+      <header class="section__head">
+        <p class="section__label">(06) — Opinie</p>
+        <h2 class="section__title" data-reveal>Co mówią<br>nasi klienci.</h2>
+      </header>
+      <div class="reviews__carousel" role="region" aria-roledescription="karuzela" aria-label="Opinie klientów">
+        <div class="reviews__stage" tabindex="0" aria-label="Przeciągnij lub użyj strzałek, aby zmienić opinię">
+          <div class="reviews__ring" id="reviews-ring">
+          <figure class="review" role="group" aria-roledescription="slajd" aria-label="1 z 6">
+            <blockquote class="review__quote"><p>Strona od Lumory w&nbsp;trzy miesiące podwoiła liczbę zapytań. Klienci zaczynają rozmowę od komplementów.</p></blockquote>
+            <figcaption class="review__author">
+              <span class="review__avatar" aria-hidden="true">AK</span>
+              <span><strong class="review__name">Anna K.</strong><span class="review__role">dyrektorka marketingu, Aurora</span></span>
+            </figcaption>
+          </figure>
+          <figure class="review" role="group" aria-roledescription="slajd" aria-label="2 z 6">
+            <blockquote class="review__quote"><p>Zrozumieli naszą architekturę lepiej niż niejeden architekt. Nowa marka wreszcie mówi naszym językiem.</p></blockquote>
+            <figcaption class="review__author">
+              <span class="review__avatar" aria-hidden="true">TW</span>
+              <span><strong class="review__name">Tomasz W.</strong><span class="review__role">partner zarządzający, Monolit</span></span>
+            </figcaption>
+          </figure>
+          <figure class="review" role="group" aria-roledescription="slajd" aria-label="3 z 6">
+            <blockquote class="review__quote"><p>Sklep jest szybki, piękny i&nbsp;— co najważniejsze — sprzedaje. Animacje produktów robią całą robotę.</p></blockquote>
+            <figcaption class="review__author">
+              <span class="review__avatar" aria-hidden="true">ML</span>
+              <span><strong class="review__name">Marta L.</strong><span class="review__role">założycielka, Halo</span></span>
+            </figcaption>
+          </figure>
+          <figure class="review" role="group" aria-roledescription="slajd" aria-label="4 z 6">
+            <blockquote class="review__quote"><p>Kampania 3D przebiła nasze najśmielsze KPI. Tak powinna wyglądać współpraca z&nbsp;agencją.</p></blockquote>
+            <figcaption class="review__author">
+              <span class="review__avatar" aria-hidden="true">PS</span>
+              <span><strong class="review__name">Piotr S.</strong><span class="review__role">head of growth, Pulse</span></span>
+            </figcaption>
+          </figure>
+          <figure class="review" role="group" aria-roledescription="slajd" aria-label="5 z 6">
+            <blockquote class="review__quote"><p>Konkretnie, terminowo i&nbsp;z&nbsp;ogromną dbałością o&nbsp;detale. Żadnych niespodzianek w&nbsp;budżecie.</p></blockquote>
+            <figcaption class="review__author">
+              <span class="review__avatar" aria-hidden="true">KM</span>
+              <span><strong class="review__name">Katarzyna M.</strong><span class="review__role">COO, branża medyczna</span></span>
+            </figcaption>
+          </figure>
+          <figure class="review" role="group" aria-roledescription="slajd" aria-label="6 z 6">
+            <blockquote class="review__quote"><p>Myśleliśmy, że 3D to fanaberia. Dziś to nasz najlepszy handlowiec — dokładnie tak, jak obiecali.</p></blockquote>
+            <figcaption class="review__author">
+              <span class="review__avatar" aria-hidden="true">MR</span>
+              <span><strong class="review__name">Michał R.</strong><span class="review__role">prezes, firma produkcyjna</span></span>
+            </figcaption>
+          </figure>
+          </div>
+        </div>
+        <div class="reviews__controls">
+          <button class="reviews__btn" type="button" data-dir="-1" aria-controls="reviews-ring" aria-label="Poprzednia opinia">←</button>
+          <p class="reviews__status" aria-live="polite"><span data-review-index>1</span> / 6</p>
+          <button class="reviews__btn" type="button" data-dir="1" aria-controls="reviews-ring" aria-label="Następna opinia">→</button>
+        </div>
+      </div>
+    </section>
+
     <section class="contact section" id="kontakt" data-scene="sphere" data-scene-x="0" data-scene-scale="1.15" data-scene-dim="0.9">
-      <p class="section__label">(06) — Kontakt</p>
+      <p class="section__label">(07) — Kontakt</p>
       <h2 class="contact__title" data-reveal>Masz pomysł?<br><span class="contact__accent">Zróbmy z&nbsp;niego coś niezwykłego.</span></h2>
+      <div class="contact__grid">
+      <div class="contact__aside">
       <a class="orb-btn" href="mailto:kontakt@lumora.example" data-magnetic data-cursor="Napisz">
         <svg class="orb-btn__ring" viewBox="0 0 200 200" aria-hidden="true">
           <defs><path id="orb-circle" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
@@ -268,6 +332,76 @@
         <span class="sr-only">Napisz do nas: kontakt@lumora.example</span>
       </a>
       <a class="contact__mail" href="mailto:kontakt@lumora.example">kontakt@lumora.example</a>
+      <ul class="contact__facts">
+        <li>Odpowiadamy w&nbsp;24&nbsp;h</li>
+        <li>Bezpłatna konsultacja 30&nbsp;min</li>
+        <li>NDA na życzenie</li>
+      </ul>
+      </div>
+
+      <!-- Bez backendu: formularz składa wiadomość i otwiera program pocztowy (mailto).
+           Ustaw data-endpoint (np. adres usługi formularzy), żeby wysyłać JSON metodą POST.
+           action/method/enctype to awaryjna ścieżka bez JavaScriptu (też mailto, z natywną walidacją). -->
+      <form class="form" action="mailto:kontakt@lumora.example" method="post" enctype="text/plain" data-mailto="kontakt@lumora.example" data-endpoint="">
+        <div class="form__body">
+          <div class="form__row">
+            <div class="field">
+              <input id="f-name" name="name" type="text" autocomplete="name" required placeholder=" " aria-describedby="f-name-err">
+              <label for="f-name">Imię i&nbsp;nazwisko</label>
+              <p class="field__error" id="f-name-err"></p>
+            </div>
+            <div class="field">
+              <input id="f-email" name="email" type="email" autocomplete="email" required placeholder=" " aria-describedby="f-email-err">
+              <label for="f-email">E-mail</label>
+              <p class="field__error" id="f-email-err"></p>
+            </div>
+          </div>
+          <div class="field">
+            <input id="f-company" name="company" type="text" autocomplete="organization" placeholder=" ">
+            <label for="f-company">Firma <span class="field__opt">(opcjonalnie)</span></label>
+          </div>
+          <fieldset class="chips">
+            <legend>Czego potrzebujesz?</legend>
+            <input type="checkbox" id="f-need-www" name="needs" value="Strona WWW"><label for="f-need-www">Strona WWW</label>
+            <input type="checkbox" id="f-need-shop" name="needs" value="Sklep internetowy"><label for="f-need-shop">Sklep internetowy</label>
+            <input type="checkbox" id="f-need-brand" name="needs" value="Marka i identyfikacja"><label for="f-need-brand">Marka i&nbsp;identyfikacja</label>
+            <input type="checkbox" id="f-need-3d" name="needs" value="3D i motion"><label for="f-need-3d">3D i&nbsp;motion</label>
+          </fieldset>
+          <fieldset class="chips">
+            <legend>Budżet</legend>
+            <input type="radio" id="f-budget-1" name="budget" value="do 20 tys. zł"><label for="f-budget-1">do 20 tys. zł</label>
+            <input type="radio" id="f-budget-2" name="budget" value="20–50 tys. zł"><label for="f-budget-2">20–50 tys. zł</label>
+            <input type="radio" id="f-budget-3" name="budget" value="50–100 tys. zł"><label for="f-budget-3">50–100 tys. zł</label>
+            <input type="radio" id="f-budget-4" name="budget" value="powyżej 100 tys. zł"><label for="f-budget-4">100 tys. zł +</label>
+          </fieldset>
+          <div class="field field--area">
+            <textarea id="f-message" name="message" rows="4" required minlength="20" placeholder=" " aria-describedby="f-message-err"></textarea>
+            <label for="f-message">Opowiedz o&nbsp;projekcie</label>
+            <p class="field__error" id="f-message-err"></p>
+          </div>
+          <div class="consent">
+            <input type="checkbox" id="f-consent" name="consent" required aria-describedby="f-consent-err">
+            <label for="f-consent">Zgadzam się na przetwarzanie moich danych w&nbsp;celu odpowiedzi na zapytanie.</label>
+            <p class="field__error" id="f-consent-err"></p>
+          </div>
+          <div class="form__hp" aria-hidden="true">
+            <label for="f-website">Nie wypełniaj tego pola</label>
+            <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+          <button type="submit" class="btn form__submit"><span>Wyślij zapytanie</span><i class="btn__arrow" aria-hidden="true">→</i></button>
+          <p class="form__status" role="status"></p>
+        </div>
+        <div class="form__done" hidden>
+          <svg class="form__check" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-16"/></svg>
+          <h3 class="form__done-title">Dziękujemy<span data-form-name></span>!</h3>
+          <p class="form__done-text" data-mode="mailto">Otworzyliśmy Twój program pocztowy z&nbsp;gotową wiadomością — wystarczy kliknąć „Wyślij”.
+            Jeśli nic się nie otworzyło, napisz na <a href="mailto:kontakt@lumora.example">kontakt@lumora.example</a>.</p>
+          <p class="form__done-text" data-mode="endpoint" hidden>Wiadomość jest już u&nbsp;nas — odezwiemy się w&nbsp;ciągu 24&nbsp;h.
+            W&nbsp;pilnej sprawie napisz na <a href="mailto:kontakt@lumora.example">kontakt@lumora.example</a>.</p>
+          <button type="button" class="link-arrow form__again">Wyślij kolejne zapytanie <span aria-hidden="true">↺</span></button>
+        </div>
+      </form>
+      </div>
     </section>
   </main>
 

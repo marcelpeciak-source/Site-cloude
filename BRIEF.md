@@ -17,6 +17,8 @@ animacje przewijania i mikrointerakcje — a przy tym szybka, dostępna i czytel
 | E-mail | `kontakt@lumora.example` | domena `.example` = placeholder |
 | Liczby w sekcji „Wyniki” | 120+, 3,4×, 98%, 24 | **przykładowe** — podmienić na prawdziwe |
 | Social media | linki `#` | uzupełnić |
+| Opinie klientów (sekcja 06) | 6 przykładowych cytatów | **placeholder** — zastąpić prawdziwymi, za zgodą klientów |
+| Formularz kontaktowy | wysyła przez `mailto:` | dla wysyłki bez programu pocztowego ustaw `data-endpoint` na `<form>` (usługa formularzy lub własny backend) |
 | Miasta | Warszawa · Kraków · zdalnie | |
 
 Jeśli strona ma być dla konkretnej firmy — wpisz tu jej nazwę, branżę, ofertę, dane kontaktowe

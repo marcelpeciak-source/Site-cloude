@@ -18,6 +18,9 @@ npm run verify     # lint + consistency + check — obowiązkowe przed każdym c
 
 Strona nie wymaga budowania — wystarczy dowolny serwer statyczny.
 
+Formularz kontaktowy domyślnie otwiera program pocztowy (`mailto:`). Aby wysyłać zgłoszenia na serwer,
+ustaw na `<form class="form">` atrybut `data-endpoint="https://…"` — dane pójdą jako JSON metodą POST.
+
 Jakość grafiki dobiera się sama na podstawie FPS. Do testów: `?quality=max` (zawsze pełne efekty)
 albo `?quality=low` (najlżejszy tryb).
 
@@ -38,6 +41,8 @@ js/interactions.js  kursor, magnetyczne przyciski, tilt kart
 js/work.js          Realizacje: okładki z shadera, podgląd WebGL za kursorem, miniatury
 js/postfx.js        post-processing: mip bloom + aberracja chromatyczna (jeden przebieg)
 js/menu.js          pełnoekranowe menu mobilne
+js/reviews.js       opinie: karuzela 3D (przeciąganie, klawiatura, autoodtwarzanie)
+js/form.js          formularz kontaktowy: walidacja, stany, mailto / data-endpoint
 scripts/            vendor.mjs (biblioteki), check.mjs (test Playwright), consistency.mjs (audyt spójności)
 vendor/             three, gsap, lenis, fonty (generowane)
 ```

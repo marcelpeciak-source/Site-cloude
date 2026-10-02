@@ -116,6 +116,24 @@ for (const el of $$('a[href], button')) {
 }
 for (const img of $$('img')) if (!img.hasAttribute('alt')) fail(`<img src="${img.getAttribute('src')}"> has no alt`);
 
+// 8b. Forms: every control has a label, every group a legend, every button an explicit type
+for (const el of $$('input, select, textarea')) {
+  if (el.getAttribute('type') === 'hidden') continue;
+  const labelled = (el.id && document.querySelector(`label[for="${el.id}"]`)) || el.closest('label')
+    || el.hasAttribute('aria-label') || el.hasAttribute('aria-labelledby');
+  if (!labelled) fail(`<${el.tagName.toLowerCase()} name="${el.getAttribute('name')}"> has no label`);
+}
+for (const fs of $$('fieldset')) if (!fs.querySelector('legend')) fail('<fieldset> without <legend>');
+for (const b of $$('button')) if (!b.hasAttribute('type')) fail(`<button class="${b.className}"> has no type (defaults to submit inside forms)`);
+
+// 8c. Carousel: slides are labelled "i z N" in order and the counter shows the same N
+const slides = $$('.review');
+slides.forEach((el, i) => {
+  if (el.getAttribute('aria-label') !== `${i + 1} z ${slides.length}`) fail(`review slide ${i + 1} has aria-label "${el.getAttribute('aria-label')}"`);
+});
+const counter = document.querySelector('.reviews__status');
+if (counter && !counter.textContent.trim().endsWith(`/ ${slides.length}`)) fail(`carousel counter "${counter.textContent.trim()}" ≠ ${slides.length} slides`);
+
 // 9. Brand and contact consistency
 const brand = document.querySelector('.footer__big')?.textContent.trim();
 for (const sel of ['.nav__logo', '.footer__logo', '.preloader__brand']) {
@@ -124,6 +142,8 @@ for (const sel of ['.nav__logo', '.footer__logo', '.preloader__brand']) {
 }
 if (brand && !document.title.startsWith(brand)) fail(`<title> should start with the brand "${brand}"`);
 const mails = new Set($$('a[href^="mailto:"]').map((a) => a.getAttribute('href').slice(7).split('?')[0]));
+for (const f of $$('form[data-mailto]')) mails.add(f.getAttribute('data-mailto'));
+for (const f of $$('form[action^="mailto:"]')) mails.add(f.getAttribute('action').slice(7).split('?')[0]);
 if (mails.size > 1) fail(`different e-mail addresses on the page: ${[...mails].join(', ')}`);
 for (const a of $$('a[href^="mailto:"]')) {
   const shown = a.textContent.trim();
@@ -135,4 +155,4 @@ if (problems.length) {
   problems.forEach((p) => console.log(`  ✖ ${p}`));
   process.exit(1);
 }
-console.log('consistency: ok — anchors, ids, ARIA, scene, files, imports, numbering, menus, names, brand');
+console.log('consistency: ok — anchors, ids, ARIA, scene, files, imports, numbering, menus, names, forms, carousel, brand');

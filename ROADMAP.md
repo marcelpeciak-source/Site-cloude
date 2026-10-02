@@ -21,10 +21,13 @@ Po zrobieniu: `[x]`, data i krótka notka w CHANGELOG.md.
 - [x] **Post-processing** (2026-10-01): własny „mip bloom” + aberracja chromatyczna zależna od prędkości scrolla
       w jednym przebiegu (bez EffectComposer), z drabiną jakości sterowaną FPS.
 
+- [x] **Opinie klientów** (2026-10-02): karuzela na cylindrze 3D (CSS 3D), przeciąganie z bezwładnością i dociąganiem,
+      strzałki + klawiatura, autoodtwarzanie z pauzą; bez JS — przewijana lista.
+- [x] **Formularz kontaktowy** (2026-10-02): walidacja z komunikatami po polsku, stany ładowania i sukcesu,
+      wysyłka przez `mailto:` lub `data-endpoint` (POST JSON), honeypot, ścieżka awaryjna bez JS.
+
 ## Następne (w kolejności)
 
-- [ ] **Opinie klientów** — karuzela 3D przeciągana myszą/palcem (GSAP Observer/Draggable).
-- [ ] **Formularz kontaktowy** — walidacja, animowane stany, fallback `mailto:` (bez zewnętrznych usług bez zgody właściciela).
 - [ ] **SEO i udostępnianie** — JSON-LD (Organization), `robots.txt`, `sitemap.xml`, obraz OG wygenerowany z Playwrighta.
 - [ ] **Wydajność** — pauza renderu gdy karta jest ukryta, `prefers-reduced-data`, lazy init sceny, audyt Lighthouse.
 - [ ] **Strona 404** z własną animacją cząsteczek.

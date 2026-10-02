@@ -1,5 +1,34 @@
 # Changelog
 
+## 2026-10-02 — v0.4 opinie klientów + formularz kontaktowy
+
+- **Opinie** (`js/reviews.js`, sekcja 06): 6 kart na obracającym się cylindrze 3D; przeciąganie myszą/palcem
+  z bezwładnością i dociąganiem do najbliższej karty, przyciski ←/→, strzałki klawiatury, licznik „N / 6”
+  (aria-live), autoodtwarzanie co 6 s (pauza przy najechaniu na karuzelę, fokusie z klawiatury, poza ekranem,
+  wyłączone przy reduced motion). Bez JS: zwykła przewijana lista. Treści opinii są przykładowe.
+- **Formularz kontaktowy** (`js/form.js`, sekcja Kontakt 07): pływające etykiety, „chipsy” zakresu i budżetu,
+  zgoda RODO, walidacja z polskimi komunikatami (`aria-invalid`, `aria-describedby`, fokus na pierwszym błędzie,
+  lekkie „potrząśnięcie”), stan ładowania, animowany stan sukcesu (rysowany znacznik + wir chmury `scene.burst()`).
+  Wysyłka: `mailto:` z gotowym tematem i treścią albo POST JSON na `data-endpoint`; honeypot na boty;
+  bez JS — natywna walidacja i `action="mailto:"`.
+- Menu mobilne: nowa pozycja „Opinie”; sekcje przenumerowane do 07.
+- `npm run check`: przeciągnięcie karuzeli (musi zmienić kartę), autoodtwarzanie, pusty i poprawny formularz
+  (asercje stanów), sprawdzenie fontu wszystkich przycisków; `npm run consistency`: etykiety pól, legendy,
+  `type` przycisków, numeracja slajdów, adres w `data-mailto`/`action`.
+
+**Kontrola jakości (koniec sesji):**
+- Przegląd zrzutów: stan „wysłane” pokazywał pola formularza (CSS `display:flex` nadpisywał `hidden`);
+  etykieta pola z błędem traciła kolor przy fokusie; przyciski `<button>` miały systemowy font
+  → poprawione, każde zabezpieczone testem.
+- Przegląd kodu (5 zgłoszeń, wszystkie odtworzone testem i naprawione):
+  1. bez JS formularz wysyłał dane do adresu strony (`?name=…`) — dodana ścieżka `action="mailto:"`;
+  2. podwójne Enter = podwójna wysyłka — blokada w trakcie wysyłania;
+  3. przy `data-endpoint` podziękowanie mówiło o programie pocztowym — osobny tekst dla obu trybów;
+  4. dotknięcie karuzeli wyłączało autoodtwarzanie na stałe — pauzuje tylko fokus z klawiatury;
+  5. puszczenie po zatrzymaniu przeciągania „przerzucało” karty — prędkość wygasa w spoczynku.
+- Dodatkowo wykryte testem: pauza „przy najechaniu” obejmowała całą (pełnoszeroką) sekcję, więc na desktopie
+  autoodtwarzanie praktycznie nie działało — zawężona do samej karuzeli.
+
 ## 2026-10-01 — kontrola jakości (na prośbę właściciela)
 
 - Nowy stały krok na koniec każdej sesji: `npm run lint` (ESLint, flat config) + `npm run consistency`
