@@ -1,5 +1,8 @@
 # Roadmapa
 
+> **Wstrzymane od 2026-10-04** na prośbę właściciela — nocne sesje zajmują się innym zadaniem
+> (poza tym repozytorium). Po wznowieniu zacznij od pierwszej niezrobionej pozycji poniżej.
+
 Nocna sesja bierze 1–2 pierwsze niezrobione pozycje (albo dopisuje nowy, ambitny pomysł).
 Po zrobieniu: `[x]`, data i krótka notka w CHANGELOG.md.
 
