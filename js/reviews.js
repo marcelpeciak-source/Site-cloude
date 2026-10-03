@@ -38,7 +38,11 @@ export function initReviews({ motion }) {
       // Angle of this card relative to the viewer: 0 = front, ±180 = back.
       const a = ((((i * step + state.rot) % 360) + 540) % 360) - 180;
       const facing = Math.cos((a * Math.PI) / 180);
-      card.style.opacity = (0.08 + 0.92 * Math.max(0, (facing + 0.35) / 1.35)).toFixed(3);
+      // Front 1 → side cards (±60°) ≈ 0.86, still ≥ 4.5:1 contrast for their text; cards turning
+      // away fade out and are hidden from 90° on, so faint unreadable text never shows.
+      const opacity = facing >= 0.5 ? 0.86 + 0.28 * (facing - 0.5) : Math.max(0, facing / 0.5) * 0.86;
+      card.style.opacity = opacity.toFixed(3);
+      card.style.visibility = opacity < 0.3 ? 'hidden' : '';
       const front = Math.abs(a) < step / 2;
       card.classList.toggle('is-front', front);
       card.setAttribute('aria-hidden', String(!front));

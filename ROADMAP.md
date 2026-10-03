@@ -26,10 +26,14 @@ Po zrobieniu: `[x]`, data i krótka notka w CHANGELOG.md.
 - [x] **Formularz kontaktowy** (2026-10-02): walidacja z komunikatami po polsku, stany ładowania i sukcesu,
       wysyłka przez `mailto:` lub `data-endpoint` (POST JSON), honeypot, ścieżka awaryjna bez JS.
 
+- [x] **SEO i udostępnianie** (2026-10-03): canonical, Open Graph/Twitter, JSON-LD (ProfessionalService),
+      `robots.txt`, `sitemap.xml`, manifest + ikony, obraz OG 1200×630 z prawdziwej sceny (`npm run social`).
+- [x] **Wydajność** (2026-10-03): three.js tylko z używanymi klasami (−29%), `modulepreload`, leniwy WebGL
+      w Realizacjach, tryb oszczędzania danych, rysowanie co drugiej klatki w bezczynności, audyt dostępności axe-core
+      w każdym `npm run check` (Lighthouse nie działa stabilnie na programowym GL w kontenerze).
+
 ## Następne (w kolejności)
 
-- [ ] **SEO i udostępnianie** — JSON-LD (Organization), `robots.txt`, `sitemap.xml`, obraz OG wygenerowany z Playwrighta.
-- [ ] **Wydajność** — pauza renderu gdy karta jest ukryta, `prefers-reduced-data`, lazy init sceny, audyt Lighthouse.
 - [ ] **Strona 404** z własną animacją cząsteczek.
 - [ ] **Polityka prywatności / cookies** (RODO) jako podstrona + przejścia stron (View Transitions API).
 - [ ] **Wersja EN** (przełącznik języka).

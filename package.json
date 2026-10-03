@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "vendor": "node scripts/vendor.mjs",
+    "social": "node scripts/social-assets.mjs",
     "serve": "http-server -p 4173 -c-1 .",
     "lint": "eslint .",
     "consistency": "node scripts/consistency.mjs",
@@ -16,6 +17,7 @@
     "@eslint/js": "^10.0.1",
     "@fontsource-variable/manrope": "^5.3.0",
     "@fontsource-variable/syne": "^5.3.0",
+    "axe-core": "^4.13.0",
     "esbuild": "^0.28.2",
     "eslint": "^10.11.0",
     "globals": "^17.13.0",

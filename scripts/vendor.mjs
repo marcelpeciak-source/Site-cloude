@@ -1,7 +1,7 @@
 // Copies/minifies front-end libraries from node_modules into vendor/.
 // CDNs are not reachable from the build container, so the site ships its own copies.
 import { build } from 'esbuild';
-import { copyFile, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 
 const root = new URL('..', import.meta.url).pathname;
@@ -23,14 +23,27 @@ const COPIES = [
 await rm(out, { recursive: true, force: true });
 await mkdir(out, { recursive: true });
 
+// three.js is bundled with only the classes the site uses (≈ −30% vs the full build).
+// The list comes from scanning js/ for `THREE.<Name>`; `npm run consistency` re-checks that
+// every symbol used in js/ is exported by the bundle, so a new one can't slip through.
+const jsDir = join(root, 'js');
+const used = new Set();
+for (const file of (await readdir(jsDir)).filter((f) => f.endsWith('.js'))) {
+  const src = await readFile(join(jsDir, file), 'utf8');
+  for (const [, name] of src.matchAll(/\bTHREE\.([A-Za-z_$][\w$]*)/g)) used.add(name);
+}
 await build({
-  entryPoints: [join(nm, 'three/build/three.module.js')],
+  stdin: {
+    contents: `export { ${[...used].sort().join(', ')} } from 'three';`,
+    resolveDir: root,
+    sourcefile: 'three-subset.js',
+  },
   outfile: join(out, 'three.module.min.js'),
   bundle: true,
   format: 'esm',
   minify: true,
   legalComments: 'none',
-  banner: { js: '/* three.js r186 — MIT License — https://threejs.org */' },
+  banner: { js: '/* three.js r186 (subset) — MIT License — https://threejs.org */' },
   logLevel: 'warning',
 });
 

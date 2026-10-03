@@ -179,8 +179,10 @@ export function createScene(canvas, { motion }) {
   // 0 = everything (post-fx, DPR ≤ 2) → 1 = no post-fx → 2 = DPR 1 → 3 = 60% of the particles.
   // Phones start at 1 (battery, high-DPR fill rate). ?quality=max pins level 0 (screenshots,
   // strong GPUs), ?quality=low starts at level 3.
+  // Data saver (Save-Data / prefers-reduced-data) starts at the lightest level as well.
   const forcedQuality = new URLSearchParams(window.location.search).get('quality');
-  let quality = { max: 0, low: 3 }[forcedQuality] ?? (isSmall() ? 1 : 0);
+  const saveData = Boolean(navigator.connection?.saveData) || matchMedia('(prefers-reduced-data: reduce)').matches;
+  let quality = { max: 0, low: 3 }[forcedQuality] ?? (saveData ? 3 : isSmall() ? 1 : 0);
 
   let post = null;
   if (quality === 0) {
@@ -363,6 +365,9 @@ export function createScene(canvas, { motion }) {
     if (!motion || !gsap) { uniforms.uScatter.value = 0; requestRender(); return; }
     gsap.to(uniforms.uScatter, { value: 0, duration: 3.2, ease: 'expo.out' });
     measuring = forcedQuality !== 'max';
+    // The intro counts as activity: the idle half-rate mode must not start before it ends,
+    // however long the page took to load.
+    lastInput = performance.now() + 3500;
   }
 
   function onPointerMove(e) {
@@ -384,6 +389,18 @@ export function createScene(canvas, { motion }) {
   let frames = 0;
   let sampleTime = 0;
   let measuring = false; // starts after the intro, so preloader work doesn't skew it
+
+  // Idle power saving: when nobody has touched the page for a while, draw every other frame.
+  const IDLE_MS = 6000;
+  let lastInput = performance.now();
+  let skipFrame = false;
+  let drawn = 0;
+  const markInput = () => { lastInput = performance.now(); };
+  if (motion) {
+    for (const type of ['pointermove', 'pointerdown', 'wheel', 'keydown', 'touchstart', 'scroll']) {
+      window.addEventListener(type, markInput, { passive: true });
+    }
+  }
   let lastFps = 0; // fps measured before the last step down
 
   function requestRender() { needsRender = true; }
@@ -462,8 +479,14 @@ export function createScene(canvas, { motion }) {
     group.rotation.x += (-pointer.y * 0.12 - group.rotation.x) * 0.04;
     group.rotation.y += (pointer.x * 0.2 - group.rotation.y) * 0.04;
 
+    // Idle (and not measuring fps): render at half rate. State above still advances every frame.
+    const idle = !measuring && now - lastInput > IDLE_MS;
+    skipFrame = idle && !skipFrame;
+    if (skipFrame) return;
+
     applyState();
     render();
+    drawn++;
 
     // Adaptive quality: measure in 2.5 s windows and step down the ladder while it's slow.
     // A step that doesn't raise the frame rate means the device is capped (30 Hz screen,
@@ -501,5 +524,7 @@ export function createScene(canvas, { motion }) {
     setVelocity(v) { velocity = v; },
     resize,
     get quality() { return quality; },
+    // Frames actually drawn (for tests of the idle half-rate mode).
+    get framesDrawn() { return drawn; },
   };
 }

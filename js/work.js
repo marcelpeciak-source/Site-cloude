@@ -190,11 +190,32 @@ export function initWork({ motion, finePointer }) {
   if (!section) return;
   const list = section.querySelector('.work__list');
   const items = [...section.querySelectorAll('.work__item')];
+  const root = document.documentElement;
 
-  if (motion && finePointer) {
-    if (initPreview(list, items)) return;
-  }
-  renderThumbnails(items);
+  // The layout is decided now (no shift later); the WebGL work waits until the section is near.
+  const preview = motion && finePointer && !root.classList.contains('no-webgl');
+  if (preview) root.classList.add('work-has-preview');
+
+  whenNear(section, () => {
+    if (preview && initPreview(list, items)) return;
+    if (preview) {
+      // The preview context could not be created: fall back to the card grid.
+      root.classList.remove('work-has-preview');
+      window.ScrollTrigger?.refresh();
+    }
+    renderThumbnails(items);
+  });
+}
+
+// Runs `fn` once, when `el` comes within one viewport height of the screen.
+function whenNear(el, fn) {
+  if (!('IntersectionObserver' in window)) { fn(); return; }
+  const io = new IntersectionObserver((entries) => {
+    if (!entries.some((e) => e.isIntersecting)) return;
+    io.disconnect();
+    fn();
+  }, { rootMargin: '100% 0px' });
+  io.observe(el);
 }
 
 function renderThumbnails(items) {
@@ -228,7 +249,6 @@ function initPreview(list, items) {
   const gl = createCoverRenderer(canvas);
   if (!gl) return false;
   document.body.appendChild(canvas);
-  document.documentElement.classList.add('work-has-preview');
 
   const W = 440;
   const H = 300;

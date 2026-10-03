@@ -1,5 +1,31 @@
 # Changelog
 
+## 2026-10-03 — v0.5 SEO, udostępnianie, wydajność, dostępność
+
+- **SEO / udostępnianie:** `canonical`, Open Graph + Twitter Card z obrazem 1200×630 (`assets/og-image.jpg` — zrzut
+  prawdziwego hero), JSON-LD `ProfessionalService` (bez ocen — opinie są przykładowe), `robots.txt`, `sitemap.xml`,
+  `site.webmanifest` + ikony 180/192/512. Nowy skrypt `npm run social` generuje obraz OG i ikony w Chromium.
+  Adres strony (SITE_URL) to adres GitHub Pages repozytorium — do zmiany po podpięciu domeny.
+- **Wydajność:** three.js budowany tylko z używanych klas (742 → 536 KB, gzip 191 → 135 KB; lista z `THREE.*` w `js/`),
+  `modulepreload` całego grafu modułów, WebGL podglądu/miniatur w Realizacjach tworzony dopiero przy zbliżeniu do sekcji,
+  Save-Data / `prefers-reduced-data` → najlżejsza jakość, po 6 s bez interakcji scena rysuje co drugą klatkę.
+- **Dostępność:** axe-core (silnik Lighthouse) w każdym `npm run check` — na starcie i po interakcjach;
+  serious/critical przerywają test. Naprawione zgłoszenia: `aria-label` na `<span>` tytułu (SplitText) i na `<p>`
+  manifestu, kontrast „ściemnionych” słów manifestu (teraz kolor zamiast przezroczystości, ≥ 3:1), kontrast kart
+  bocznych karuzeli i dopisku „(opcjonalnie)”, `<figure role="group">` → `<div>`, menu mobilne jako `role="dialog"`.
+- `npm run consistency`: jeden `<h1>` i hierarchia nagłówków, komplet meta tagów, jeden adres strony wszędzie
+  (canonical/OG/JSON-LD/robots/sitemap), istnienie obrazów i ikon, `modulepreload` dla każdego modułu,
+  klasy `THREE.*` obecne w paczce. Wspólny `scripts/static-server.mjs` dla skryptów.
+
+**Kontrola jakości (koniec sesji):**
+- Przegląd zrzutów: na telefonie strona była szersza niż ekran (476 px w 390 px) przez boczne karty karuzeli 3D —
+  **błąd istniał od v0.4**; test przepełnienia go nie łapał, bo porównywał z `innerWidth`, który mobilny Chrome
+  poszerza razem z treścią. Naprawione (`overflow-x: clip` na sekcji) i test poprawiony (porównanie z zadaną
+  szerokością ekranu; potwierdzone, że bez poprawki zgłasza błąd).
+- Przegląd kodu (2 zgłoszenia): intro mogło grać w połowie klatek, gdy strona ładowała się > 6 s (licznik bezczynności
+  startował przed intro) — odtworzone na spowolnionych fontach i naprawione; `robots.txt` pod podścieżką nie jest
+  czytany przez wyszukiwarki — opisane w BRIEF/README, audyt wypisuje przypomnienie.
+
 ## 2026-10-02 — v0.4 opinie klientów + formularz kontaktowy
 
 - **Opinie** (`js/reviews.js`, sekcja 06): 6 kart na obracającym się cylindrze 3D; przeciąganie myszą/palcem

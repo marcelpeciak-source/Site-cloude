@@ -150,9 +150,84 @@ for (const a of $$('a[href^="mailto:"]')) {
   if (/^\S+@\S+$/.test(shown) && shown !== a.getAttribute('href').slice(7)) fail(`mailto link shows "${shown}" but sends to ${a.getAttribute('href')}`);
 }
 
+// 10. Headings: one <h1>, and levels never skip on the way down (h2 → h4)
+const headings = $$('h1, h2, h3, h4, h5, h6');
+if (headings.filter((h) => h.tagName === 'H1').length !== 1) fail('the page must have exactly one <h1>');
+headings.forEach((h, i) => {
+  const level = Number(h.tagName[1]);
+  const prev = i ? Number(headings[i - 1].tagName[1]) : 0;
+  if (level > prev + 1) fail(`heading <${h.tagName.toLowerCase()}> "${h.textContent.trim().slice(0, 30)}" skips a level after <h${prev}>`);
+});
+
+// 11. SEO & sharing: required tags, one site URL everywhere, files behind the URLs exist
+const meta = (sel) => document.querySelector(sel)?.getAttribute('content') ?? document.querySelector(sel)?.getAttribute('href');
+const required = {
+  title: document.title,
+  description: meta('meta[name="description"]'),
+  canonical: meta('link[rel="canonical"]'),
+  'og:title': meta('meta[property="og:title"]'),
+  'og:description': meta('meta[property="og:description"]'),
+  'og:url': meta('meta[property="og:url"]'),
+  'og:image': meta('meta[property="og:image"]'),
+  'twitter:card': meta('meta[name="twitter:card"]'),
+};
+for (const [name, value] of Object.entries(required)) if (!value) fail(`missing ${name}`);
+const site = required.canonical || '';
+if (!/^https:\/\/.+\/$/.test(site)) fail(`canonical "${site}" should be an absolute https URL ending with /`);
+const underSite = (label, url) => {
+  if (!url) return;
+  if (!url.startsWith(site)) { fail(`${label} "${url}" is not under the site URL ${site}`); return; }
+  const local = url.slice(site.length);
+  if (local) localFiles.push([label, local]);
+};
+const localFiles = [];
+if (required['og:url'] !== site) fail(`og:url "${required['og:url']}" ≠ canonical ${site}`);
+underSite('og:image', required['og:image']);
+underSite('twitter:image', meta('meta[name="twitter:image"]'));
+for (const script of $$('script[type="application/ld+json"]')) {
+  let data;
+  try { data = JSON.parse(script.textContent); } catch (err) { fail(`JSON-LD is not valid JSON: ${err.message}`); continue; }
+  if (data.url !== site) fail(`JSON-LD url "${data.url}" ≠ canonical ${site}`);
+  underSite('JSON-LD logo', data.logo);
+  underSite('JSON-LD image', data.image);
+  if (data.email && !mails.has(data.email)) fail(`JSON-LD email ${data.email} differs from the page's mailto`);
+  if (data.aggregateRating || data.review) fail('JSON-LD must not carry ratings/reviews while the testimonials are placeholders');
+}
+// Crawlers read robots.txt only at the host root. While the site lives under a sub-path
+// (GitHub Pages project site), the file is ready for a custom domain but not read yet.
+const notes = [];
+if (site && new URL(site).pathname !== '/') {
+  notes.push(`robots.txt is only read at the host root; under ${site} submit sitemap.xml in Google Search Console (or use a custom domain)`);
+}
+const robots = await readFile(join(root, 'robots.txt'), 'utf8').catch(() => '');
+if (!robots.includes(`Sitemap: ${site}sitemap.xml`)) fail(`robots.txt should point to ${site}sitemap.xml`);
+const sitemap = await readFile(join(root, 'sitemap.xml'), 'utf8').catch(() => '');
+if (!sitemap.includes(`<loc>${site}</loc>`)) fail(`sitemap.xml should list ${site}`);
+const manifestHref = meta('link[rel="manifest"]');
+if (manifestHref) {
+  try {
+    const manifest = JSON.parse(await readFile(join(root, manifestHref), 'utf8'));
+    for (const icon of manifest.icons || []) localFiles.push(['manifest icon', icon.src]);
+  } catch (err) { fail(`${manifestHref}: ${err.message}`); }
+}
+for (const [label, file] of localFiles) if (!(await exists(join(root, file)))) fail(`${label}: missing file ${file}`);
+
+// 12. Performance: every module in js/ is modulepreloaded; three.js symbols used in js/ exist in
+//     the subset bundle (re-run `npm run vendor` after using a new THREE.* class).
+const preloaded = new Set($$('link[rel="modulepreload"]').map((l) => l.getAttribute('href')));
+for (const f of jsFiles) if (!preloaded.has(`js/${f}`)) fail(`js/${f} has no <link rel="modulepreload">`);
+const threeBundle = await readFile(join(root, 'vendor/three.module.min.js'), 'utf8');
+// The bundle ends with one `export{a as Name,…}` statement.
+const exportList = threeBundle.match(/export\s*\{([^}]*)\}\s*;?\s*$/)?.[1] ?? '';
+const threeExports = new Set(exportList.split(',').map((e) => e.trim().split(/\s+as\s+/).pop()).filter(Boolean));
+if (!threeExports.size) fail('vendor/three.module.min.js: export list not found');
+const threeUsed = new Set(Object.values(sources).flatMap((src) => [...src.matchAll(/\bTHREE\.([A-Za-z_$][\w$]*)/g)].map((m) => m[1])));
+for (const name of threeUsed) if (!threeExports.has(name)) fail(`THREE.${name} is used but not in vendor/three.module.min.js — run npm run vendor`);
+
 if (problems.length) {
   console.log(`consistency: ${problems.length} problem(s)`);
   problems.forEach((p) => console.log(`  ✖ ${p}`));
   process.exit(1);
 }
-console.log('consistency: ok — anchors, ids, ARIA, scene, files, imports, numbering, menus, names, forms, carousel, brand');
+notes.forEach((n) => console.log(`  ℹ ${n}`));
+console.log('consistency: ok — anchors, ids, ARIA, scene, files, imports, numbering, menus, names, forms, carousel, brand, headings, SEO, preload, three subset');

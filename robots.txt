@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://marcelpeciak-source.github.io/Site-cloude/sitemap.xml

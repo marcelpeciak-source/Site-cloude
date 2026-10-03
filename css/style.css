@@ -713,7 +713,12 @@ main, .footer { transition: opacity 0.6s var(--ease); }
    Default (no JS): horizontally scrollable cards. .is-3d: cards on a draggable 3D cylinder.
    -------------------------------------------------------------------------- */
 
-.reviews { --card-w: clamp(280px, 30vw, 420px); --card-h: clamp(330px, 46vh, 430px); }
+.reviews {
+  --card-w: clamp(280px, 30vw, 420px); --card-h: clamp(330px, 46vh, 430px);
+  /* The side cards of the 3D ring reach past the screen edge; clip them here (the body's
+     overflow-x doesn't stop mobile browsers from widening the page to fit them). */
+  overflow-x: clip;
+}
 .reviews__ring {
   display: flex; gap: 20px;
   overflow-x: auto; scroll-snap-type: x mandatory;
@@ -890,7 +895,7 @@ main, .footer { transition: opacity 0.6s var(--ease); }
 .field input:not(:placeholder-shown) + label,
 .field textarea:focus + label,
 .field textarea:not(:placeholder-shown) + label { transform: translateY(-21px) scale(0.78); color: var(--fg); }
-.field__opt { opacity: 0.6; }
+.field__opt { font-size: 0.85em; }
 .field__error { margin-top: 6px; font-size: 13.5px; color: var(--amber); }
 .field__error:empty { display: none; }
 .field.is-invalid input,

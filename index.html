@@ -6,11 +6,83 @@
   <title>Lumora — cyfrowe doświadczenia dla biznesu</title>
   <meta name="description" content="Lumora łączy strategię, design i technologię 3D. Tworzymy strony, sklepy i kampanie, które zamieniają odwiedzających w klientów.">
   <meta name="theme-color" content="#07070b">
+  <!-- Adres strony (SITE_URL): https://marcelpeciak-source.github.io/Site-cloude/ — przy zmianie domeny podmień go wszędzie
+       (canonical, og:*, twitter:image, JSON-LD, robots.txt, sitemap.xml); `npm run consistency` pilnuje zgodności. -->
+  <link rel="canonical" href="https://marcelpeciak-source.github.io/Site-cloude/">
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Lumora Studio">
+  <meta property="og:url" content="https://marcelpeciak-source.github.io/Site-cloude/">
   <meta property="og:title" content="Lumora — cyfrowe doświadczenia dla biznesu">
   <meta property="og:description" content="Strategia, design i 3D, które sprzedają. Budujemy marki, których nie da się przewinąć.">
+  <meta property="og:image" content="https://marcelpeciak-source.github.io/Site-cloude/assets/og-image.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Lumora — napis „Budujemy marki, których nie da się przewinąć” na tle sfery z cząsteczek">
   <meta property="og:locale" content="pl_PL">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Lumora — cyfrowe doświadczenia dla biznesu">
+  <meta name="twitter:description" content="Strategia, design i 3D, które sprzedają. Budujemy marki, których nie da się przewinąć.">
+  <meta name="twitter:image" content="https://marcelpeciak-source.github.io/Site-cloude/assets/og-image.jpg">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Lumora Studio",
+    "alternateName": "Lumora",
+    "url": "https://marcelpeciak-source.github.io/Site-cloude/",
+    "logo": "https://marcelpeciak-source.github.io/Site-cloude/assets/icon-512.png",
+    "image": "https://marcelpeciak-source.github.io/Site-cloude/assets/og-image.jpg",
+    "description": "Studio cyfrowych doświadczeń: strategia marki, strony i sklepy z grafiką 3D, produkty cyfrowe i kampanie motion.",
+    "email": "kontakt@lumora.example",
+    "areaServed": "PL",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Warszawa",
+      "addressCountry": "PL"
+    },
+    "knowsAbout": [
+      "Strategia marki",
+      "Strony internetowe 3D",
+      "E-commerce",
+      "Identyfikacja wizualna",
+      "Motion design"
+    ],
+    "makesOffer": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Strategia i marka"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Strony i sklepy 3D"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Produkty cyfrowe"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Motion i kampanie"
+        }
+      }
+    ]
+  }
+  </script>
 
   <link rel="preload" href="vendor/fonts/syne-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="vendor/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -27,6 +99,17 @@
     })(document.documentElement.classList);
   </script>
   <script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script>
+  <!-- Fetch the whole module graph in parallel instead of import by import (after the import map). -->
+  <link rel="modulepreload" href="vendor/three.module.min.js">
+  <link rel="modulepreload" href="js/main.js">
+  <link rel="modulepreload" href="js/scene.js">
+  <link rel="modulepreload" href="js/shapes.js">
+  <link rel="modulepreload" href="js/postfx.js">
+  <link rel="modulepreload" href="js/interactions.js">
+  <link rel="modulepreload" href="js/work.js">
+  <link rel="modulepreload" href="js/menu.js">
+  <link rel="modulepreload" href="js/reviews.js">
+  <link rel="modulepreload" href="js/form.js">
   <script src="vendor/gsap.min.js" defer></script>
   <script src="vendor/ScrollTrigger.min.js" defer></script>
   <script src="vendor/SplitText.min.js" defer></script>
@@ -71,7 +154,7 @@
     </div>
   </header>
 
-  <div class="menu" id="menu" aria-label="Menu" inert>
+  <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu" inert>
     <nav class="menu__nav" aria-label="Menu mobilne">
       <a href="#o-nas" class="menu__link"><span class="menu__num">01</span><span class="menu__mask"><span class="menu__label">O nas</span></span></a>
       <a href="#uslugi" class="menu__link"><span class="menu__num">02</span><span class="menu__mask"><span class="menu__label">Usługi</span></span></a>
@@ -266,48 +349,48 @@
       <div class="reviews__carousel" role="region" aria-roledescription="karuzela" aria-label="Opinie klientów">
         <div class="reviews__stage" tabindex="0" aria-label="Przeciągnij lub użyj strzałek, aby zmienić opinię">
           <div class="reviews__ring" id="reviews-ring">
-          <figure class="review" role="group" aria-roledescription="slajd" aria-label="1 z 6">
+          <div class="review" role="group" aria-roledescription="slajd" aria-label="1 z 6">
             <blockquote class="review__quote"><p>Strona od Lumory w&nbsp;trzy miesiące podwoiła liczbę zapytań. Klienci zaczynają rozmowę od komplementów.</p></blockquote>
-            <figcaption class="review__author">
+            <div class="review__author">
               <span class="review__avatar" aria-hidden="true">AK</span>
               <span><strong class="review__name">Anna K.</strong><span class="review__role">dyrektorka marketingu, Aurora</span></span>
-            </figcaption>
-          </figure>
-          <figure class="review" role="group" aria-roledescription="slajd" aria-label="2 z 6">
+            </div>
+          </div>
+          <div class="review" role="group" aria-roledescription="slajd" aria-label="2 z 6">
             <blockquote class="review__quote"><p>Zrozumieli naszą architekturę lepiej niż niejeden architekt. Nowa marka wreszcie mówi naszym językiem.</p></blockquote>
-            <figcaption class="review__author">
+            <div class="review__author">
               <span class="review__avatar" aria-hidden="true">TW</span>
               <span><strong class="review__name">Tomasz W.</strong><span class="review__role">partner zarządzający, Monolit</span></span>
-            </figcaption>
-          </figure>
-          <figure class="review" role="group" aria-roledescription="slajd" aria-label="3 z 6">
+            </div>
+          </div>
+          <div class="review" role="group" aria-roledescription="slajd" aria-label="3 z 6">
             <blockquote class="review__quote"><p>Sklep jest szybki, piękny i&nbsp;— co najważniejsze — sprzedaje. Animacje produktów robią całą robotę.</p></blockquote>
-            <figcaption class="review__author">
+            <div class="review__author">
               <span class="review__avatar" aria-hidden="true">ML</span>
               <span><strong class="review__name">Marta L.</strong><span class="review__role">założycielka, Halo</span></span>
-            </figcaption>
-          </figure>
-          <figure class="review" role="group" aria-roledescription="slajd" aria-label="4 z 6">
+            </div>
+          </div>
+          <div class="review" role="group" aria-roledescription="slajd" aria-label="4 z 6">
             <blockquote class="review__quote"><p>Kampania 3D przebiła nasze najśmielsze KPI. Tak powinna wyglądać współpraca z&nbsp;agencją.</p></blockquote>
-            <figcaption class="review__author">
+            <div class="review__author">
               <span class="review__avatar" aria-hidden="true">PS</span>
               <span><strong class="review__name">Piotr S.</strong><span class="review__role">head of growth, Pulse</span></span>
-            </figcaption>
-          </figure>
-          <figure class="review" role="group" aria-roledescription="slajd" aria-label="5 z 6">
+            </div>
+          </div>
+          <div class="review" role="group" aria-roledescription="slajd" aria-label="5 z 6">
             <blockquote class="review__quote"><p>Konkretnie, terminowo i&nbsp;z&nbsp;ogromną dbałością o&nbsp;detale. Żadnych niespodzianek w&nbsp;budżecie.</p></blockquote>
-            <figcaption class="review__author">
+            <div class="review__author">
               <span class="review__avatar" aria-hidden="true">KM</span>
               <span><strong class="review__name">Katarzyna M.</strong><span class="review__role">COO, branża medyczna</span></span>
-            </figcaption>
-          </figure>
-          <figure class="review" role="group" aria-roledescription="slajd" aria-label="6 z 6">
+            </div>
+          </div>
+          <div class="review" role="group" aria-roledescription="slajd" aria-label="6 z 6">
             <blockquote class="review__quote"><p>Myśleliśmy, że 3D to fanaberia. Dziś to nasz najlepszy handlowiec — dokładnie tak, jak obiecali.</p></blockquote>
-            <figcaption class="review__author">
+            <div class="review__author">
               <span class="review__avatar" aria-hidden="true">MR</span>
               <span><strong class="review__name">Michał R.</strong><span class="review__role">prezes, firma produkcyjna</span></span>
-            </figcaption>
-          </figure>
+            </div>
+          </div>
           </div>
         </div>
         <div class="reviews__controls">

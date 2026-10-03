@@ -18,6 +18,8 @@ animacje przewijania i mikrointerakcje — a przy tym szybka, dostępna i czytel
 | Liczby w sekcji „Wyniki” | 120+, 3,4×, 98%, 24 | **przykładowe** — podmienić na prawdziwe |
 | Social media | linki `#` | uzupełnić |
 | Opinie klientów (sekcja 06) | 6 przykładowych cytatów | **placeholder** — zastąpić prawdziwymi, za zgodą klientów |
+| Adres strony (SITE_URL) | `https://marcelpeciak-source.github.io/Site-cloude/` | po podpięciu domeny podmień w `index.html`, `robots.txt`, `sitemap.xml` i `npm run social`; `npm run consistency` pilnuje zgodności |
+| Sitemap | `sitemap.xml` | pod podścieżką GitHub Pages `robots.txt` nie jest czytany — zgłoś sitemap w Google Search Console (albo podepnij domenę) |
 | Formularz kontaktowy | wysyła przez `mailto:` | dla wysyłki bez programu pocztowego ustaw `data-endpoint` na `<form>` (usługa formularzy lub własny backend) |
 | Miasta | Warszawa · Kraków · zdalnie | |
 
@@ -43,3 +45,5 @@ i ton komunikacji, a kolejna nocna sesja przerobi treści.
   dzisiejszych zmian pod kątem błędów i spójności; każdy znaleziony błąd odtworzyć, naprawić i potwierdzić testem.
 - Zawsze: fallback bez WebGL, `prefers-reduced-motion`, poprawna semantyka i fokus z klawiatury, brak poziomego scrolla na mobile.
 - Język strony: polski (ewentualna wersja EN później).
+- Dane strukturalne (JSON-LD) bez ocen i recenzji, dopóki opinie są przykładowe.
+- Dostępność: axe-core w `npm run check` — zero naruszeń „serious/critical”.

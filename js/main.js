@@ -124,7 +124,12 @@ function intro(scene) {
   if (!motion) return;
 
   const title = $('[data-hero-title]');
-  const split = SplitText.create($$('.line', title), { type: 'words,chars' });
+  // The heading keeps one readable name; the per-letter spans are hidden from assistive tech
+  // (SplitText's default would put aria-label on the <span> lines, which ARIA doesn't allow).
+  title.setAttribute('aria-label', title.textContent.replace(/\s+/g, ' ').trim());
+  const lines = $$('.line', title);
+  lines.forEach((line) => line.setAttribute('aria-hidden', 'true'));
+  const split = SplitText.create(lines, { type: 'words,chars', aria: 'none' });
   gsap.set(title, { visibility: 'visible' });
 
   gsap.timeline({ defaults: { ease: 'expo.out' } })
@@ -225,9 +230,13 @@ function initReveals() {
 
   const manifesto = $('[data-words]');
   if (manifesto) {
-    const split = SplitText.create(manifesto, { type: 'words' });
-    gsap.fromTo(split.words, { opacity: 0.12 }, {
-      opacity: 1,
+    // Words only (no letters), so the text still reads naturally; aria: 'none' avoids an
+    // aria-label on the <p>, which ARIA doesn't allow for paragraphs.
+    const split = SplitText.create(manifesto, { type: 'words', aria: 'none' });
+    // Dim → bright via colour, not opacity: the dim state still meets the 3:1 contrast
+    // required for large text, so a reader who stops scrolling halfway can read it.
+    gsap.fromTo(split.words, { color: '#6c6979' }, {
+      color: '#f3f0ea',
       ease: 'none',
       stagger: 0.1,
       scrollTrigger: { trigger: manifesto, start: 'top 80%', end: 'bottom 55%', scrub: true },

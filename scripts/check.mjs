@@ -2,33 +2,17 @@
 // fails on console/page errors and saves a screenshot of every section to screenshots/.
 //   npm run check            — all runs
 //   npm run check -- desktop — only the named run(s)
-import { createServer } from 'node:http';
-import { readFile, mkdir, rm } from 'node:fs/promises';
-import { extname, join, normalize } from 'node:path';
+import { mkdir, rm } from 'node:fs/promises';
+import { join } from 'node:path';
 import { chromium } from 'playwright';
+import { serve } from './static-server.mjs';
+
+const AXE = new URL('../node_modules/axe-core/axe.min.js', import.meta.url).pathname;
 
 const root = new URL('..', import.meta.url).pathname;
 const outDir = join(root, 'screenshots');
-const MIME = {
-  '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.mjs': 'text/javascript',
-  '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg',
-  '.webp': 'image/webp', '.json': 'application/json', '.woff2': 'font/woff2', '.glb': 'model/gltf-binary',
-};
-
-const server = createServer(async (req, res) => {
-  const path = normalize(decodeURIComponent(new URL(req.url, 'http://x').pathname)).replace(/^(\.\.[/\\])+/, '');
-  const file = join(root, path.endsWith('/') ? `${path}index.html` : path);
-  try {
-    const body = await readFile(file);
-    res.writeHead(200, { 'content-type': MIME[extname(file)] || 'application/octet-stream' });
-    res.end(body);
-  } catch {
-    res.writeHead(404);
-    res.end('not found');
-  }
-});
-await new Promise((r) => server.listen(0, '127.0.0.1', r));
-const base = `http://127.0.0.1:${server.address().port}/`;
+const server = await serve(root);
+const base = server.base;
 
 const RUNS = {
   // ?quality=max keeps post-processing on despite SwiftShader's low fps, so it shows up in screenshots.
@@ -87,7 +71,7 @@ for (const [name, { query = '', ...options }] of runs) {
   await page.waitForFunction(() => !document.querySelector('.preloader'), null, { timeout: 20000 });
   await page.waitForTimeout(2600);
 
-  const info = await page.evaluate(async () => {
+  const info = await page.evaluate(async (designWidth) => {
     const frames = await new Promise((resolve) => {
       let n = 0;
       const t0 = performance.now();
@@ -99,7 +83,10 @@ for (const [name, { query = '', ...options }] of runs) {
       webgl: !c.contains('no-webgl'),
       motion: c.contains('motion'),
       fps: Math.round(frames),
-      overflowX: document.documentElement.scrollWidth > window.innerWidth + 1,
+      // Compare with the configured viewport, not innerWidth: mobile Chrome widens the layout
+      // viewport to fit overflowing content, so innerWidth grows along with the bug.
+      overflowX: Math.max(document.documentElement.scrollWidth, window.innerWidth) > designWidth + 1,
+      layoutWidth: Math.max(document.documentElement.scrollWidth, window.innerWidth),
       // Fixed elements don't widen the page, so check that the nav bar's items stay inside
       // its content box (i.e. don't eat into the side padding or leave the screen).
       navOverflow: (() => {
@@ -119,8 +106,22 @@ for (const [name, { query = '', ...options }] of runs) {
         .filter((b) => b.offsetParent && !/Manrope|Syne/.test(getComputedStyle(b).fontFamily))
         .map((b) => b.className),
     };
-  });
-  if (info.overflowX) errors.push('horizontal overflow: page is wider than the viewport');
+  }, options.viewport.width);
+  // Accessibility (axe-core, the engine behind Lighthouse's a11y score): serious/critical fail the run.
+  // Runs on the initial page and again after all interactions (form states, carousel, open menu).
+  const auditA11y = async (when) => {
+    if (!(await page.evaluate(() => Boolean(window.axe)))) await page.addScriptTag({ path: AXE });
+    const found = await page.evaluate(async () => {
+      const res = await window.axe.run(document, { resultTypes: ['violations'] });
+      return res.violations.map((v) => ({ id: v.id, impact: v.impact, help: v.help, nodes: v.nodes.slice(0, 3).map((n) => n.target.join(' ')) }));
+    });
+    for (const v of found) {
+      const msg = `a11y ${v.impact} (${when}): ${v.id} — ${v.help} [${v.nodes.join(' | ')}]`;
+      (['serious', 'critical'].includes(v.impact) ? errors : warnings).push(msg);
+    }
+  };
+  await auditA11y('start');
+  if (info.overflowX) errors.push(`horizontal overflow: page is ${info.layoutWidth}px wide in a ${options.viewport.width}px viewport`);
   if (info.navOverflow) errors.push('navigation items overflow the nav bar (padding or screen edge)');
   if (!info.heroVisible) errors.push('hero title is not visible');
   if (info.foreignFontButtons.length) errors.push(`buttons without the site font: ${info.foreignFontButtons.join(', ')}`);
@@ -204,6 +205,8 @@ for (const [name, { query = '', ...options }] of runs) {
     }
     await page.screenshot({ path: join(outDir, `${name}-${String(SECTIONS.findIndex((s) => s[0] === shot)).padStart(2, '0')}-${shot}.png`) });
   }
+
+  await auditA11y('after interactions');
 
   // Quality level the adaptive ladder settled on (0 = full post-fx … 3 = reduced particles).
   const quality = await page.evaluate(() => window.__site?.scene?.quality ?? '-');
