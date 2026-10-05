@@ -5,26 +5,35 @@
 
 ## Cel
 
-Strona biznesowa, która robi wrażenie od pierwszej sekundy: immersyjne 3D (WebGL), płynne
-animacje przewijania i mikrointerakcje — a przy tym szybka, dostępna i czytelna na telefonie.
+**Od 2026-10-05 (decyzja właściciela): strona ofertowa Marcela Pęciaka — strony internetowe dla lokalnych firm.**
+Dotychczasowe demo „Lumora” przerabiamy na prawdziwą stronę, którą zobaczą firmy dostające od właściciela maile
+i listy (fryzjerzy, mechanicy, gabinety kosmetyczne, dentyści, firmy budowlane z Pajęczna, Działoszyna, Łodzi i okolic).
 
-## Marka (placeholder — do podmiany)
+- **Odbiorca:** właściciel małej firmy, zwykle bez strony albo z przestarzałą stroną, ogląda na telefonie, nie zna żargonu.
+- **Jedno zadanie strony:** przekonać do zamówienia **bezpłatnej wizualizacji strony głównej** (telefon, SMS, e-mail, formularz).
+- **Co sprzedajemy językiem korzyści:** więcej telefonów i rezerwacji, widoczność w Google, aktualne godziny/cennik/dojazd
+  w jednym miejscu, przycisk „Zadzwoń”, strona gotowa w kilka dni, „resztę biorę na siebie”.
+- Efekty 3D/animacje zostają jako pokaz umiejętności („tak może wyglądać Twoja strona”), ale treść ma być prosta,
+  a strona szybka także na tanim telefonie.
 
-| Pole | Obecna wartość | Uwagi |
+## Marka i dane (prawdziwe — od 2026-10-05)
+
+| Pole | Wartość | Uwagi |
 | --- | --- | --- |
-| Nazwa | **Lumora** (Lumora Studio) | fikcyjna nazwa robocza |
-| Branża | studio cyfrowych doświadczeń dla biznesu | strategia, design, strony 3D |
-| E-mail | `kontakt@lumora.example` | domena `.example` = placeholder |
-| Liczby w sekcji „Wyniki” | 120+, 3,4×, 98%, 24 | **przykładowe** — podmienić na prawdziwe |
-| Social media | linki `#` | uzupełnić |
-| Opinie klientów (sekcja 06) | 6 przykładowych cytatów | **placeholder** — zastąpić prawdziwymi, za zgodą klientów |
+| Nazwa | **Marcel Pęciak — strony internetowe dla lokalnych firm** | robocza; jeśli właściciel poda nazwę marki, podmienić wszędzie |
+| Oferta | strony-wizytówki i strony firmowe dla małych firm + **bezpłatna wizualizacja strony głównej** przed decyzją | wizualizacja zaakceptowana przez właściciela 2026-10-04 |
+| Telefon | `662 868 774` (`tel:+48662868774`) | klikany na telefonie |
+| E-mail | `zrobswojastrone@gmail.com` | z tej skrzynki idą maile do firm; także adres formularza (`mailto:`) |
+| Region | Pajęczno, Działoszyn, Łódź, Pabianice i okolice | w treści i w JSON-LD (`areaServed`) |
+| Ceny | **nie podawać** | ustalane po wizualizacji; właściciel nie podał cennika |
+| Liczby, opinie, realizacje | **żadnych fikcyjnych** | usunąć przykładowe liczby i opinie; przykładowe projekty tylko wyraźnie podpisane „przykład / wizualizacja”; nigdy nazwy prawdziwych firm z listy kontaktów |
+| Forma zwracania się | „Państwo” (jak w mailach do firm), prosty język | bez słów typu „konwersja”, „UX”, „brand” |
 | Adres strony (SITE_URL) | `https://marcelpeciak-source.github.io/Site-cloude/` | po podpięciu domeny podmień w `index.html`, `robots.txt`, `sitemap.xml` i `npm run social`; `npm run consistency` pilnuje zgodności |
 | Sitemap | `sitemap.xml` | pod podścieżką GitHub Pages `robots.txt` nie jest czytany — zgłoś sitemap w Google Search Console (albo podepnij domenę) |
-| Formularz kontaktowy | wysyła przez `mailto:` | dla wysyłki bez programu pocztowego ustaw `data-endpoint` na `<form>` (usługa formularzy lub własny backend) |
-| Miasta | Warszawa · Kraków · zdalnie | |
+| Formularz kontaktowy | `mailto:` na `zrobswojastrone@gmail.com` | dla wysyłki bez programu pocztowego ustaw `data-endpoint` na `<form>`; formularz zbiera dane → potrzebna polityka prywatności (RODO) |
+| Social media | brak | nie wstawiać pustych linków |
 
-Jeśli strona ma być dla konkretnej firmy — wpisz tu jej nazwę, branżę, ofertę, dane kontaktowe
-i ton komunikacji, a kolejna nocna sesja przerobi treści.
+**Repozytorium jest publiczne:** nie wpisuj tu ani na stronę danych firm z prywatnej tabeli leadów.
 
 ## Kierunek wizualny
 
@@ -45,5 +54,5 @@ i ton komunikacji, a kolejna nocna sesja przerobi treści.
   dzisiejszych zmian pod kątem błędów i spójności; każdy znaleziony błąd odtworzyć, naprawić i potwierdzić testem.
 - Zawsze: fallback bez WebGL, `prefers-reduced-motion`, poprawna semantyka i fokus z klawiatury, brak poziomego scrolla na mobile.
 - Język strony: polski (ewentualna wersja EN później).
-- Dane strukturalne (JSON-LD) bez ocen i recenzji, dopóki opinie są przykładowe.
+- Dane strukturalne (JSON-LD) bez ocen i recenzji, dopóki nie ma prawdziwych opinii (za zgodą klientów).
 - Dostępność: axe-core w `npm run check` — zero naruszeń „serious/critical”.

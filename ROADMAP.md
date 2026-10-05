@@ -1,7 +1,7 @@
 # Roadmapa
 
-> **Wstrzymane od 2026-10-04** na prośbę właściciela — nocne sesje zajmują się innym zadaniem
-> (poza tym repozytorium). Po wznowieniu zacznij od pierwszej niezrobionej pozycji poniżej.
+> **Wznowione 2026-10-05** (wstrzymane 2026-10-04). Nowy kierunek od właściciela: demo „Lumora” staje się
+> **stroną ofertową Marcela Pęciaka — strony dla lokalnych firm** (szczegóły w BRIEF.md, który ma pierwszeństwo).
 
 Nocna sesja bierze 1–2 pierwsze niezrobione pozycje (albo dopisuje nowy, ambitny pomysł).
 Po zrobieniu: `[x]`, data i krótka notka w CHANGELOG.md.
@@ -37,15 +37,26 @@ Po zrobieniu: `[x]`, data i krótka notka w CHANGELOG.md.
 
 ## Następne (w kolejności)
 
-- [ ] **Strona 404** z własną animacją cząsteczek.
-- [ ] **Polityka prywatności / cookies** (RODO) jako podstrona + przejścia stron (View Transitions API).
-- [ ] **Wersja EN** (przełącznik języka).
-- [ ] **Easter egg** — np. kod Konami → „fajerwerki” z cząsteczek.
+- [ ] **v0.6 — przebudowa treści na stronę ofertową** (zgodnie z BRIEF.md): nowy `<title>`, opis, hero
+      („Strony internetowe dla firm z Pajęczna, Działoszyna, Łodzi…” + przycisk „Bezpłatna wizualizacja”),
+      usługi językiem korzyści (strona-wizytówka, strona firmowa, widoczność w Google/wizytówka Google, opieka),
+      proces w 4 krokach (rozmowa → bezpłatna wizualizacja → strona w kilka dni → opieka),
+      sekcję liczb i przykładowe opinie zastąpić czymś prawdziwym (np. „Co dostajesz” / FAQ),
+      kontakt: klikany telefon, e-mail, formularz na `zrobswojastrone@gmail.com`; stopka, preloader, logo z cząsteczek,
+      meta/OG/JSON-LD (`ProfessionalService` z `areaServed`, bez ocen), nowy obraz OG (`npm run social`).
+      Zero „Lumora” w plikach strony (README/CHANGELOG mogą wspominać historię).
+- [ ] **v0.7 — przykłady dla branż**: sekcja „Realizacje” → „Przykłady” + 4–5 lekkich podstron demo
+      (fryzjer, mechanik, gabinet kosmetyczny, dentysta, firma budowlana) z fikcyjną, wyraźnie podpisaną firmą
+      („przykład”); te same podstrony służą jako szablony do szybkich bezpłatnych wizualizacji.
+- [ ] **v0.8 — polityka prywatności** (RODO dla formularza i kontaktu) jako podstrona + **strona 404** z animacją cząsteczek.
+- [ ] **v0.9 — szybkość i lokalne SEO**: tryb lekki na słabych telefonach, test na emulacji wolnego CPU/sieci,
+      treści i nagłówki pod lokalne wyszukiwania (Pajęczno, Działoszyn, Łódź, Pabianice), dostępność.
 
 ## Pomysły na później
 
-- Podstrony case studies (zamiast samych wierszy listy) z przejściem: okładka z podglądu rozszerza się na pełny ekran.
-
+- Domena + Google Search Console + wizytówka Google właściciela (wymaga działań właściciela).
+- Przejścia stron (View Transitions API) między stroną główną a przykładami.
+- Podstrony przykładów z przejściem: okładka z podglądu rozszerza się na pełny ekran.
+- Easter egg — np. kod Konami → „fajerwerki” z cząsteczek.
+- Wersja EN (raczej niepotrzebna przy lokalnych klientach).
 - Dźwięk ambient (WebAudio, domyślnie wyłączony) sterowany scrollem.
-- Interaktywny „konfigurator” 3D produktu/usługi.
-- Sekcja zespołu z portretami z cząsteczek.
