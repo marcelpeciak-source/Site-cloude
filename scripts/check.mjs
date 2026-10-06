@@ -25,20 +25,20 @@ const runs = Object.entries(RUNS).filter(([name]) => !only.length || only.includ
 
 const SECTIONS = [
   ['hero', null],
-  ['o-nas', '#o-nas'],
-  ['uslugi', '#uslugi'],
-  ['realizacje', '#realizacje'],
-  ['realizacje-hover', '#realizacje', 0, { hover: '.work__item:nth-child(2)' }],
-  ['proces', '#proces'],
-  ['proces-mid', '#proces', 0.5],
-  ['wyniki', '#wyniki'],
-  ['opinie', '#opinie'],
-  ['opinie-ruch', '#opinie', 0, { reviews: true }],
+  ['o-mnie', '#o-mnie'],
+  ['oferta', '#oferta'],
+  ['przyklady', '#przyklady'],
+  ['przyklady-hover', '#przyklady', 0, { hover: '.work__item:nth-child(2)' }],
+  ['jak-to-dziala', '#jak-to-dziala'],
+  ['jak-to-dziala-mid', '#jak-to-dziala', 0.5],
+  ['konkrety', '#konkrety'],
+  ['pytania', '#pytania'],
+  ['pytania-ruch', '#pytania', 0, { reviews: true }],
   ['kontakt', '#kontakt'],
   ['formularz-bledy', '.form', 0, { form: 'invalid' }],
   ['formularz-wyslany', '.form', 0, { form: 'valid' }],
   ['stopka', '.footer'],
-  ['menu', '#uslugi', 0, { click: '.nav__toggle', mobileOnly: true }],
+  ['menu', '#oferta', 0, { click: '.nav__toggle', mobileOnly: true }],
 ];
 
 await rm(outDir, { recursive: true, force: true });
@@ -101,6 +101,17 @@ for (const [name, { query = '', ...options }] of runs) {
         });
       })(),
       heroVisible: getComputedStyle(document.querySelector('.hero__title')).visibility === 'visible',
+      // The footer wordmark doesn't wrap (the particle logo is sampled from one line): its glyphs
+      // must stay inside the footer's side padding, or the name gets clipped on narrow phones.
+      wordmarkOut: (() => {
+        const el = document.querySelector('.footer__big');
+        if (!el) return false;
+        const pad = parseFloat(getComputedStyle(document.querySelector('.footer')).paddingLeft);
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        const r = range.getBoundingClientRect();
+        return r.left < pad - 1 || r.right > window.innerWidth - pad + 1;
+      })(),
       // <button> doesn't inherit the font by default; every visible one must use the site fonts.
       foreignFontButtons: [...document.querySelectorAll('button')]
         .filter((b) => b.offsetParent && !/Manrope|Syne/.test(getComputedStyle(b).fontFamily))
@@ -124,6 +135,7 @@ for (const [name, { query = '', ...options }] of runs) {
   if (info.overflowX) errors.push(`horizontal overflow: page is ${info.layoutWidth}px wide in a ${options.viewport.width}px viewport`);
   if (info.navOverflow) errors.push('navigation items overflow the nav bar (padding or screen edge)');
   if (!info.heroVisible) errors.push('hero title is not visible');
+  if (info.wordmarkOut) errors.push('footer wordmark reaches past the side padding (clipped on this screen width)');
   if (info.foreignFontButtons.length) errors.push(`buttons without the site font: ${info.foreignFontButtons.join(', ')}`);
 
   for (const [shot, selector, fraction = 0, action = {}] of SECTIONS) {
@@ -187,10 +199,11 @@ for (const [name, { query = '', ...options }] of runs) {
     } else if (form === 'valid') {
       await page.fill('#f-name', 'Jan Testowy');
       await page.fill('#f-email', 'jan@firma.pl');
-      await page.fill('#f-company', 'Firma Testowa');
-      await page.locator('label[for="f-need-www"]').click();
-      await page.locator('label[for="f-budget-2"]').click();
-      await page.fill('#f-message', 'Potrzebujemy nowej strony z elementami 3D i animacjami.');
+      await page.fill('#f-phone', '600 100 200');
+      await page.fill('#f-company', 'Zakład Testowy, Pajęczno');
+      await page.locator('label[for="f-need-card"]').click();
+      await page.locator('label[for="f-current-2"]').click();
+      await page.fill('#f-message', 'Prowadzimy zakład w Pajęcznie i chcemy pierwszej strony.');
       await page.locator('label[for="f-consent"]').click();
       await page.locator('.form__submit').click();
       await page.waitForTimeout(2200);

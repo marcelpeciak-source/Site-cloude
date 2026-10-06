@@ -144,9 +144,11 @@ function intro(scene) {
 async function initParticleLogo(scene) {
   const mark = $('.footer__big');
   if (!scene || !motion || !mark) return;
-  // Sample the wordmark only once the display font is really available.
-  await Promise.race([document.fonts?.load('800 100px "Syne Variable"'), wait(2000)]).catch(() => {});
-  if (scene.setLogo(mark.textContent.trim())) root.classList.add('has-particle-logo');
+  // Sample the wordmark only once the display font is really available — for these very
+  // characters: Polish letters (ę) live in a separate latin-ext subset that loads on demand.
+  const text = mark.textContent.trim();
+  await Promise.race([document.fonts?.load('800 100px "Syne Variable"', text), wait(2000)]).catch(() => {});
+  if (scene.setLogo(text)) root.classList.add('has-particle-logo');
 }
 
 function sceneConfig(el) {

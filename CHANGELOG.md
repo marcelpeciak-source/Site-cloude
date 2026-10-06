@@ -1,5 +1,39 @@
 # Changelog
 
+## 2026-10-06 — v0.6 strona ofertowa (Marcel Pęciak — strony dla lokalnych firm)
+
+Kierunek od właściciela (2026-10-05): demo „Lumora” staje się prawdziwą stroną ofertową. Dane kontaktowe z BRIEF.md.
+
+- **Treść:** hero „Niech klienci znajdą Państwa w Google.” z przyciskiem „Bezpłatna wizualizacja”; O mnie (pierwsza
+  osoba, forma „Państwo”); Oferta: strona-wizytówka, strona firmowa, widoczność w Google, opieka; Przykłady
+  (fryzjer, warsztat, dentysta, remonty) wyraźnie podpisane „Przykład”, bez fikcyjnych wyników; Jak to działa
+  (rozmowa → bezpłatna wizualizacja → gotowa strona → opieka); **Konkrety** zamiast wymyślonych liczb
+  (0 zł za wizualizację, 4 kroki, 100% stron najpierw pod telefon, 1 osoba do kontaktu); **Pytania i odpowiedzi**
+  w karuzeli 3D zamiast przykładowych opinii; kontakt z klikanym telefonem i e-mailem; stopka i logo z cząsteczek
+  z nazwiskiem. Zero „Lumora” w plikach strony.
+- **Formularz:** pod bezpłatną wizualizację — nowe pole telefonu, „Firma i miejscowość”, zakres i „Czy firma ma już
+  stronę?” (zamiast budżetu), krótka informacja RODO przy zgodzie, komunikaty w formie „Państwo”, temat maila
+  „Bezpłatna wizualizacja — …”.
+- **Nawigacja:** na telefonie przycisk „Zadzwoń” (tel:) zamiast dłuższego CTA; menu-hamburger do 1000 px
+  (imię i nazwisko + 5 linków + CTA nie mieściły się w jednym rzędzie między 821 a 1000 px).
+- **SEO:** nowy `<title>`, opis, OG/Twitter, JSON-LD `ProfessionalService` z telefonem, `areaServed` (Pajęczno,
+  Działoszyn, Łódź, Pabianice) i ofertą „Bezpłatna wizualizacja” za 0 zł; manifest; nowy obraz OG (`npm run social`).
+- **Logo z cząsteczek:** font ładowany razem z podzbiorem polskich znaków (`document.fonts.load(…, tekst)`),
+  żeby „ę” w nazwisku nie wypadło z innego kroju.
+- `npm run consistency`: jeden numer telefonu na stronie, każdy link `tel:` pokazuje numer, który wybiera,
+  JSON-LD `telephone` zgodny z linkami.
+
+**Kontrola jakości (koniec sesji):**
+- `npm run verify` — lint, spójność i Playwright (desktop, telefon, reduced motion, axe-core) bez błędów.
+- Zrzuty: nagłówek strony w pierwszej wersji zajmował 4 wiersze i wypychał przyciski poza ekran (axe zgłosił też
+  kontrast podpisu „Przewiń”) — krótszy nagłówek i lead; na telefonie nazwisko i CTA w nawigacji łamały się na dwie
+  linie — przycisk „Zadzwoń” i mniejsze logo (zmierzone dla 320–600 px); długie nazwy przykładów skrócone.
+- Przegląd kodu: **duży napis w stopce na telefonach ≤ 390 px wychodził poza margines i był przycinany**
+  (nazwa nie zawija się, bo logo z cząsteczek próbkuje jedną linię) — odtworzone pomiarem, naprawione skalowaniem
+  `clamp(22px, 7.4vw, 140px)`, dopisany test w `npm run check` (sprawdzony: na starej wersji zgłasza błąd);
+  komunikat błędu zgody nie pokazałby się, bo `aria-describedby` wskazuje teraz notkę i błąd — `form.js`
+  szuka komunikatu w polu, a nie po pojedynczym id.
+
 ## 2026-10-03 — v0.5 SEO, udostępnianie, wydajność, dostępność
 
 - **SEO / udostępnianie:** `canonical`, Open Graph + Twitter Card z obrazem 1200×630 (`assets/og-image.jpg` — zrzut

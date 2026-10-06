@@ -35,18 +35,15 @@ Po zrobieniu: `[x]`, data i krótka notka w CHANGELOG.md.
       w Realizacjach, tryb oszczędzania danych, rysowanie co drugiej klatki w bezczynności, audyt dostępności axe-core
       w każdym `npm run check` (Lighthouse nie działa stabilnie na programowym GL w kontenerze).
 
+- [x] **v0.6 — strona ofertowa** (2026-10-06): cała treść przepisana z demo „Lumora” na ofertę Marcela Pęciaka
+      dla lokalnych firm (hero „Niech klienci znajdą Państwa w Google.”, oferta, przykłady branżowe podpisane jako
+      przykład, proces z bezpłatną wizualizacją, „Konkrety” zamiast fikcyjnych liczb, pytania i odpowiedzi zamiast
+      przykładowych opinii, kontakt z telefonem, formularz pod wizualizację), meta/OG/JSON-LD, nowy obraz OG.
+
 ## Następne (w kolejności)
 
-- [ ] **v0.6 — przebudowa treści na stronę ofertową** (zgodnie z BRIEF.md): nowy `<title>`, opis, hero
-      („Strony internetowe dla firm z Pajęczna, Działoszyna, Łodzi…” + przycisk „Bezpłatna wizualizacja”),
-      usługi językiem korzyści (strona-wizytówka, strona firmowa, widoczność w Google/wizytówka Google, opieka),
-      proces w 4 krokach (rozmowa → bezpłatna wizualizacja → strona w kilka dni → opieka),
-      sekcję liczb i przykładowe opinie zastąpić czymś prawdziwym (np. „Co dostajesz” / FAQ),
-      kontakt: klikany telefon, e-mail, formularz na `zrobswojastrone@gmail.com`; stopka, preloader, logo z cząsteczek,
-      meta/OG/JSON-LD (`ProfessionalService` z `areaServed`, bez ocen), nowy obraz OG (`npm run social`).
-      Zero „Lumora” w plikach strony (README/CHANGELOG mogą wspominać historię).
-- [ ] **v0.7 — przykłady dla branż**: sekcja „Realizacje” → „Przykłady” + 4–5 lekkich podstron demo
-      (fryzjer, mechanik, gabinet kosmetyczny, dentysta, firma budowlana) z fikcyjną, wyraźnie podpisaną firmą
+- [ ] **v0.7 — podstrony przykładów**: każdy wiersz sekcji „Przykłady” (fryzjer, warsztat, dentysta, remonty;
+      ewentualnie gabinet kosmetyczny) prowadzi do lekkiej podstrony demo z fikcyjną, wyraźnie podpisaną firmą
       („przykład”); te same podstrony służą jako szablony do szybkich bezpłatnych wizualizacji.
 - [ ] **v0.8 — polityka prywatności** (RODO dla formularza i kontaktu) jako podstrona + **strona 404** z animacją cząsteczek.
 - [ ] **v0.9 — szybkość i lokalne SEO**: tryb lekki na słabych telefonach, test na emulacji wolnego CPU/sieci,

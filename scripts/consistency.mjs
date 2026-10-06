@@ -149,6 +149,15 @@ for (const a of $$('a[href^="mailto:"]')) {
   const shown = a.textContent.trim();
   if (/^\S+@\S+$/.test(shown) && shown !== a.getAttribute('href').slice(7)) fail(`mailto link shows "${shown}" but sends to ${a.getAttribute('href')}`);
 }
+// One phone number everywhere, and every tel: link shows the number it dials.
+const digits = (t) => t.replace(/\D/g, '').replace(/^48(?=\d{9}$)/, '');
+const phones = new Set($$('a[href^="tel:"]').map((a) => digits(a.getAttribute('href'))));
+if (phones.size > 1) fail(`different phone numbers on the page: ${[...phones].join(', ')}`);
+for (const a of $$('a[href^="tel:"]')) {
+  if (!/^tel:\+48\d{9}$/.test(a.getAttribute('href'))) fail(`tel link "${a.getAttribute('href')}" should be tel:+48 followed by 9 digits`);
+  const shown = digits(a.textContent);
+  if (shown && shown !== digits(a.getAttribute('href'))) fail(`tel link shows "${a.textContent.trim()}" but dials ${a.getAttribute('href')}`);
+}
 
 // 10. Headings: one <h1>, and levels never skip on the way down (h2 → h4)
 const headings = $$('h1, h2, h3, h4, h5, h6');
@@ -191,7 +200,8 @@ for (const script of $$('script[type="application/ld+json"]')) {
   underSite('JSON-LD logo', data.logo);
   underSite('JSON-LD image', data.image);
   if (data.email && !mails.has(data.email)) fail(`JSON-LD email ${data.email} differs from the page's mailto`);
-  if (data.aggregateRating || data.review) fail('JSON-LD must not carry ratings/reviews while the testimonials are placeholders');
+  if (data.telephone && !phones.has(digits(data.telephone))) fail(`JSON-LD telephone ${data.telephone} differs from the page's tel: links`);
+  if (data.aggregateRating || data.review) fail('JSON-LD must not carry ratings/reviews until there are real, consented client reviews');
 }
 // Crawlers read robots.txt only at the host root. While the site lives under a sub-path
 // (GitHub Pages project site), the file is ready for a custom domain but not read yet.
@@ -230,4 +240,4 @@ if (problems.length) {
   process.exit(1);
 }
 notes.forEach((n) => console.log(`  ℹ ${n}`));
-console.log('consistency: ok — anchors, ids, ARIA, scene, files, imports, numbering, menus, names, forms, carousel, brand, headings, SEO, preload, three subset');
+console.log('consistency: ok — anchors, ids, ARIA, scene, files, imports, numbering, menus, names, forms, carousel, brand, contact, headings, SEO, preload, three subset');

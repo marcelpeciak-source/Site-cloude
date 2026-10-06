@@ -1,6 +1,7 @@
-# Lumora — strona biznesowa 3D
+# Marcel Pęciak — strony internetowe dla lokalnych firm
 
-Statyczna strona z immersyjną sceną WebGL (Three.js, własne shadery), animacjami przewijania
+Strona ofertowa (do v0.5 demo „Lumora”): strony dla firm z Pajęczna, Działoszyna, Łodzi i Pabianic,
+z bezpłatną wizualizacją strony głównej. Statyczna strona z immersyjną sceną WebGL (Three.js, własne shadery), animacjami przewijania
 (GSAP + ScrollTrigger + SplitText, Lenis) i mikrointerakcjami. Rozwijana codziennie przez nocną sesję
 Claude Code — plan w [ROADMAP.md](ROADMAP.md), założenia w [BRIEF.md](BRIEF.md), historia w [CHANGELOG.md](CHANGELOG.md).
 

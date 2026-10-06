@@ -6,9 +6,9 @@ const { gsap } = window;
 
 const MESSAGES = {
   required: 'To pole jest wymagane.',
-  email: 'Wpisz poprawny adres e-mail, np. jan@firma.pl.',
-  short: (n) => `Napisz trochę więcej — co najmniej ${n} znaków.`,
-  consent: 'Potrzebujemy tej zgody, żeby móc odpowiedzieć.',
+  email: 'Proszę wpisać poprawny adres e-mail, np. jan@firma.pl.',
+  short: (n) => `Proszę napisać trochę więcej — co najmniej ${n} znaków.`,
+  consent: 'Bez tej zgody nie mogę odpowiedzieć na wiadomość.',
 };
 
 export function initForm({ motion, onSent } = {}) {
@@ -35,10 +35,13 @@ export function initForm({ motion, onSent } = {}) {
     return '';
   }
 
+  // aria-describedby can also point at a note (consent), so the error is looked up in the field.
+  const errorEl = (el) => el.closest('.field, .consent')?.querySelector('.field__error');
+
   function validate(el) {
     const message = errorFor(el);
     const wrapper = el.closest('.field, .consent');
-    const error = document.getElementById(el.getAttribute('aria-describedby'));
+    const error = errorEl(el);
     const changed = error && error.textContent !== message;
     wrapper?.classList.toggle('is-invalid', Boolean(message));
     if (message) el.setAttribute('aria-invalid', 'true');
@@ -63,22 +66,24 @@ export function initForm({ motion, onSent } = {}) {
     return {
       name: (data.get('name') || '').trim(),
       email: (data.get('email') || '').trim(),
+      phone: (data.get('phone') || '').trim(),
       company: (data.get('company') || '').trim(),
       needs: data.getAll('needs'),
-      budget: data.get('budget') || '',
+      current: data.get('current') || '',
       message: (data.get('message') || '').trim(),
       website: data.get('website') || '', // honeypot
     };
   }
 
   function mailtoUrl(d) {
-    const subject = `Zapytanie ze strony — ${d.name}${d.company ? `, ${d.company}` : ''}`;
+    const subject = `Bezpłatna wizualizacja — ${d.company || d.name}`;
     const details = [
       `Imię i nazwisko: ${d.name}`,
       `E-mail: ${d.email}`,
+      d.phone ? `Telefon: ${d.phone}` : null,
       d.company ? `Firma: ${d.company}` : null,
       d.needs.length ? `Zakres: ${d.needs.join(', ')}` : null,
-      d.budget ? `Budżet: ${d.budget}` : null,
+      d.current ? `Obecna strona: ${d.current}` : null,
     ].filter(Boolean);
     const text = `${d.message}\n\n—\n${details.join('\n')}`;
     return `mailto:${form.dataset.mailto}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
@@ -118,8 +123,8 @@ export function initForm({ motion, onSent } = {}) {
     const invalid = fields.filter((el) => !validate(el));
     if (invalid.length) {
       status.textContent = invalid.length === 1
-        ? 'Popraw zaznaczone pole.'
-        : `Popraw zaznaczone pola (${invalid.length}).`;
+        ? 'Proszę poprawić zaznaczone pole.'
+        : `Proszę poprawić zaznaczone pola (${invalid.length}).`;
       invalid[0].focus();
       if (motion) gsap.fromTo(form, { x: 0 }, { keyframes: { x: [-8, 7, -5, 3, 0] }, duration: 0.45, ease: 'none' });
       return;
@@ -135,7 +140,7 @@ export function initForm({ motion, onSent } = {}) {
       showDone(d);
     } catch (err) {
       console.warn('Wysyłka formularza nie powiodła się:', err);
-      status.textContent = `Nie udało się wysłać. Napisz bezpośrednio na ${form.dataset.mailto}.`;
+      status.textContent = `Nie udało się wysłać. Proszę napisać bezpośrednio na ${form.dataset.mailto}.`;
     } finally {
       sending = false;
       submit.classList.remove('is-loading');
@@ -147,7 +152,7 @@ export function initForm({ motion, onSent } = {}) {
     fields.forEach((el) => {
       el.removeAttribute('aria-invalid');
       el.closest('.field, .consent')?.classList.remove('is-invalid');
-      const error = document.getElementById(el.getAttribute('aria-describedby'));
+      const error = errorEl(el);
       if (error) error.textContent = '';
     });
     status.textContent = '';

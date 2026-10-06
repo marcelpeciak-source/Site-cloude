@@ -2,6 +2,8 @@
 // from line masks, and the particle cloud behind it swirls into a galaxy until it closes.
 const { gsap } = window;
 const root = document.documentElement;
+// Above this width the nav shows its links and the menu button is hidden (see .nav__toggle in CSS).
+const NAV_BREAKPOINT = 1000;
 
 export function initMenu({ lenis, scene, motion }) {
   const toggle = document.querySelector('.nav__toggle');
@@ -102,6 +104,6 @@ export function initMenu({ lenis, scene, motion }) {
   });
 
   window.addEventListener('resize', () => {
-    if (open && window.innerWidth >= 820) setOpen(false, { focus: false });
+    if (open && window.innerWidth > NAV_BREAKPOINT) setOpen(false, { focus: false });
   });
 }
