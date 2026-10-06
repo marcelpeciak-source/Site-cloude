@@ -11,6 +11,7 @@ Claude Code — plan w [ROADMAP.md](ROADMAP.md), założenia w [BRIEF.md](BRIEF.
 npm install        # biblioteki + Playwright (tylko do testów)
 npm run vendor     # kopiuje/minifikuje biblioteki i fonty do vendor/ (wynik jest w repo; three.js tylko z używanych klas)
 npm run social     # obraz do udostępniania (assets/og-image.jpg) i ikony z favicon.svg
+npm run standalone # dist/strona.html — cała strona w jednym pliku, otwiera się dwuklikiem bez serwera (offline)
 npm run serve      # http://localhost:4173
 npm run check      # test w Chromium (+ audyt dostępności axe-core) i zrzuty ekranu do screenshots/
 npm run lint       # ESLint (js/, scripts/)

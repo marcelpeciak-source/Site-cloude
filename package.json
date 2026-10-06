@@ -11,7 +11,8 @@
     "lint": "eslint .",
     "consistency": "node scripts/consistency.mjs",
     "check": "node scripts/check.mjs",
-    "verify": "npm run lint && npm run consistency && npm run check"
+    "verify": "npm run lint && npm run consistency && npm run check",
+    "standalone": "node scripts/standalone.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
