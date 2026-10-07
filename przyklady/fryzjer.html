@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Salon Fryzjerski Lazur — przykładowa strona (salon fryzjerski) | Marcel Pęciak</title>
+  <meta name="description" content="Strzyżenie, koloryzacja i upięcia dla pań i panów. Wizytę można umówić telefonicznie albo przez formularz — także wieczorem, gdy salon jest zamknięty.">
+  <meta name="theme-color" content="#faf5f2">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="szablon.css">
+  <style>:root { --tlo: #faf5f2; --karta: #ffffff; --tekst: #2b1d24; --przygaszony: #6b5860; --akcent: #9e3a5b; --akcent-tekst: #ffffff; --miekki: #f3dce3; color-scheme: light; }</style>
+  <script src="szablon.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#tresc">Przejdź do treści</a>
+  <aside class="demo-bar" aria-label="O tej stronie">
+    <p><strong>Przykładowa strona</strong> — fikcyjna firma, przykładowe ceny i dane. Tak może wyglądać strona Państwa firmy.</p>
+    <p class="demo-bar__links"><a href="../#przyklady"><span aria-hidden="true">←</span> Wszystkie przykłady</a><a href="../#kontakt">Chcę taką stronę</a></p>
+  </aside>
+
+  <header class="top">
+    <div class="wrap top__in">
+      <a class="top__logo" href="#tresc">Salon Fryzjerski Lazur</a>
+      <nav class="top__nav" aria-label="Sekcje strony">
+        <a href="#oferta">Oferta</a>
+        <a href="#cennik">Cennik</a>
+        <a href="#galeria">Galeria</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+      <a class="btn btn--small top__call" href="#kontakt" data-demo="To przykład — w gotowej stronie ten przycisk od razu wybiera numer firmy.">Zadzwoń</a>
+    </div>
+  </header>
+
+  <main id="tresc">
+    <section class="hero" aria-labelledby="hero-h">
+      <div class="wrap hero__in">
+        <div>
+          <p class="hero__kicker">Salon fryzjerski · Twoja Miejscowość</p>
+          <h1 id="hero-h">Fryzura, z którą chce się wychodzić z domu.</h1>
+          <p class="hero__lead">Strzyżenie, koloryzacja i upięcia dla pań i panów. Wizytę można umówić telefonicznie albo przez formularz — także wieczorem, gdy salon jest zamknięty.</p>
+          <div class="hero__actions">
+            <a class="btn" href="#formularz">Umów wizytę</a>
+            <a class="btn btn--ghost" href="#oferta">Zobacz ofertę</a>
+          </div>
+          <p class="status" data-status hidden></p>
+        </div>
+        <figure class="ph" data-mono="L"><figcaption class="ph__cap">Miejsce na zdjęcie firmy</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="sec" id="oferta" aria-labelledby="oferta-h">
+      <div class="wrap">
+        <h2 id="oferta-h">Oferta</h2>
+        <ul class="cards">
+          <li class="card"><h3>Strzyżenie damskie</h3><p>Cięcie dopasowane do kształtu twarzy i tego, ile czasu rano mają Państwo na fryzurę.</p></li>
+          <li class="card"><h3>Strzyżenie męskie</h3><p>Klasyczne i nowoczesne cięcia, wykończenie maszynką i brzytwą.</p></li>
+          <li class="card"><h3>Koloryzacja</h3><p>Kolor jednolity, pasemka i odświeżenie odrostów — z doborem odcienia przed farbowaniem.</p></li>
+          <li class="card"><h3>Upięcia okolicznościowe</h3><p>Fryzury na wesela, studniówki i komunie, z próbą przed wielkim dniem.</p></li>
+          <li class="card"><h3>Pielęgnacja i regeneracja</h3><p>Zabiegi dla włosów zniszczonych farbowaniem, słońcem i prostownicą.</p></li>
+          <li class="card"><h3>Fryzury dziecięce</h3><p>Szybko i cierpliwie — tak, żeby dziecko chciało wrócić.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="sec sec--alt" id="cennik" aria-labelledby="cennik-h">
+      <div class="wrap">
+        <h2 id="cennik-h">Cennik</h2>
+        <dl class="prices">
+          <div><dt>Strzyżenie damskie</dt><dd>od 60 zł</dd></div>
+          <div><dt>Strzyżenie męskie</dt><dd>od 40 zł</dd></div>
+          <div><dt>Strzyżenie dziecięce</dt><dd>od 30 zł</dd></div>
+          <div><dt>Koloryzacja</dt><dd>od 150 zł</dd></div>
+          <div><dt>Pasemka</dt><dd>od 180 zł</dd></div>
+          <div><dt>Upięcie okolicznościowe</dt><dd>od 120 zł</dd></div>
+        </dl>
+        <p class="note">Ceny przykładowe. W Państwa stronie wpiszemy prawdziwy cennik — i zmienimy go, kiedy tylko trzeba.</p>
+      </div>
+    </section>
+
+    <section class="sec" id="galeria" aria-labelledby="galeria-h">
+      <div class="wrap">
+        <h2 id="galeria-h">Nasze fryzury</h2>
+        <p class="sec__intro">W gotowej stronie tu będą zdjęcia Państwa prac — najlepiej sprzedają się prawdziwe fryzury prawdziwych klientów (za ich zgodą).</p>
+        <ul class="gallery">
+          <li class="ph" data-mono="1"><span class="ph__cap">Cięcie i modelowanie</span></li>
+          <li class="ph" data-mono="2"><span class="ph__cap">Koloryzacja</span></li>
+          <li class="ph" data-mono="3"><span class="ph__cap">Upięcie ślubne</span></li>
+          <li class="ph" data-mono="4"><span class="ph__cap">Strzyżenie męskie</span></li>
+          <li class="ph" data-mono="5"><span class="ph__cap">Pasemka</span></li>
+          <li class="ph" data-mono="6"><span class="ph__cap">Fryzura dziecięca</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="sec sec--alt" id="kontakt" aria-labelledby="kontakt-h">
+      <div class="wrap">
+        <h2 id="kontakt-h">Kontakt i dojazd</h2>
+        <div class="contact">
+          <div>
+            <div class="contact__lines">
+              <p>ul. Przykładowa 12, Twoja Miejscowość</p>
+              <p><a href="#kontakt" data-demo="To przykład — w gotowej stronie ten przycisk od razu wybiera numer firmy.">Zadzwoń</a></p>
+            </div>
+            <h3 class="contact__h">Godziny otwarcia</h3>
+            <table class="hours">
+              <tr data-dni="0 1 2 3 4"><th scope="row">Poniedziałek – piątek</th><td>9:00–18:00</td></tr>
+              <tr data-dni="5"><th scope="row">Sobota</th><td>8:00–14:00</td></tr>
+              <tr data-dni="6"><th scope="row">Niedziela</th><td>nieczynne</td></tr>
+            </table>
+            <a class="map" href="#kontakt" data-demo="W gotowej stronie tu jest mapa Google z dojazdem — jedno dotknięcie i nawigacja prowadzi pod same drzwi."><span class="map__pin">ul. Przykładowa 12, Twoja Miejscowość</span><span class="map__go">Wyznacz trasę <span aria-hidden="true">→</span></span></a>
+          </div>
+          <form class="form" id="formularz" data-demo="To tylko przykład, nic nie zostało wysłane. W gotowej stronie wiadomość trafi prosto na Państwa telefon lub e-mail.">
+            <h3>Umów wizytę</h3>
+            <p>Proszę zostawić numer — oddzwonimy i potwierdzimy termin.</p>
+            <div class="form__grid">
+              <label>Imię <input name="imie" autocomplete="given-name" required></label>
+              <label>Telefon <input name="telefon" type="tel" inputmode="tel" autocomplete="tel" required></label>
+              <label>Usługa <select name="wybor"><option>Strzyżenie damskie</option><option>Strzyżenie męskie</option><option>Koloryzacja</option><option>Upięcia okolicznościowe</option><option>Pielęgnacja i regeneracja</option><option>Fryzury dziecięce</option><option>Inne</option></select></label>
+              <label>Wiadomość (opcjonalnie) <textarea name="wiadomosc" rows="3"></textarea></label>
+            </div>
+            <button class="btn" type="submit">Wyślij</button>
+            <p class="form__small">Formularz pokazowy — nic nie zostanie wysłane.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot__in">
+      <p>© Salon Fryzjerski Lazur</p>
+      <p>Fikcyjna firma. Strona przykładowa: <a href="../">Marcel Pęciak — strony dla lokalnych firm</a></p>
+    </div>
+  </footer>
+
+  <nav class="dock" aria-label="Szybki kontakt">
+    <a href="#kontakt" data-demo="To przykład — w gotowej stronie ten przycisk od razu wybiera numer firmy.">Zadzwoń</a>
+    <a href="#formularz">Umów wizytę</a>
+    <a href="#kontakt" data-demo="W gotowej stronie tu jest mapa Google z dojazdem — jedno dotknięcie i nawigacja prowadzi pod same drzwi.">Dojazd</a>
+  </nav>
+  <div class="toast" role="status"></div>
+  <script type="application/json" id="godziny">[["9:00","18:00"],["9:00","18:00"],["9:00","18:00"],["9:00","18:00"],["9:00","18:00"],["8:00","14:00"],null]</script>
+</body>
+</html>

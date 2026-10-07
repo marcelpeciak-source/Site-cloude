@@ -1,0 +1,40 @@
+{
+  "slug": "warsztat",
+  "nazwa": "Auto Serwis Tłok",
+  "branza": "Warsztat samochodowy",
+  "haslo": "Naprawimy, zanim zepsuje się na dobre.",
+  "lead": "Mechanika, diagnostyka komputerowa, opony i przeglądy przed sezonem. Wycenę naprawy dostają Państwo przed rozpoczęciem pracy.",
+  "motyw": { "tlo": "#14161a", "karta": "#1e2227", "tekst": "#f2f1ec", "przygaszony": "#a9afb7", "akcent": "#f28c28", "akcentTekst": "#14161a", "miekki": "#2c3036" },
+  "adres": "ul. Przykładowa 5",
+  "miejscowosc": "Twoja Miejscowość",
+  "godziny": [["8:00", "17:00"], ["8:00", "17:00"], ["8:00", "17:00"], ["8:00", "17:00"], ["8:00", "17:00"], ["8:00", "13:00"], null],
+  "cta": { "tekst": "Zadzwoń", "cel": "telefon" },
+  "uslugi": [
+    { "nazwa": "Mechanika ogólna", "opis": "Silnik, sprzęgło, rozrząd, układ wydechowy — naprawy osobówek i dostawczych." },
+    { "nazwa": "Diagnostyka komputerowa", "opis": "Odczyt błędów i sprawdzenie, co naprawdę jest do zrobienia." },
+    { "nazwa": "Opony i wyważanie", "opis": "Sezonowa wymiana, wyważanie i naprawa przebitych opon." },
+    { "nazwa": "Hamulce i zawieszenie", "opis": "Klocki, tarcze, amortyzatory, wahacze — z jazdą próbną po naprawie." },
+    { "nazwa": "Olej i filtry", "opis": "Wymiana oleju i filtrów zgodnie z zaleceniami producenta auta." },
+    { "nazwa": "Klimatyzacja", "opis": "Odgrzybianie, uzupełnienie czynnika i szukanie nieszczelności." }
+  ],
+  "cennik": [
+    ["Wymiana oleju z filtrem", "od 80 zł"],
+    ["Diagnostyka komputerowa", "od 100 zł"],
+    ["Wymiana opon (komplet)", "od 100 zł"],
+    ["Klocki hamulcowe (oś)", "od 120 zł"],
+    ["Serwis klimatyzacji", "od 200 zł"],
+    ["Geometria kół", "od 150 zł"]
+  ],
+  "sekcja": {
+    "typ": "kroki",
+    "naglowek": "Jak wygląda naprawa",
+    "wstep": "Bez niespodzianek na rachunku — każdy krok uzgadniamy z Państwem.",
+    "elementy": [
+      ["Telefon albo SMS", "Opisują Państwo objawy, umawiamy termin oględzin."],
+      ["Diagnoza i wycena", "Sprawdzamy auto i podajemy koszt naprawy przed jej rozpoczęciem."],
+      ["Naprawa", "Zaczynamy dopiero po akceptacji wyceny. Wymienione części można zabrać."],
+      ["Odbiór", "Mówimy, co zrobiliśmy i kiedy warto przyjechać na kolejny przegląd."]
+    ]
+  },
+  "formularz": { "naglowek": "Zapytaj o naprawę", "opis": "Marka, model i krótki opis usterki wystarczą do wstępnej wyceny.", "wybor": "Rodzaj usługi" }
+}

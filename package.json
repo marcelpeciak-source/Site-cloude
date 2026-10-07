@@ -12,7 +12,9 @@
     "consistency": "node scripts/consistency.mjs",
     "check": "node scripts/check.mjs",
     "verify": "npm run lint && npm run consistency && npm run check",
-    "standalone": "node scripts/standalone.mjs"
+    "standalone": "node scripts/standalone.mjs",
+    "przyklady": "node scripts/przyklady.mjs",
+    "wizualizacja": "node scripts/przyklady.mjs --wizualizacja"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

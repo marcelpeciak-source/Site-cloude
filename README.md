@@ -12,6 +12,8 @@ npm install        # biblioteki + Playwright (tylko do testów)
 npm run vendor     # kopiuje/minifikuje biblioteki i fonty do vendor/ (wynik jest w repo; three.js tylko z używanych klas)
 npm run social     # obraz do udostępniania (assets/og-image.jpg) i ikony z favicon.svg
 npm run standalone # dist/strona.html — cała strona w jednym pliku, otwiera się dwuklikiem bez serwera (offline)
+npm run przyklady  # przyklady/<slug>.html z przyklady/dane/*.json (podstrony przykładów; wynik jest w repo)
+npm run wizualizacja -- wizualizacje/dane/firma.json  # bezpłatna wizualizacja dla firmy → wizualizacje/<slug>.html
 npm run serve      # http://localhost:4173
 npm run check      # test w Chromium (+ audyt dostępności axe-core) i zrzuty ekranu do screenshots/
 npm run lint       # ESLint (js/, scripts/)
@@ -46,9 +48,24 @@ js/postfx.js        post-processing: mip bloom + aberracja chromatyczna (jeden p
 js/menu.js          pełnoekranowe menu mobilne
 js/reviews.js       opinie: karuzela 3D (przeciąganie, klawiatura, autoodtwarzanie)
 js/form.js          formularz kontaktowy: walidacja, stany, mailto / data-endpoint
-scripts/            vendor.mjs (biblioteki), check.mjs (test Playwright), consistency.mjs (audyt spójności)
+przyklady/          podstrony przykładów (generowane), szablon.css + szablon.js, dane/*.json — treść przykładów
+scripts/            vendor.mjs (biblioteki), check.mjs (test Playwright), consistency.mjs (audyt spójności),
+                    przyklady.mjs (szablon strony małej firmy → HTML), standalone.mjs (strona w jednym pliku)
 vendor/             three, gsap, lenis, fonty (generowane)
 ```
+
+### Przykłady i bezpłatne wizualizacje
+
+Sekcja „Przykłady” prowadzi do lekkich podstron fikcyjnych firm (`przyklady/fryzjer.html` itd., bez WebGL,
+`noindex`, z paskiem „Przykładowa strona”). Wszystkie powstają z jednego szablonu: treść, kolory i godziny są
+w `przyklady/dane/<slug>.json`, a `npm run przyklady` generuje HTML (`npm run consistency` pilnuje, żeby był aktualny).
+
+Ten sam szablon robi **wizualizację dla prawdziwej firmy**: skopiuj np. `przyklady/dane/fryzjer.json` do
+`wizualizacje/dane/<firma>.json`, wpisz dane firmy (można dodać `"telefon"` i `"email"`; `"cennik"` pomiń, jeśli
+firma go nie podaje) i uruchom `npm run wizualizacja -- wizualizacje/dane/<firma>.json`. Wynik to jeden plik
+`wizualizacje/<slug>.html` (style, fonty i skrypt w środku) — otwiera się z dysku i nadaje się na załącznik.
+Folder `wizualizacje/` jest w `.gitignore`: **repozytorium jest publiczne, dane firm nie mogą do niego trafić.**
+Generator sprawdza dane (godziny, kolory z kontrastem WCAG ≥ 4.5:1, wymagane pola) i wypisuje wszystkie błędy naraz.
 
 ### Sterowanie sceną z HTML
 

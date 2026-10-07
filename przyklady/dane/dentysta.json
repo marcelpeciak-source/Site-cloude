@@ -1,0 +1,38 @@
+{
+  "slug": "dentysta",
+  "nazwa": "Gabinet Stomatologiczny Szkliwo",
+  "branza": "Gabinet stomatologiczny",
+  "haslo": "Spokojne leczenie zębów, bez pośpiechu.",
+  "lead": "Profilaktyka, leczenie zachowawcze i protetyka dla dorosłych i dzieci. Część świadczeń wykonujemy w ramach NFZ — szczegóły przy rejestracji.",
+  "motyw": { "tlo": "#f3f8f8", "karta": "#ffffff", "tekst": "#123130", "przygaszony": "#4b6766", "akcent": "#0d6f6b", "akcentTekst": "#ffffff", "miekki": "#d5ebe9" },
+  "adres": "ul. Przykładowa 8",
+  "miejscowosc": "Twoja Miejscowość",
+  "godziny": [["8:00", "15:00"], ["12:00", "19:00"], ["8:00", "15:00"], ["12:00", "19:00"], ["8:00", "14:00"], null, null],
+  "cta": { "tekst": "Zarejestruj się", "cel": "formularz" },
+  "uslugi": [
+    { "nazwa": "Przeglądy i profilaktyka", "opis": "Kontrola stanu zębów, plan leczenia i wskazówki do codziennej higieny." },
+    { "nazwa": "Leczenie zachowawcze", "opis": "Wypełnienia estetyczne i leczenie próchnicy w znieczuleniu." },
+    { "nazwa": "Leczenie kanałowe", "opis": "Ratowanie zęba zamiast usuwania — z kontrolą zdjęciem RTG." },
+    { "nazwa": "Protetyka", "opis": "Korony, mosty i protezy dopasowane do zgryzu i uśmiechu." },
+    { "nazwa": "Stomatologia dziecięca", "opis": "Pierwsze wizyty, lakowanie i leczenie zębów mlecznych." },
+    { "nazwa": "Higienizacja", "opis": "Usuwanie kamienia i osadu, piaskowanie i fluoryzacja." }
+  ],
+  "cennik": [
+    ["Przegląd z planem leczenia", "od 100 zł"],
+    ["Wypełnienie", "od 200 zł"],
+    ["Higienizacja", "od 250 zł"],
+    ["Leczenie kanałowe", "od 600 zł"],
+    ["Usunięcie zęba", "od 200 zł"]
+  ],
+  "sekcja": {
+    "typ": "info",
+    "naglowek": "Pierwsza wizyta",
+    "wstep": "Krótko o tym, o co pacjenci pytają najczęściej przed pierwszą wizytą.",
+    "elementy": [
+      ["Co zabrać", "Dokument tożsamości i listę przyjmowanych leków. Przy wizycie na NFZ — numer PESEL."],
+      ["NFZ i prywatnie", "Część świadczeń wykonujemy w ramach NFZ, pozostałe prywatnie. Przy rejestracji powiemy, co obejmuje refundacja."],
+      ["Dzieci", "Pierwsza wizyta dziecka to przede wszystkim oswojenie z gabinetem — bez pośpiechu i bez wiertła, jeśli nie trzeba."]
+    ]
+  },
+  "formularz": { "naglowek": "Rejestracja", "opis": "Proszę zostawić numer — rejestracja oddzwoni i zaproponuje termin.", "wybor": "Rodzaj wizyty" }
+}

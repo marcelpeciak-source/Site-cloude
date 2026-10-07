@@ -1,0 +1,34 @@
+{
+  "slug": "remonty",
+  "nazwa": "Firma Remontowa Poziomica",
+  "branza": "Firma remontowa",
+  "haslo": "Remont bez nerwów — od wyceny do sprzątania.",
+  "lead": "Łazienki pod klucz, płytki, gładzie, malowanie i podłogi. Przyjeżdżamy, mierzymy i przygotowujemy bezpłatną wycenę na miejscu.",
+  "motyw": { "tlo": "#f4efe5", "karta": "#fffdf8", "tekst": "#1d2a21", "przygaszony": "#5a6458", "akcent": "#2b6544", "akcentTekst": "#ffffff", "miekki": "#e8dfc9" },
+  "adres": "ul. Przykładowa 20",
+  "miejscowosc": "Twoja Miejscowość",
+  "godziny": [["7:00", "17:00"], ["7:00", "17:00"], ["7:00", "17:00"], ["7:00", "17:00"], ["7:00", "17:00"], ["8:00", "12:00"], null],
+  "cta": { "tekst": "Bezpłatna wycena", "cel": "formularz" },
+  "uslugi": [
+    { "nazwa": "Łazienki pod klucz", "opis": "Od skucia starych płytek po montaż armatury — jedna ekipa, jeden termin." },
+    { "nazwa": "Glazura i terakota", "opis": "Płytki na ścianach i podłogach, także wielkoformatowe." },
+    { "nazwa": "Malowanie i gładzie", "opis": "Równe ściany, czyste krawędzie, zabezpieczone meble i podłogi." },
+    { "nazwa": "Podłogi i panele", "opis": "Panele, deska winylowa, listwy — z wyrównaniem podłoża." },
+    { "nazwa": "Zabudowy z płyt g-k", "opis": "Ścianki działowe, sufity podwieszane i zabudowy poddaszy." },
+    { "nazwa": "Drobne naprawy", "opis": "Montaż drzwi, listew, gniazdek i wszystkiego, co od dawna czeka na fachowca." }
+  ],
+  "cennik": [
+    ["Malowanie ścian", "od 15 zł/m²"],
+    ["Gładź gipsowa", "od 35 zł/m²"],
+    ["Układanie płytek", "od 90 zł/m²"],
+    ["Panele podłogowe", "od 30 zł/m²"],
+    ["Łazienka pod klucz", "wycena indywidualna"]
+  ],
+  "sekcja": {
+    "typ": "galeria",
+    "naglowek": "Nasze realizacje",
+    "wstep": "W gotowej stronie tu będą zdjęcia Państwa realizacji — najlepiej „przed i po”. Klient przed zleceniem remontu chce zobaczyć prawdziwą pracę.",
+    "elementy": ["Łazienka — przed i po", "Kuchnia z płytkami", "Salon po malowaniu", "Poddasze z płyt g-k", "Podłoga z paneli", "Schody i listwy"]
+  },
+  "formularz": { "naglowek": "Bezpłatna wycena", "opis": "Kilka słów o zakresie prac i miejscowości — oddzwonimy i umówimy pomiar.", "wybor": "Rodzaj prac" }
+}

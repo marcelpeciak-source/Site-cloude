@@ -40,12 +40,16 @@ Po zrobieniu: `[x]`, data i krótka notka w CHANGELOG.md.
       przykład, proces z bezpłatną wizualizacją, „Konkrety” zamiast fikcyjnych liczb, pytania i odpowiedzi zamiast
       przykładowych opinii, kontakt z telefonem, formularz pod wizualizację), meta/OG/JSON-LD, nowy obraz OG.
 
+- [x] **v0.7 — podstrony przykładów** (2026-10-07): każdy wiersz „Przykładów” otwiera lekką podstronę fikcyjnej
+      firmy (fryzjer, warsztat, dentysta, remonty) z paskiem „Przykładowa strona”; jeden szablon + dane JSON,
+      status „otwarte/zamknięte” wg czasu w Polsce, pasek „Zadzwoń / Umów / Dojazd” na telefonie;
+      `npm run wizualizacja` robi z tego samego szablonu jednoplikową wizualizację dla prawdziwej firmy (poza repo).
+
 ## Następne (w kolejności)
 
-- [ ] **v0.7 — podstrony przykładów**: każdy wiersz sekcji „Przykłady” (fryzjer, warsztat, dentysta, remonty;
-      ewentualnie gabinet kosmetyczny) prowadzi do lekkiej podstrony demo z fikcyjną, wyraźnie podpisaną firmą
-      („przykład”); te same podstrony służą jako szablony do szybkich bezpłatnych wizualizacji.
 - [ ] **v0.8 — polityka prywatności** (RODO dla formularza i kontaktu) jako podstrona + **strona 404** z animacją cząsteczek.
+- [ ] **Więcej przykładów**: gabinet kosmetyczny, sklep, firma sprzątająca — po jednym pliku w `przyklady/dane/`
+      (najpierw te branże, do których idą maile i listy).
 - [ ] **v0.9 — szybkość i lokalne SEO**: tryb lekki na słabych telefonach, test na emulacji wolnego CPU/sieci,
       treści i nagłówki pod lokalne wyszukiwania (Pajęczno, Działoszyn, Łódź, Pabianice), dostępność.
 

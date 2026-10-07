@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Auto Serwis Tłok — przykładowa strona (warsztat samochodowy) | Marcel Pęciak</title>
+  <meta name="description" content="Mechanika, diagnostyka komputerowa, opony i przeglądy przed sezonem. Wycenę naprawy dostają Państwo przed rozpoczęciem pracy.">
+  <meta name="theme-color" content="#14161a">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="szablon.css">
+  <style>:root { --tlo: #14161a; --karta: #1e2227; --tekst: #f2f1ec; --przygaszony: #a9afb7; --akcent: #f28c28; --akcent-tekst: #14161a; --miekki: #2c3036; color-scheme: dark; }</style>
+  <script src="szablon.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#tresc">Przejdź do treści</a>
+  <aside class="demo-bar" aria-label="O tej stronie">
+    <p><strong>Przykładowa strona</strong> — fikcyjna firma, przykładowe ceny i dane. Tak może wyglądać strona Państwa firmy.</p>
+    <p class="demo-bar__links"><a href="../#przyklady"><span aria-hidden="true">←</span> Wszystkie przykłady</a><a href="../#kontakt">Chcę taką stronę</a></p>
+  </aside>
+
+  <header class="top">
+    <div class="wrap top__in">
+      <a class="top__logo" href="#tresc">Auto Serwis Tłok</a>
+      <nav class="top__nav" aria-label="Sekcje strony">
+        <a href="#oferta">Oferta</a>
+        <a href="#cennik">Cennik</a>
+        <a href="#jak-pracujemy">Jak pracujemy</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+      <a class="btn btn--small top__call" href="#kontakt" data-demo="To przykład — w gotowej stronie ten przycisk od razu wybiera numer firmy.">Zadzwoń</a>
+    </div>
+  </header>
+
+  <main id="tresc">
+    <section class="hero" aria-labelledby="hero-h">
+      <div class="wrap hero__in">
+        <div>
+          <p class="hero__kicker">Warsztat samochodowy · Twoja Miejscowość</p>
+          <h1 id="hero-h">Naprawimy, zanim zepsuje się na dobre.</h1>
+          <p class="hero__lead">Mechanika, diagnostyka komputerowa, opony i przeglądy przed sezonem. Wycenę naprawy dostają Państwo przed rozpoczęciem pracy.</p>
+          <div class="hero__actions">
+            <a class="btn" href="#kontakt" data-demo="To przykład — w gotowej stronie ten przycisk od razu wybiera numer firmy.">Zadzwoń</a>
+            <a class="btn btn--ghost" href="#oferta">Zobacz ofertę</a>
+          </div>
+          <p class="status" data-status hidden></p>
+        </div>
+        <figure class="ph" data-mono="T"><figcaption class="ph__cap">Miejsce na zdjęcie firmy</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="sec" id="oferta" aria-labelledby="oferta-h">
+      <div class="wrap">
+        <h2 id="oferta-h">Oferta</h2>
+        <ul class="cards">
+          <li class="card"><h3>Mechanika ogólna</h3><p>Silnik, sprzęgło, rozrząd, układ wydechowy — naprawy osobówek i dostawczych.</p></li>
+          <li class="card"><h3>Diagnostyka komputerowa</h3><p>Odczyt błędów i sprawdzenie, co naprawdę jest do zrobienia.</p></li>
+          <li class="card"><h3>Opony i wyważanie</h3><p>Sezonowa wymiana, wyważanie i naprawa przebitych opon.</p></li>
+          <li class="card"><h3>Hamulce i zawieszenie</h3><p>Klocki, tarcze, amortyzatory, wahacze — z jazdą próbną po naprawie.</p></li>
+          <li class="card"><h3>Olej i filtry</h3><p>Wymiana oleju i filtrów zgodnie z zaleceniami producenta auta.</p></li>
+          <li class="card"><h3>Klimatyzacja</h3><p>Odgrzybianie, uzupełnienie czynnika i szukanie nieszczelności.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="sec sec--alt" id="cennik" aria-labelledby="cennik-h">
+      <div class="wrap">
+        <h2 id="cennik-h">Cennik</h2>
+        <dl class="prices">
+          <div><dt>Wymiana oleju z filtrem</dt><dd>od 80 zł</dd></div>
+          <div><dt>Diagnostyka komputerowa</dt><dd>od 100 zł</dd></div>
+          <div><dt>Wymiana opon (komplet)</dt><dd>od 100 zł</dd></div>
+          <div><dt>Klocki hamulcowe (oś)</dt><dd>od 120 zł</dd></div>
+          <div><dt>Serwis klimatyzacji</dt><dd>od 200 zł</dd></div>
+          <div><dt>Geometria kół</dt><dd>od 150 zł</dd></div>
+        </dl>
+        <p class="note">Ceny przykładowe. W Państwa stronie wpiszemy prawdziwy cennik — i zmienimy go, kiedy tylko trzeba.</p>
+      </div>
+    </section>
+
+    <section class="sec" id="jak-pracujemy" aria-labelledby="jak-pracujemy-h">
+      <div class="wrap">
+        <h2 id="jak-pracujemy-h">Jak wygląda naprawa</h2>
+        <p class="sec__intro">Bez niespodzianek na rachunku — każdy krok uzgadniamy z Państwem.</p>
+        <ol class="steps">
+          <li><h3>Telefon albo SMS</h3><p>Opisują Państwo objawy, umawiamy termin oględzin.</p></li>
+          <li><h3>Diagnoza i wycena</h3><p>Sprawdzamy auto i podajemy koszt naprawy przed jej rozpoczęciem.</p></li>
+          <li><h3>Naprawa</h3><p>Zaczynamy dopiero po akceptacji wyceny. Wymienione części można zabrać.</p></li>
+          <li><h3>Odbiór</h3><p>Mówimy, co zrobiliśmy i kiedy warto przyjechać na kolejny przegląd.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="sec sec--alt" id="kontakt" aria-labelledby="kontakt-h">
+      <div class="wrap">
+        <h2 id="kontakt-h">Kontakt i dojazd</h2>
+        <div class="contact">
+          <div>
+            <div class="contact__lines">
+              <p>ul. Przykładowa 5, Twoja Miejscowość</p>
+              <p><a href="#kontakt" data-demo="To przykład — w gotowej stronie ten przycisk od razu wybiera numer firmy.">Zadzwoń</a></p>
+            </div>
+            <h3 class="contact__h">Godziny otwarcia</h3>
+            <table class="hours">
+              <tr data-dni="0 1 2 3 4"><th scope="row">Poniedziałek – piątek</th><td>8:00–17:00</td></tr>
+              <tr data-dni="5"><th scope="row">Sobota</th><td>8:00–13:00</td></tr>
+              <tr data-dni="6"><th scope="row">Niedziela</th><td>nieczynne</td></tr>
+            </table>
+            <a class="map" href="#kontakt" data-demo="W gotowej stronie tu jest mapa Google z dojazdem — jedno dotknięcie i nawigacja prowadzi pod same drzwi."><span class="map__pin">ul. Przykładowa 5, Twoja Miejscowość</span><span class="map__go">Wyznacz trasę <span aria-hidden="true">→</span></span></a>
+          </div>
+          <form class="form" id="formularz" data-demo="To tylko przykład, nic nie zostało wysłane. W gotowej stronie wiadomość trafi prosto na Państwa telefon lub e-mail.">
+            <h3>Zapytaj o naprawę</h3>
+            <p>Marka, model i krótki opis usterki wystarczą do wstępnej wyceny.</p>
+            <div class="form__grid">
+              <label>Imię <input name="imie" autocomplete="given-name" required></label>
+              <label>Telefon <input name="telefon" type="tel" inputmode="tel" autocomplete="tel" required></label>
+              <label>Rodzaj usługi <select name="wybor"><option>Mechanika ogólna</option><option>Diagnostyka komputerowa</option><option>Opony i wyważanie</option><option>Hamulce i zawieszenie</option><option>Olej i filtry</option><option>Klimatyzacja</option><option>Inne</option></select></label>
+              <label>Wiadomość (opcjonalnie) <textarea name="wiadomosc" rows="3"></textarea></label>
+            </div>
+            <button class="btn" type="submit">Wyślij</button>
+            <p class="form__small">Formularz pokazowy — nic nie zostanie wysłane.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot__in">
+      <p>© Auto Serwis Tłok</p>
+      <p>Fikcyjna firma. Strona przykładowa: <a href="../">Marcel Pęciak — strony dla lokalnych firm</a></p>
+    </div>
+  </footer>
+
+  <nav class="dock" aria-label="Szybki kontakt">
+    <a href="#kontakt" data-demo="To przykład — w gotowej stronie ten przycisk od razu wybiera numer firmy.">Zadzwoń</a>
+    <a href="#formularz">Napisz</a>
+    <a href="#kontakt" data-demo="W gotowej stronie tu jest mapa Google z dojazdem — jedno dotknięcie i nawigacja prowadzi pod same drzwi.">Dojazd</a>
+  </nav>
+  <div class="toast" role="status"></div>
+  <script type="application/json" id="godziny">[["8:00","17:00"],["8:00","17:00"],["8:00","17:00"],["8:00","17:00"],["8:00","17:00"],["8:00","13:00"],null]</script>
+</body>
+</html>

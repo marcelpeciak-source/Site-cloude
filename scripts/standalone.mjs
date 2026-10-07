@@ -64,6 +64,11 @@ replaceOnce(/^\s*<script type="module" src="js\/main\.js"><\/script>\n/m, '');
 const scripts = [...libs, app].map((code) => `<script>\n${safe(code, 'script')}\n</script>`).join('\n');
 replaceOnce(/<\/body>/, () => `${scripts}\n</body>`);
 
+// 5. The example pages (przyklady/*.html) stay separate files: link to them on the published site.
+const site = html.match(/<link rel="canonical" href="([^"]+)">/)?.[1];
+if (!site) throw new Error('standalone: canonical URL not found');
+html = html.replace(/href="(przyklady\/[^"]+)"/g, (_, path) => `href="${site}${path}"`);
+
 if (/(?:src|href)="(?!https?:|data:|mailto:|tel:|#)[^"]+"/.test(html)) {
   const left = html.match(/(?:src|href)="(?!https?:|data:|mailto:|tel:|#)[^"]+"/g);
   throw new Error(`standalone: local references left: ${left.join(', ')}`);

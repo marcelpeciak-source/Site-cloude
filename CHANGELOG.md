@@ -1,5 +1,37 @@
 # Changelog
 
+## 2026-10-07 — v0.7 podstrony przykładów (i szablon bezpłatnych wizualizacji)
+
+- **Podstrony przykładów:** każdy wiersz sekcji „Przykłady” otwiera stronę fikcyjnej firmy — Salon Fryzjerski Lazur,
+  Auto Serwis Tłok, Gabinet Stomatologiczny Szkliwo, Firma Remontowa Poziomica. Lekkie (bez WebGL i bibliotek),
+  najpierw pod telefon: oferta, cennik („ceny przykładowe”), galeria / kroki naprawy / pierwsza wizyta, godziny,
+  dojazd i formularz. Na górze zawsze pasek „Przykładowa strona — fikcyjna firma” z powrotem do przykładów
+  i „Chcę taką stronę”; `noindex`, bez numerów telefonów (przyciski-atrapy pokazują, co zrobią w gotowej stronie).
+- **Rzeczy, które sprzedają stronę małej firmie:** status „Teraz otwarte · do 18:00” / „otwieramy jutro o 8:00”
+  liczony wg czasu w Polsce, dzisiejszy dzień wyróżniony w godzinach, na telefonie stały pasek „Zadzwoń / Umów /
+  Dojazd”, miejsca na zdjęcia z podpisem, co tam będzie.
+- **Jeden szablon, dane w JSON:** `przyklady/dane/*.json` → `npm run przyklady`. Generator sprawdza dane (godziny,
+  wymagane pola, kontrast kolorów WCAG ≥ 4.5:1 dla każdej pary tekst/tło) i nie wpuści do przykładu telefonu ani e-maila.
+- **`npm run wizualizacja -- plik.json`:** ten sam szablon dla prawdziwej firmy — prawdziwy `tel:`, link do Map Google,
+  pasek „Wizualizacja strony głównej dla … — projekt: Marcel Pęciak”; wynik to jeden plik (style, fonty, skrypt w środku)
+  w `wizualizacje/`, które są w `.gitignore` (repo jest publiczne).
+- **Strona główna:** cały wiersz/karta przykładu jest linkiem (kursor „Zobacz”, na kartach „Otwórz przykład →”),
+  nowy opis pod listą. `npm run standalone` linkuje przykłady do opublikowanej strony.
+- `npm run consistency`: przykłady aktualne względem danych, każdy podlinkowany z „Przykładów”, `noindex`, pasek
+  „Przykładowa strona”, działające kotwice i pliki, brak cudzych `tel:`/`mailto:`, dane kontaktowe w generatorze = index.html.
+- `npm run check`: każdy przykład na komputerze i telefonie — zero błędów konsoli, brak poziomego scrolla, axe-core,
+  status godzin przy ustawionym zegarze (środa 10:30 i niedziela 12:00), komunikat przycisku-atrapy, formularz pokazowy.
+
+**Kontrola jakości (koniec sesji):**
+- `npm run verify` bez błędów (strona główna: desktop, telefon, reduced motion; 4 przykłady × 2 ekrany).
+- Testy sprawdzone „na odwrót”: z celowo zepsutym szablonem (strefa czasowa UTC, formularz bez czyszczenia)
+  i nieaktualnym/niepodlinkowanym przykładem testy zgłaszają błędy; walidator wyłapuje zły kontrast, zakres godzin
+  i telefon w przykładzie.
+- Zrzuty: w galerii co drugi kafelek był pusty (zmienna CSS odwołująca się do samej siebie) — osobna zmienna `--ph`;
+  na telefonie długa nazwa gabinetu w przyklejonym nagłówku zajmowała 3 linie — na telefonie nagłówek nie jest
+  przyklejony (kontakt jest w dolnym pasku) i ma mniejsze logo.
+- Wizualizacja testowa (fikcyjne dane) otwarta z dysku (`file://`): bez błędów, fonty i status działają, plik usunięty.
+
 ## 2026-10-06 — v0.6 strona ofertowa (Marcel Pęciak — strony dla lokalnych firm)
 
 Kierunek od właściciela (2026-10-05): demo „Lumora” staje się prawdziwą stroną ofertową. Dane kontaktowe z BRIEF.md.

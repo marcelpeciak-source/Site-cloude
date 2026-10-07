@@ -1,11 +1,12 @@
 // Consistency audit — things ESLint can't see. Run with `npm run consistency`.
 // Checks the HTML against itself, the files on disk and the JS modules:
 // anchors, ids, ARIA references, scene shapes, local assets, module imports/exports,
-// section numbering, menus, accessible names and brand/contact consistency.
+// section numbering, menus, accessible names, brand/contact consistency and the example pages.
 import { readFile, readdir, access } from 'node:fs/promises';
 import { join, dirname, normalize } from 'node:path';
 import { parseHTML } from 'linkedom';
 import { SHAPES } from '../js/shapes.js';
+import { OWNER, render, loadExamples } from './przyklady.mjs';
 
 const root = new URL('..', import.meta.url).pathname;
 const problems = [];
@@ -234,10 +235,61 @@ if (!threeExports.size) fail('vendor/three.module.min.js: export list not found'
 const threeUsed = new Set(Object.values(sources).flatMap((src) => [...src.matchAll(/\bTHREE\.([A-Za-z_$][\w$]*)/g)].map((m) => m[1])));
 for (const name of threeUsed) if (!threeExports.has(name)) fail(`THREE.${name} is used but not in vendor/three.module.min.js — run npm run vendor`);
 
+// 13. Example pages (przyklady/): generated from przyklady/dane/*.json and up to date, linked from the
+//     "Przykłady" section, clearly labelled as examples, not indexed, and internally consistent.
+if (!phones.has(digits(OWNER.tel)) || !mails.has(OWNER.email) || brand !== OWNER.name) {
+  fail(`scripts/przyklady.mjs OWNER (${OWNER.name}, ${OWNER.tel}, ${OWNER.email}) differs from index.html`);
+}
+const examples = await loadExamples().catch((err) => { fail(err.message); return []; });
+const exampleFiles = new Set(examples.map((d) => `przyklady/${d.slug}.html`));
+for (const file of (await readdir(join(root, 'przyklady'))).filter((f) => f.endsWith('.html'))) {
+  if (!exampleFiles.has(`przyklady/${file}`)) fail(`przyklady/${file} has no data file przyklady/dane/${file.replace(/\.html$/, '.json')}`);
+}
+const linked = $$('.work__link').map((a) => a.getAttribute('href'));
+for (const file of exampleFiles) if (!linked.includes(file)) fail(`${file} is not linked from the "Przykłady" section`);
+for (const href of linked) if (!exampleFiles.has(href)) fail(`.work__link points at ${href}, which is not a generated example`);
+for (const a of $$('a[href]')) {
+  const href = a.getAttribute('href').split('#')[0];
+  if (isLocal(href) && !(await exists(join(root, href)))) fail(`link to missing page ${href}`);
+}
+for (const data of examples) {
+  const file = `przyklady/${data.slug}.html`;
+  let expected;
+  try { expected = render(data); } catch (err) { fail(err.message); continue; }
+  const onDisk = await readFile(join(root, file), 'utf8').catch(() => '');
+  if (onDisk !== expected) fail(`${file} is out of date — run npm run przyklady`);
+  const { document: doc } = parseHTML(onDisk);
+  const all = (sel) => [...doc.querySelectorAll(sel)];
+  const pageIds = new Set(all('[id]').map((el) => el.id));
+  if (pageIds.size !== all('[id]').length) fail(`${file}: duplicate ids`);
+  if (doc.querySelector('meta[name="robots"]')?.getAttribute('content') !== 'noindex') fail(`${file}: needs <meta name="robots" content="noindex">`);
+  if (!doc.querySelector('.demo-bar')?.textContent.includes('Przykładowa strona')) fail(`${file}: the demo bar must say "Przykładowa strona"`);
+  if (doc.querySelectorAll('h1').length !== 1) fail(`${file}: must have exactly one <h1>`);
+  for (const a of all('a[href]')) {
+    const href = a.getAttribute('href');
+    if (href.startsWith('#')) { if (href.length > 1 && !pageIds.has(href.slice(1))) fail(`${file}: link to missing #${href.slice(1)}`); continue; }
+    if (href.startsWith('../#') && !ids.has(href.slice(4))) fail(`${file}: link to missing index.html#${href.slice(4)}`);
+    if (href.startsWith('tel:') && href !== `tel:${OWNER.tel}`) fail(`${file}: an example must not dial ${href} (fictional firm)`);
+    if (href.startsWith('mailto:') && href !== `mailto:${OWNER.email}`) fail(`${file}: an example must not mail ${href} (fictional firm)`);
+    if (!(a.textContent || a.getAttribute('aria-label') || '').trim()) fail(`${file}: <a href="${href}"> has no accessible name`);
+  }
+  for (const ref of [...all('[src]').map((el) => el.getAttribute('src')), ...all('a[href], link[href]').map((el) => el.getAttribute('href').split('#')[0])]) {
+    if (isLocal(ref) && !(await exists(join(root, 'przyklady', ref)))) fail(`${file}: missing file ${ref}`);
+  }
+  for (const el of all('[aria-labelledby]')) if (!pageIds.has(el.getAttribute('aria-labelledby'))) fail(`${file}: aria-labelledby points at a missing id`);
+  for (const el of all('input, select, textarea')) if (!el.closest('label')) fail(`${file}: <${el.tagName.toLowerCase()} name="${el.getAttribute('name')}"> has no label`);
+  let prevLevel = 0;
+  for (const h of all('h1, h2, h3, h4')) {
+    const level = Number(h.tagName[1]);
+    if (level > prevLevel + 1) fail(`${file}: heading "${h.textContent.trim().slice(0, 30)}" skips a level`);
+    prevLevel = level;
+  }
+}
+
 if (problems.length) {
   console.log(`consistency: ${problems.length} problem(s)`);
   problems.forEach((p) => console.log(`  ✖ ${p}`));
   process.exit(1);
 }
 notes.forEach((n) => console.log(`  ℹ ${n}`));
-console.log('consistency: ok — anchors, ids, ARIA, scene, files, imports, numbering, menus, names, forms, carousel, brand, contact, headings, SEO, preload, three subset');
+console.log('consistency: ok — anchors, ids, ARIA, scene, files, imports, numbering, menus, names, forms, carousel, brand, contact, headings, SEO, preload, three subset, example pages');

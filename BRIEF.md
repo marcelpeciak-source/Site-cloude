@@ -34,6 +34,9 @@ i listy (fryzjerzy, mechanicy, gabinety kosmetyczne, dentyści, firmy budowlane 
 | Social media | brak | nie wstawiać pustych linków |
 
 **Repozytorium jest publiczne:** nie wpisuj tu ani na stronę danych firm z prywatnej tabeli leadów.
+Wizualizacje dla prawdziwych firm robimy szablonem przykładów (`npm run wizualizacja`, patrz README) — dane i wynik
+tylko w `wizualizacje/` (ignorowane przez git). Przykłady w `przyklady/` to wyłącznie fikcyjne firmy
+(„Twoja Miejscowość”, „ul. Przykładowa”, bez numerów telefonów), z widocznym podpisem „Przykładowa strona”.
 
 ## Kierunek wizualny
 

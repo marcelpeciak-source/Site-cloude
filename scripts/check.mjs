@@ -1,11 +1,13 @@
 // Smoke test: serves the site, opens it in Chromium (desktop, mobile, reduced motion),
 // fails on console/page errors and saves a screenshot of every section to screenshots/.
-//   npm run check            — all runs
-//   npm run check -- desktop — only the named run(s)
+// Then the example pages (przyklady/*.html) on desktop and mobile.
+//   npm run check              — all runs
+//   npm run check -- desktop   — only the named run(s); "przyklady" = only the example pages
 import { mkdir, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { chromium } from 'playwright';
 import { serve } from './static-server.mjs';
+import { loadExamples } from './przyklady.mjs';
 
 const AXE = new URL('../node_modules/axe-core/axe.min.js', import.meta.url).pathname;
 
@@ -22,6 +24,7 @@ const RUNS = {
 };
 const only = process.argv.slice(2);
 const runs = Object.entries(RUNS).filter(([name]) => !only.length || only.includes(name));
+const checkExamples = !only.length || only.includes('przyklady');
 
 const SECTIONS = [
   ['hero', null],
@@ -229,6 +232,87 @@ for (const [name, { query = '', ...options }] of runs) {
   errors.forEach((e) => console.log(`  ✖ ${e}`));
   warnings.forEach((w) => console.log(`  ⚠ ${w}`));
   await context.close();
+}
+
+// Example pages: light, no WebGL. Time is pinned to Polish time so the open/closed badge is deterministic.
+const EXAMPLE_RUNS = {
+  desktop: { viewport: { width: 1440, height: 900 } },
+  mobile: { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 },
+};
+const WED_1030 = new Date('2026-10-07T10:30:00+02:00'); // Wednesday (index 2), 10:30 in Poland
+const SUN_1200 = new Date('2026-10-11T12:00:00+02:00'); // Sunday (index 6), noon
+const expectedStatus = (godziny, day, minutes) => {
+  const toMin = (t) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+  const today = godziny[day];
+  if (today && minutes >= toMin(today[0]) && minutes < toMin(today[1])) return `Teraz otwarte · do ${today[1]}`;
+  if (today && minutes < toMin(today[0])) return `Teraz zamknięte · otwieramy dziś o ${today[0]}`;
+  const next = godziny[(day + 1) % 7];
+  return next ? `Teraz zamknięte · otwieramy jutro o ${next[0]}` : null; // the examples all open on the next day
+};
+const examples = checkExamples ? await loadExamples() : [];
+for (const [run, options] of checkExamples ? Object.entries(EXAMPLE_RUNS) : []) {
+  for (const data of examples) {
+    const context = await browser.newContext(options);
+    const page = await context.newPage();
+    const errors = [];
+    const warnings = [];
+    page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
+    page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
+    page.on('requestfailed', (r) => (r.url().startsWith(base) ? errors : warnings).push(`request failed: ${r.url()}`));
+    page.on('response', (r) => { if (r.url().startsWith(base) && r.status() >= 400) errors.push(`HTTP ${r.status()}: ${r.url()}`); });
+    const url = `${base}przyklady/${data.slug}.html`;
+
+    await page.clock.setFixedTime(SUN_1200);
+    await page.goto(url, { waitUntil: 'load' });
+    const sunday = await page.locator('[data-status]').textContent();
+    if (sunday !== expectedStatus(data.godziny, 6, 12 * 60)) errors.push(`status on Sunday noon: "${sunday}"`);
+    await page.clock.setFixedTime(WED_1030);
+    await page.reload({ waitUntil: 'load' });
+    await page.evaluate(() => document.fonts.ready);
+
+    const info = await page.evaluate((designWidth) => ({
+      status: document.querySelector('[data-status]:not([hidden])')?.textContent,
+      today: [...document.querySelectorAll('.hours tr.is-today')].map((tr) => tr.dataset.dni),
+      overflowX: Math.max(document.documentElement.scrollWidth, window.innerWidth) > designWidth + 1,
+      demoBar: document.querySelector('.demo-bar')?.getBoundingClientRect().top === 0,
+    }), options.viewport.width);
+    if (info.status !== expectedStatus(data.godziny, 2, 10 * 60 + 30)) errors.push(`status on Wednesday 10:30: "${info.status}"`);
+    if (info.today.length !== 1 || !info.today[0].split(' ').includes('2')) errors.push(`today's hours row: ${JSON.stringify(info.today)}`);
+    if (info.overflowX) errors.push('horizontal overflow');
+    if (!info.demoBar) errors.push('the "example page" bar is not at the very top');
+
+    if (!(await page.evaluate(() => Boolean(window.axe)))) await page.addScriptTag({ path: AXE });
+    const found = await page.evaluate(async () => (await window.axe.run(document, { resultTypes: ['violations'] }))
+      .violations.map((v) => ({ id: v.id, impact: v.impact, nodes: v.nodes.slice(0, 3).map((n) => n.target.join(' ')) })));
+    for (const v of found) (['serious', 'critical'].includes(v.impact) ? errors : warnings).push(`a11y ${v.impact}: ${v.id} [${v.nodes.join(' | ')}]`);
+
+    await page.screenshot({ path: join(outDir, `przyklady-${run}-${data.slug}.png`), fullPage: true });
+
+    // Placeholder buttons explain themselves instead of dialling; the demo form "sends" without leaving the page.
+    const callButton = page.locator(options.isMobile ? '.dock a' : '.top__call').first();
+    await callButton.click();
+    const toast = page.locator('.toast.is-on');
+    if (await toast.textContent({ timeout: 2000 }).catch(() => null) !== await callButton.getAttribute('data-demo')) {
+      errors.push('the call placeholder did not show its note');
+    }
+    await page.fill('#formularz [name="imie"]', 'Jan');
+    await page.fill('#formularz [name="telefon"]', '600 100 200');
+    await page.locator('#formularz [type="submit"]').click();
+    await page.waitForTimeout(300);
+    const sent = await page.evaluate(() => ({
+      toast: document.querySelector('.toast.is-on')?.textContent,
+      expected: document.querySelector('#formularz').dataset.demo,
+      cleared: document.querySelector('#formularz [name="imie"]').value === '',
+      url: location.href,
+    }));
+    if (sent.toast !== sent.expected || !sent.cleared || sent.url.split('#')[0] !== url) errors.push(`demo form: ${JSON.stringify(sent)}`);
+
+    if (errors.length) failed = true;
+    console.log(`\n[przyklady/${data.slug} · ${run}] ${errors.length ? 'FAIL' : 'ok'}`);
+    errors.forEach((e) => console.log(`  ✖ ${e}`));
+    warnings.forEach((w) => console.log(`  ⚠ ${w}`));
+    await context.close();
+  }
 }
 
 await browser.close();

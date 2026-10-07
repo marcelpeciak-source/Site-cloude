@@ -14,6 +14,14 @@ export default [
     },
   },
   {
+    files: ['przyklady/**/*.js'],
+    languageOptions: {
+      ecmaVersion: 2023,
+      sourceType: 'script', // classic <script defer> on the example pages and inlined into visualisations
+      globals: { ...globals.browser },
+    },
+  },
+  {
     files: ['scripts/**/*.mjs', 'eslint.config.js'],
     languageOptions: {
       ecmaVersion: 2023,

@@ -1,0 +1,35 @@
+{
+  "slug": "fryzjer",
+  "nazwa": "Salon Fryzjerski Lazur",
+  "branza": "Salon fryzjerski",
+  "haslo": "Fryzura, z którą chce się wychodzić z domu.",
+  "lead": "Strzyżenie, koloryzacja i upięcia dla pań i panów. Wizytę można umówić telefonicznie albo przez formularz — także wieczorem, gdy salon jest zamknięty.",
+  "motyw": { "tlo": "#faf5f2", "karta": "#ffffff", "tekst": "#2b1d24", "przygaszony": "#6b5860", "akcent": "#9e3a5b", "akcentTekst": "#ffffff", "miekki": "#f3dce3" },
+  "adres": "ul. Przykładowa 12",
+  "miejscowosc": "Twoja Miejscowość",
+  "godziny": [["9:00", "18:00"], ["9:00", "18:00"], ["9:00", "18:00"], ["9:00", "18:00"], ["9:00", "18:00"], ["8:00", "14:00"], null],
+  "cta": { "tekst": "Umów wizytę", "cel": "formularz" },
+  "uslugi": [
+    { "nazwa": "Strzyżenie damskie", "opis": "Cięcie dopasowane do kształtu twarzy i tego, ile czasu rano mają Państwo na fryzurę." },
+    { "nazwa": "Strzyżenie męskie", "opis": "Klasyczne i nowoczesne cięcia, wykończenie maszynką i brzytwą." },
+    { "nazwa": "Koloryzacja", "opis": "Kolor jednolity, pasemka i odświeżenie odrostów — z doborem odcienia przed farbowaniem." },
+    { "nazwa": "Upięcia okolicznościowe", "opis": "Fryzury na wesela, studniówki i komunie, z próbą przed wielkim dniem." },
+    { "nazwa": "Pielęgnacja i regeneracja", "opis": "Zabiegi dla włosów zniszczonych farbowaniem, słońcem i prostownicą." },
+    { "nazwa": "Fryzury dziecięce", "opis": "Szybko i cierpliwie — tak, żeby dziecko chciało wrócić." }
+  ],
+  "cennik": [
+    ["Strzyżenie damskie", "od 60 zł"],
+    ["Strzyżenie męskie", "od 40 zł"],
+    ["Strzyżenie dziecięce", "od 30 zł"],
+    ["Koloryzacja", "od 150 zł"],
+    ["Pasemka", "od 180 zł"],
+    ["Upięcie okolicznościowe", "od 120 zł"]
+  ],
+  "sekcja": {
+    "typ": "galeria",
+    "naglowek": "Nasze fryzury",
+    "wstep": "W gotowej stronie tu będą zdjęcia Państwa prac — najlepiej sprzedają się prawdziwe fryzury prawdziwych klientów (za ich zgodą).",
+    "elementy": ["Cięcie i modelowanie", "Koloryzacja", "Upięcie ślubne", "Strzyżenie męskie", "Pasemka", "Fryzura dziecięca"]
+  },
+  "formularz": { "naglowek": "Umów wizytę", "opis": "Proszę zostawić numer — oddzwonimy i potwierdzimy termin.", "wybor": "Usługa" }
+}

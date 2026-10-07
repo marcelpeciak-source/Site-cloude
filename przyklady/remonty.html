@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Firma Remontowa Poziomica — przykładowa strona (firma remontowa) | Marcel Pęciak</title>
+  <meta name="description" content="Łazienki pod klucz, płytki, gładzie, malowanie i podłogi. Przyjeżdżamy, mierzymy i przygotowujemy bezpłatną wycenę na miejscu.">
+  <meta name="theme-color" content="#f4efe5">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="szablon.css">
+  <style>:root { --tlo: #f4efe5; --karta: #fffdf8; --tekst: #1d2a21; --przygaszony: #5a6458; --akcent: #2b6544; --akcent-tekst: #ffffff; --miekki: #e8dfc9; color-scheme: light; }</style>
+  <script src="szablon.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#tresc">Przejdź do treści</a>
+  <aside class="demo-bar" aria-label="O tej stronie">
+    <p><strong>Przykładowa strona</strong> — fikcyjna firma, przykładowe ceny i dane. Tak może wyglądać strona Państwa firmy.</p>
+    <p class="demo-bar__links"><a href="../#przyklady"><span aria-hidden="true">←</span> Wszystkie przykłady</a><a href="../#kontakt">Chcę taką stronę</a></p>
+  </aside>
+
+  <header class="top">
+    <div class="wrap top__in">
+      <a class="top__logo" href="#tresc">Firma Remontowa Poziomica</a>
+      <nav class="top__nav" aria-label="Sekcje strony">
+        <a href="#oferta">Oferta</a>
+        <a href="#cennik">Cennik</a>
+        <a href="#galeria">Galeria</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+      <a class="btn btn--small top__call" href="#kontakt" data-demo="To przykład — w gotowej stronie ten przycisk od razu wybiera numer firmy.">Zadzwoń</a>
+    </div>
+  </header>
+
+  <main id="tresc">
+    <section class="hero" aria-labelledby="hero-h">
+      <div class="wrap hero__in">
+        <div>
+          <p class="hero__kicker">Firma remontowa · Twoja Miejscowość</p>
+          <h1 id="hero-h">Remont bez nerwów — od wyceny do sprzątania.</h1>
+          <p class="hero__lead">Łazienki pod klucz, płytki, gładzie, malowanie i podłogi. Przyjeżdżamy, mierzymy i przygotowujemy bezpłatną wycenę na miejscu.</p>
+          <div class="hero__actions">
+            <a class="btn" href="#formularz">Bezpłatna wycena</a>
+            <a class="btn btn--ghost" href="#oferta">Zobacz ofertę</a>
+          </div>
+          <p class="status" data-status hidden></p>
+        </div>
+        <figure class="ph" data-mono="P"><figcaption class="ph__cap">Miejsce na zdjęcie firmy</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="sec" id="oferta" aria-labelledby="oferta-h">
+      <div class="wrap">
+        <h2 id="oferta-h">Oferta</h2>
+        <ul class="cards">
+          <li class="card"><h3>Łazienki pod klucz</h3><p>Od skucia starych płytek po montaż armatury — jedna ekipa, jeden termin.</p></li>
+          <li class="card"><h3>Glazura i terakota</h3><p>Płytki na ścianach i podłogach, także wielkoformatowe.</p></li>
+          <li class="card"><h3>Malowanie i gładzie</h3><p>Równe ściany, czyste krawędzie, zabezpieczone meble i podłogi.</p></li>
+          <li class="card"><h3>Podłogi i panele</h3><p>Panele, deska winylowa, listwy — z wyrównaniem podłoża.</p></li>
+          <li class="card"><h3>Zabudowy z płyt g-k</h3><p>Ścianki działowe, sufity podwieszane i zabudowy poddaszy.</p></li>
+          <li class="card"><h3>Drobne naprawy</h3><p>Montaż drzwi, listew, gniazdek i wszystkiego, co od dawna czeka na fachowca.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="sec sec--alt" id="cennik" aria-labelledby="cennik-h">
+      <div class="wrap">
+        <h2 id="cennik-h">Cennik</h2>
+        <dl class="prices">
+          <div><dt>Malowanie ścian</dt><dd>od 15 zł/m²</dd></div>
+          <div><dt>Gładź gipsowa</dt><dd>od 35 zł/m²</dd></div>
+          <div><dt>Układanie płytek</dt><dd>od 90 zł/m²</dd></div>
+          <div><dt>Panele podłogowe</dt><dd>od 30 zł/m²</dd></div>
+          <div><dt>Łazienka pod klucz</dt><dd>wycena indywidualna</dd></div>
+        </dl>
+        <p class="note">Ceny przykładowe. W Państwa stronie wpiszemy prawdziwy cennik — i zmienimy go, kiedy tylko trzeba.</p>
+      </div>
+    </section>
+
+    <section class="sec" id="galeria" aria-labelledby="galeria-h">
+      <div class="wrap">
+        <h2 id="galeria-h">Nasze realizacje</h2>
+        <p class="sec__intro">W gotowej stronie tu będą zdjęcia Państwa realizacji — najlepiej „przed i po”. Klient przed zleceniem remontu chce zobaczyć prawdziwą pracę.</p>
+        <ul class="gallery">
+          <li class="ph" data-mono="1"><span class="ph__cap">Łazienka — przed i po</span></li>
+          <li class="ph" data-mono="2"><span class="ph__cap">Kuchnia z płytkami</span></li>
+          <li class="ph" data-mono="3"><span class="ph__cap">Salon po malowaniu</span></li>
+          <li class="ph" data-mono="4"><span class="ph__cap">Poddasze z płyt g-k</span></li>
+          <li class="ph" data-mono="5"><span class="ph__cap">Podłoga z paneli</span></li>
+          <li class="ph" data-mono="6"><span class="ph__cap">Schody i listwy</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="sec sec--alt" id="kontakt" aria-labelledby="kontakt-h">
+      <div class="wrap">
+        <h2 id="kontakt-h">Kontakt i dojazd</h2>
+        <div class="contact">
+          <div>
+            <div class="contact__lines">
+              <p>ul. Przykładowa 20, Twoja Miejscowość</p>
+              <p><a href="#kontakt" data-demo="To przykład — w gotowej stronie ten przycisk od razu wybiera numer firmy.">Zadzwoń</a></p>
+            </div>
+            <h3 class="contact__h">Godziny otwarcia</h3>
+            <table class="hours">
+              <tr data-dni="0 1 2 3 4"><th scope="row">Poniedziałek – piątek</th><td>7:00–17:00</td></tr>
+              <tr data-dni="5"><th scope="row">Sobota</th><td>8:00–12:00</td></tr>
+              <tr data-dni="6"><th scope="row">Niedziela</th><td>nieczynne</td></tr>
+            </table>
+            <a class="map" href="#kontakt" data-demo="W gotowej stronie tu jest mapa Google z dojazdem — jedno dotknięcie i nawigacja prowadzi pod same drzwi."><span class="map__pin">ul. Przykładowa 20, Twoja Miejscowość</span><span class="map__go">Wyznacz trasę <span aria-hidden="true">→</span></span></a>
+          </div>
+          <form class="form" id="formularz" data-demo="To tylko przykład, nic nie zostało wysłane. W gotowej stronie wiadomość trafi prosto na Państwa telefon lub e-mail.">
+            <h3>Bezpłatna wycena</h3>
+            <p>Kilka słów o zakresie prac i miejscowości — oddzwonimy i umówimy pomiar.</p>
+            <div class="form__grid">
+              <label>Imię <input name="imie" autocomplete="given-name" required></label>
+              <label>Telefon <input name="telefon" type="tel" inputmode="tel" autocomplete="tel" required></label>
+              <label>Rodzaj prac <select name="wybor"><option>Łazienki pod klucz</option><option>Glazura i terakota</option><option>Malowanie i gładzie</option><option>Podłogi i panele</option><option>Zabudowy z płyt g-k</option><option>Drobne naprawy</option><option>Inne</option></select></label>
+              <label>Wiadomość (opcjonalnie) <textarea name="wiadomosc" rows="3"></textarea></label>
+            </div>
+            <button class="btn" type="submit">Wyślij</button>
+            <p class="form__small">Formularz pokazowy — nic nie zostanie wysłane.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot__in">
+      <p>© Firma Remontowa Poziomica</p>
+      <p>Fikcyjna firma. Strona przykładowa: <a href="../">Marcel Pęciak — strony dla lokalnych firm</a></p>
+    </div>
+  </footer>
+
+  <nav class="dock" aria-label="Szybki kontakt">
+    <a href="#kontakt" data-demo="To przykład — w gotowej stronie ten przycisk od razu wybiera numer firmy.">Zadzwoń</a>
+    <a href="#formularz">Bezpłatna wycena</a>
+    <a href="#kontakt" data-demo="W gotowej stronie tu jest mapa Google z dojazdem — jedno dotknięcie i nawigacja prowadzi pod same drzwi.">Dojazd</a>
+  </nav>
+  <div class="toast" role="status"></div>
+  <script type="application/json" id="godziny">[["7:00","17:00"],["7:00","17:00"],["7:00","17:00"],["7:00","17:00"],["7:00","17:00"],["8:00","12:00"],null]</script>
+</body>
+</html>
